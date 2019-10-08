@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.8">
+<title>Spring Cloud Alibaba Sentinel</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+<script type="text/javascript">
+function addBlockSwitches() {
+	$('.primary').each(function() {
+		primary = $(this);
+		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
+		primary.children('.title').remove();
+	});
+	$('.secondary').each(function(idx, node) {
+		secondary = $(node);
+		primary = findPrimary(secondary);
+		switchItem = createSwitchItem(secondary, primary.children('.switch'));
+		switchItem.content.addClass('hidden');
+		findPrimary(secondary).append(switchItem.content);
+		secondary.remove();
+	});
+}
+
+function createBlockSwitch(primary) {
+	blockSwitch = $('<div class="switch"></div>');
+	primary.prepend(blockSwitch);
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	candidate = secondary.prev();
+	while (!candidate.is('.primary')) {
+		candidate = candidate.prev();
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	blockName = block.children('.title').text();
+	content = block.children('.content').first().append(block.next('.colist'));
+	item = $('<div class="switch--item">' + blockName + '</div>');
+	item.on('click', '', content, function(e) {
+		$(this).addClass('selected');
+		$(this).siblings().removeClass('selected');
+		e.data.siblings('.content').addClass('hidden');
+		e.data.removeClass('hidden');
+	});
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+$(addBlockSwitches);
+</script>
+
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_spring_cloud_alibaba_sentinel">Spring Cloud Alibaba Sentinel</a>
+<ul class="sectlevel2">
+<li><a href="#_introduction_of_sentinel">Introduction of Sentinel</a></li>
+<li><a href="#_how_to_use_sentinel">How to Use Sentinel</a></li>
+<li><a href="#_openfeign_support">OpenFeign Support</a></li>
+<li><a href="#_resttemplate_support">RestTemplate Support</a></li>
+<li><a href="#_dynamic_data_source_support">Dynamic Data Source Support</a></li>
+<li><a href="#_support_zuul">Support Zuul</a></li>
+<li><a href="#_support_spring_cloud_gateway">Support Spring Cloud Gateway</a></li>
+<li><a href="#_circuit_breaker_spring_cloud_circuit_breaker_with_sentinel_configuring_sentinel_circuit_breakers">Circuit Breaker: Spring Cloud Circuit Breaker With Sentinel &amp; Configuring Sentinel Circuit Breakers</a></li>
+<li><a href="#_sentinel_endpoint">Sentinel Endpoint</a></li>
+<li><a href="#_configuration">Configuration</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_spring_cloud_alibaba_sentinel"><a class="link" href="#_spring_cloud_alibaba_sentinel">Spring Cloud Alibaba Sentinel</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_introduction_of_sentinel"><a class="link" href="#_introduction_of_sentinel">Introduction of Sentinel</a></h3>
+<div class="paragraph">
+<p>As microservices become popular, the stability of service calls is becoming increasingly important. <a href="https://github.com/alibaba/Sentinel">Sentinel</a> takes "flow" as the breakthrough point, and works on multiple fields including flow control, circuit breaking and load protection to protect service reliability.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/alibaba/Sentinel">Sentinel</a> has the following features:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Rich Scenarios</strong>： Sentinel has supported the key scenarios of Alibaba’s Double 11 Shopping Festivals for over 10 years, such as second kill(i.e., controlling sudden bursts of traffic flow so that it’s within the acceptable range of the system capacity), message load shifting, circuit breaking of unreliable downstream applications.</p>
+</li>
+<li>
+<p><strong>Comprehensive Real-Time Monitoring</strong>： Sentinel provides real-time monitoring capability. You can see the monitoring data of your servers at the accuracy of seconds, and even the overall runtime status of a cluster with less than 500 nodes.</p>
+</li>
+<li>
+<p><strong>Extensive Open-Source Ecosystem</strong>： Sentinel provides out-of-box modules that can be easily integrated with other open-source frameworks/libraries, such as Spring Cloud, Dubbo, and gRPC. To use Sentinel, you only need to introduce the related dependency and make a few simple configurations.</p>
+</li>
+<li>
+<p><strong>Sound SPI Extensions</strong>： Sentinel provides easy-to-use and sound SPI extension interfaces. You can customize logics with the SPI extensions quickly, for example, you can define your own rule management, or adapt to specific data sources.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_to_use_sentinel"><a class="link" href="#_how_to_use_sentinel">How to Use Sentinel</a></h3>
+<div class="paragraph">
+<p>If you want to use Sentinel in your project, please use the starter with the group ID as <code>com.alibaba.cloud</code> and the artifact ID as <code>spring-cloud-starter-alibaba-sentinel</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-alibaba-sentinel&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The following is a simple example of how to use Sentinel:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+public class Application {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ServiceApplication.class, args);
+    }
+
+}
+
+@RestController
+public class TestController {
+
+    @GetMapping(value = "/hello")
+    @SentinelResource("hello")
+    public String hello() {
+        return "Hello Sentinel";
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The @SentinelResource annotation is used to identify if a resource is rate limited or degraded. In the above sample, the 'hello' attribute of the annotation refers to the resource name.</p>
+</div>
+<div class="paragraph">
+<p>@SentinelResource also provides attributes such as <code>blockHandler</code>, <code>blockHandlerClass</code>,  and <code>fallback</code> to identify rate limiting or degradation operations. For more details, refer to  <a href="https://github.com/alibaba/Sentinel/wiki/%E6%B3%A8%E8%A7%A3%E6%94%AF%E6%8C%81">Sentinel Annotation Support</a>.</p>
+</div>
+<div class="paragraph">
+<p>The above examples are all used in the WebServlet environment. Sentinel currently supports WebFlux and needs to cooperate with the <code>spring-boot-starter-webflux</code> dependency to trigger the WebFlux-related automation configuration in sentinel starter.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+public class Application {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ServiceApplication.class, args);
+    }
+
+}
+
+@RestController
+public class TestController {
+
+    @GetMapping("/mono")
+    @SentinelResource("hello")
+    public Mono&lt;String&gt; mono() {
+	return Mono.just("simple string")
+			.transform(new SentinelReactorTransformer&lt;&gt;("otherResourceName"));
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_sentinel_dashboard"><a class="link" href="#_sentinel_dashboard">Sentinel Dashboard</a></h5>
+<div class="paragraph">
+<p>Sentinel dashboard is a lightweight console that provides functions such as machine discovery, single-server resource monitoring, overview of cluster resource data, as well as rule management. To use these features, you only need to complete a few steps.</p>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong>: The statistics overview for clusters only supports clusters with less than 500 nodes, and has a latency of about 1 to 2 seconds.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://github.com/alibaba/Sentinel/wiki/image/dashboard.png" alt="dashboard">
+</div>
+<div class="title">Figure 1. Sentinel Dashboard</div>
+</div>
+<div class="paragraph">
+<p>To use the Sentinel dashboard, simply complete the following 3 steps.</p>
+</div>
+<div class="sect5">
+<h6 id="_get_the_dashboard"><a class="link" href="#_get_the_dashboard">Get the Dashboard</a></h6>
+<div class="paragraph">
+<p>You can download the latest dashboard JAR file from the <a href="https://github.com/alibaba/Sentinel/releases">Release Page</a>.</p>
+</div>
+<div class="paragraph">
+<p>You can also get the latest source code to build your own Sentinel dashboard：</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Download the  <a href="https://github.com/alibaba/Sentinel/tree/master/sentinel-dashboard">Dashboard</a> project.</p>
+</li>
+<li>
+<p>Run the following command to package the code into a FatJar: <code>mvn clean package</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_start_the_dashboard"><a class="link" href="#_start_the_dashboard">Start the Dashboard</a></h6>
+<div class="paragraph">
+<p>Sentinel dashboard is a standard SpringBoot application, and you can run the JAR file in the Spring Boot mode.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">java -Dserver.port=8080 -Dcsp.sentinel.dashboard.server=localhost:8080 -Dproject.name=sentinel-dashboard -jar sentinel-dashboard.jar</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If there is conflict with the 8080 port, you can use <code>-Dserver.port=new port</code> to define a new port.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_configure_the_dashboard"><a class="link" href="#_configure_the_dashboard">Configure the Dashboard</a></h4>
+<div class="listingblock">
+<div class="title">application.yml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring:
+  cloud:
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: localhost:8080</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The port number specified in <code>spring.cloud.sentinel.transport.port</code> will start an HTTP Server on the corresponding server of the application, and this server will interact with the Sentinel dashboard. For example, if a rate limiting rule is added in the Sentinel dashboard, the the rule data will be pushed to and recieved by the HTTP Server, which in turn registers the rule to Sentinel.</p>
+</div>
+<div class="paragraph">
+<p>For more information about Sentinel dashboard, please refer to <a href="https://github.com/alibaba/Sentinel/wiki/%E6%8E%A7%E5%88%B6%E5%8F%B0">Sentinel Dashboard</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_openfeign_support"><a class="link" href="#_openfeign_support">OpenFeign Support</a></h3>
+<div class="paragraph">
+<p>Sentinel is compatible with the <a href="https://github.com/OpenFeign/feign">OpenFeign</a> component. To use it, in addition to introducing the <code>sentinel-starter</code> dependency, complete the following 2 steps:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Enable the Sentinel support for feign in the properties file. <code>feign.sentinel.enabled=true</code></p>
+</li>
+<li>
+<p>Add the <code>openfeign starter</code> dependency to trigger and enable <code>sentinel starter</code>:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is a simple usage of <code>FeignClient</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@FeignClient(name = "service-provider", fallback = EchoServiceFallback.class, configuration = FeignConfiguration.class)
+public interface EchoService {
+    @GetMapping(value = "/echo/{str}")
+    String echo(@PathVariable("str") String str);
+}
+
+class FeignConfiguration {
+    @Bean
+    public EchoServiceFallback echoServiceFallback() {
+        return new EchoServiceFallback();
+    }
+}
+
+class EchoServiceFallback implements EchoService {
+    @Override
+    public String echo(@PathVariable("str") String str) {
+        return "echo fallback";
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The resource name policy in the corresponding interface of Feign is：httpmethod:protocol://requesturl. All the attributes in the <code>@FeignClient</code> annotation is supported by Sentinel.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The corresponding resource name of the <code>echo</code> method in the <code>EchoService</code> interface is <code>GET:http://service-provider/echo/{str}</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_resttemplate_support"><a class="link" href="#_resttemplate_support">RestTemplate Support</a></h3>
+<div class="paragraph">
+<p>Spring Cloud Alibaba Sentinel supports the protection of <code>RestTemplate</code> service calls using Sentinel. To do this, you need to add the <code>@SentinelRestTemplate</code> annotation when constructing the <code>RestTemplate</code> bean.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+@SentinelRestTemplate(blockHandler = "handleException", blockHandlerClass = ExceptionUtil.class)
+public RestTemplate restTemplate() {
+    return new RestTemplate();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The attribute of the <code>@SentinelRestTemplate</code> annotation support flow control(<code>blockHandler</code>, <code>blockHandlerClass</code>) and circuit breaking(<code>fallback</code>, <code>fallbackClass</code>).</p>
+</div>
+<div class="paragraph">
+<p>==</p>
+</div>
+<div class="paragraph">
+<p>The <code>blockHandler</code> or <code>fallback</code> is the static method of <code>blockHandlerClass</code> or <code>fallbackClass</code>.</p>
+</div>
+<div class="paragraph">
+<p>The parameter and return value of method in <code>@SentinelRestTemplate</code> is same as <code>org.springframework.http.client.ClientHttpRequestInterceptor#interceptor</code>, but it has one more parameter <code>BlockException</code> to catch the exception by Sentinel.</p>
+</div>
+<div class="paragraph">
+<p>The method signature of <code>handleException</code> in <code>ExceptionUtil</code> above should be like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class ExceptionUtil {
+    public static ClientHttpResponse handleException(HttpRequest request, byte[] body, ClientHttpRequestExecution execution, BlockException exception) {
+        ...
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+When the application starts, it will check if the <code>@SentinelRestTemplate</code> annotation corresponding to the flow control or circuit breaking method exists, if it does not exist, it will throw an exception.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The attribute of the <code>@SentinelRestTemplate</code> annotation is optional.</p>
+</div>
+<div class="paragraph">
+<p>It will return <code>RestTemplate request block by sentinel</code> when you using <code>RestTemplate</code> blocked by Sentinel. You can override it by your own logic. We provide <code>SentinelClientHttpResponse</code> to handle the response.</p>
+</div>
+<div class="paragraph">
+<p>Sentinel RestTemplate provides two granularities for resource rate limiting:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>httpmethod:schema://host:port/path</code>： Protocol, host, port and path</p>
+</li>
+<li>
+<p><code>httpmethod:schema://host:port</code>： Protocol, host and port</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Take Http GET <code><a href="https://www.taobao.com/test" class="bare">https://www.taobao.com/test</a></code> as an example. The corresponding resource names have two levels of granularities, <code>GET:https://www.taobao.com</code> and <code>GET:https://www.taobao.com/test</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dynamic_data_source_support"><a class="link" href="#_dynamic_data_source_support">Dynamic Data Source Support</a></h3>
+<div class="paragraph">
+<p><code>SentinelProperties</code> provide <code>datasource</code> attribute to configure datasource.</p>
+</div>
+<div class="paragraph">
+<p>For example, 4 data sources are configures：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.cloud.sentinel.datasource.ds1.file.file=classpath: degraderule.json
+spring.cloud.sentinel.datasource.ds1.file.rule-type=flow
+
+#spring.cloud.sentinel.datasource.ds1.file.file=classpath: flowrule.json
+#spring.cloud.sentinel.datasource.ds1.file.data-type=custom
+#spring.cloud.sentinel.datasource.ds1.file.converter-class=JsonFlowRuleListConverter
+#spring.cloud.sentinel.datasource.ds1.file.rule-type=flow
+
+spring.cloud.sentinel.datasource.ds2.nacos.server-addr=localhost:8848
+spring.cloud.sentinel.datasource.ds2.nacos.data-id=sentinel
+spring.cloud.sentinel.datasource.ds2.nacos.group-id=DEFAULT_GROUP
+spring.cloud.sentinel.datasource.ds2.nacos.data-type=json
+spring.cloud.sentinel.datasource.ds2.nacos.rule-type=degrade
+
+spring.cloud.sentinel.datasource.ds3.zk.path = /Sentinel-Demo/SYSTEM-CODE-DEMO-FLOW
+spring.cloud.sentinel.datasource.ds3.zk.server-addr = localhost:2181
+spring.cloud.sentinel.datasource.ds3.zk.rule-type=authority
+
+spring.cloud.sentinel.datasource.ds4.apollo.namespace-name = application
+spring.cloud.sentinel.datasource.ds4.apollo.flow-rules-key = sentinel
+spring.cloud.sentinel.datasource.ds4.apollo.default-flow-rule-value = test
+spring.cloud.sentinel.datasource.ds4.apollo.rule-type=param-flow</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This method follows the configuration of Spring Cloud Stream Binder. <code>TreeMap</code> is used for storage internally, and comparator is <code>String.CASE_INSENSITIVE_ORDER</code>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+d1, ds2, ds3, ds4 are the names of <code>ReadableDataSource</code>, and can be coded as you like. The <code>file</code>, <code>zk</code>, <code>nacos</code> , <code>apollo</code> refer to the specific data sources. The configurations following them are the specific configurations of these data sources respecitively.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Every data source has 3 common configuration items: <code>data-type</code>, <code>converter-class</code> and <code>rule-type</code>.</p>
+</div>
+<div class="paragraph">
+<p><code>data-type</code> refers to <code>Converter</code>. Spring Cloud Alibaba Sentinel provides two embedded values by default: <code>json</code> and <code>xml</code> (the default is json if not specified). If you do not want to use the embedded <code>json</code> or <code>xml</code> <code>Converter</code>, you can also fill in <code>custom</code> to indicate that you will define your own <code>Converter</code>, and then configure the <code>converter-class</code>. You need to specify the full path of the class for this configuration.</p>
+</div>
+<div class="paragraph">
+<p><code>rule-type</code> refers to the rule type in datasource(<code>flow</code>，<code>degrade</code>，<code>authority</code>，<code>system</code>, <code>param-flow</code>, <code>gw-flow</code>, <code>gw-api-group</code>).</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+XML format is not supported by default. To make it effective, you need to add the  <code>jackson-dataformat-xml</code> dependency.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To learn more about how dynamic data sources work in Sentinel, refer to <a href="https://github.com/alibaba/Sentinel/wiki/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%99%E6%89%A9%E5%B1%95">Dynamic Rule Extension</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_support_zuul"><a class="link" href="#_support_zuul">Support Zuul</a></h3>
+<div class="paragraph">
+<p>Refer <a href="https://github.com/alibaba/Sentinel/wiki/API-Gateway-Flow-Control">API Gateway Flow Control</a></p>
+</div>
+<div class="paragraph">
+<p>If you want to use Sentinel Starter with Zuul, you need to add the <code>spring-cloud-alibaba-sentinel-gateway</code> dependency, and you need to add the <code>spring-cloud-starter-netflix-zuul</code> dependency to let Zuul AutoConfiguration class in the gateway module takes effect:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-alibaba-sentinel&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-alibaba-sentinel-gateway&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-netflix-zuul&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_support_spring_cloud_gateway"><a class="link" href="#_support_spring_cloud_gateway">Support Spring Cloud Gateway</a></h3>
+<div class="paragraph">
+<p>Refer <a href="https://github.com/alibaba/Sentinel/wiki/API-Gateway-Flow-Control">API Gateway Flow Control</a></p>
+</div>
+<div class="paragraph">
+<p>If you want to use Sentinel Starter with Spring Cloud Gateway, you need to add the <code>spring-cloud-alibaba-sentinel-gateway</code> dependency and add the <code>spring-cloud-starter-gateway</code> dependency to let Spring Cloud Gateway AutoConfiguration class in the module takes effect:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-alibaba-sentinel&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-alibaba-sentinel-gateway&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-gateway&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_circuit_breaker_spring_cloud_circuit_breaker_with_sentinel_configuring_sentinel_circuit_breakers"><a class="link" href="#_circuit_breaker_spring_cloud_circuit_breaker_with_sentinel_configuring_sentinel_circuit_breakers">Circuit Breaker: Spring Cloud Circuit Breaker With Sentinel &amp; Configuring Sentinel Circuit Breakers</a></h3>
+<div class="sect3">
+<h4 id="_default_configuration"><a class="link" href="#_default_configuration">Default Configuration</a></h4>
+<div class="paragraph">
+<p>To provide a default configuration for all of your circuit breakers create a <code>Customizer</code> bean that is passed a
+<code>SentinelCircuitBreakerFactory</code> or <code>ReactiveSentinelCircuitBreakerFactory</code>.
+The <code>configureDefault</code> method can be used to provide a default configuration.</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public Customizer&lt;SentinelCircuitBreakerFactory&gt; defaultCustomizer() {
+	return factory -&gt; factory.configureDefault(id -&gt; new SentinelConfigBuilder(id)
+			.build());
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>You can choose to provide default circuit breaking rules via <code>SentinelConfigBuilder#rules(rules)</code>.
+You can also choose to load circuit breaking rules later elsewhere using
+<code>DegradeRuleManager.loadRules(rules)</code> API of Sentinel, or via Sentinel dashboard.</p>
+</div>
+<div class="sect4">
+<h5 id="_reactive_example"><a class="link" href="#_reactive_example">Reactive Example</a></h5>
+<div class="exampleblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public Customizer&lt;ReactiveSentinelCircuitBreakerFactory&gt; defaultCustomizer() {
+	return factory -&gt; factory.configureDefault(id -&gt; new SentinelConfigBuilder(id)
+			.build());
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_specific_circuit_breaker_configuration"><a class="link" href="#_specific_circuit_breaker_configuration">Specific Circuit Breaker Configuration</a></h4>
+<div class="paragraph">
+<p>Similarly to providing a default configuration, you can create a <code>Customizer</code> bean this is passed a
+<code>SentinelCircuitBreakerFactory</code>.</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public Customizer&lt;SentinelCircuitBreakerFactory&gt; slowCustomizer() {
+	String slowId = "slow";
+	List&lt;DegradeRule&gt; rules = Collections.singletonList(
+		new DegradeRule(slowId).setGrade(RuleConstant.DEGRADE_GRADE_RT)
+			.setCount(100)
+			.setTimeWindow(10)
+		);
+	return factory -&gt; factory.configure(builder -&gt; builder.rules(rules), slowId);
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_reactive_example_2"><a class="link" href="#_reactive_example_2">Reactive Example</a></h5>
+<div class="exampleblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public Customizer&lt;ReactiveSentinelCircuitBreakerFactory&gt; customizer() {
+	List&lt;DegradeRule&gt; rules = Collections.singletonList(
+		new DegradeRule().setGrade(RuleConstant.DEGRADE_GRADE_RT)
+			.setCount(100)
+			.setTimeWindow(10)
+		);
+	return factory -&gt; factory.configure(builder -&gt; builder.rules(rules), "foo", "bar");
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sentinel_endpoint"><a class="link" href="#_sentinel_endpoint">Sentinel Endpoint</a></h3>
+<div class="paragraph">
+<p>Sentinel provides an Endpoint internally with a corresponding endpoint id of <code>sentinel</code>.</p>
+</div>
+<div class="paragraph">
+<p>Endpoint exposed json contains multi properties:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>appName: application name</p>
+</li>
+<li>
+<p>logDir: the directory of log</p>
+</li>
+<li>
+<p>logUsePid: log name with pid ot not</p>
+</li>
+<li>
+<p>blockPage: redirect page after sentinel block</p>
+</li>
+<li>
+<p>metricsFileSize: the size of metrics file</p>
+</li>
+<li>
+<p>metricsFileCharset: metrics file charset</p>
+</li>
+<li>
+<p>totalMetricsFileCount: the total file count of of metrics file</p>
+</li>
+<li>
+<p>consoleServer: sentinel dashboard address</p>
+</li>
+<li>
+<p>clientIp: client ip</p>
+</li>
+<li>
+<p>heartbeatIntervalMs: client heartbeat interval with dashboard</p>
+</li>
+<li>
+<p>clientPort: the client needs to expose the port to interact with the dashboard</p>
+</li>
+<li>
+<p>coldFactor: cold factor</p>
+</li>
+<li>
+<p>filter: CommonFilter related properties, such as order, urlPatterns and enable</p>
+</li>
+<li>
+<p>datasource: datasource configuration info by client</p>
+</li>
+<li>
+<p>rules: the rule that the client takes effect internally contains flowRules, degradeRules, systemRules, authorityRule, paramFlowRule</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The followings shows how a service instance accesses the Endpoint:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+	"blockPage": null,
+	"appName": "sentinel-example",
+	"consoleServer": "localhost:8080",
+	"coldFactor": "3",
+	"rules": {
+		"flowRules": [{
+			"resource": "GET:http://www.taobao.com",
+			"limitApp": "default",
+			"grade": 1,
+			"count": 0.0,
+			"strategy": 0,
+			"refResource": null,
+			"controlBehavior": 0,
+			"warmUpPeriodSec": 10,
+			"maxQueueingTimeMs": 500,
+			"clusterMode": false,
+			"clusterConfig": null
+		}, {
+			"resource": "/test",
+			"limitApp": "default",
+			"grade": 1,
+			"count": 0.0,
+			"strategy": 0,
+			"refResource": null,
+			"controlBehavior": 0,
+			"warmUpPeriodSec": 10,
+			"maxQueueingTimeMs": 500,
+			"clusterMode": false,
+			"clusterConfig": null
+		}, {
+			"resource": "/hello",
+			"limitApp": "default",
+			"grade": 1,
+			"count": 1.0,
+			"strategy": 0,
+			"refResource": null,
+			"controlBehavior": 0,
+			"warmUpPeriodSec": 10,
+			"maxQueueingTimeMs": 500,
+			"clusterMode": false,
+			"clusterConfig": null
+		}]
+	},
+	"metricsFileCharset": "UTF-8",
+	"filter": {
+		"order": -2147483648,
+		"urlPatterns": ["/*"],
+		"enabled": true
+	},
+	"totalMetricsFileCount": 6,
+	"datasource": {
+		"ds1": {
+			"file": {
+				"dataType": "json",
+				"ruleType": "FLOW",
+				"converterClass": null,
+				"file": "...",
+				"charset": "utf-8",
+				"recommendRefreshMs": 3000,
+				"bufSize": 1048576
+			},
+			"nacos": null,
+			"zk": null,
+			"apollo": null,
+			"redis": null
+		}
+	},
+	"clientIp": "30.5.121.91",
+	"clientPort": "8719",
+	"logUsePid": false,
+	"metricsFileSize": 52428800,
+	"logDir": "...",
+	"heartbeatIntervalMs": 10000
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configuration"><a class="link" href="#_configuration">Configuration</a></h3>
+<div class="paragraph">
+<p>The following table shows that when there are corresponding bean types in <code>ApplicationContext</code>, some actions will be taken:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Existing Bean Type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Action</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Function</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>UrlCleaner</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCallbackManager.setUrlCleaner(urlCleaner)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource cleaning(resource(for example, classify all URLs of /foo/:id to the  /foo/* resource))</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>UrlBlockHandler</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCallbackManager.setUrlBlockHandler(urlBlockHandler)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Customize rate limiting logic</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>RequestOriginParser</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCallbackManager.setRequestOriginParser(requestOriginParser)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Setting the origin</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>The following table shows all the configurations of Spring Cloud Alibaba Sentinel:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Configuration</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default Value</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.application.name</code> or <code>project.name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Project Name Of Sentinel</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether Sentinel automatic configuration takes effect</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.eager</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to trigger Sentinel initialization in advance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.transport.port</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Port for the application to interact with Sentinel dashboard. An HTTP Server which uses this port will be started in the application</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8719</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.transport.dashboard</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sentinel dashboard address</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.transport.heartbeatIntervalMs</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hearbeat interval between the application and Sentinel dashboard</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.transport.client-ip</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The client IP of this configuration will be registered to the Sentinel Server side.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.filter.order</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Loading order of Servlet Filter. The filter will be constructed in the Starter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Integer.MIN_VALUE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.filter.url-patterns</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data type is array. Refers to the collection of Servlet Filter ULR patterns</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/*</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.filter.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enable to instance CommonFilter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.metric.charset</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">metric file character set</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UTF-8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.metric.fileSingleSize</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sentinel metric single file size</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.metric.fileTotalCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sentinel metric total file number</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.log.dir</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Directory of Sentinel log files</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.log.switch-pid</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If PID is required for Sentinel log file names</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.servlet.blockPage</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Customized redirection URL. When rate limited, the request will be redirected to the pre-defined URL</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.flow.coldFactor</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/alibaba/Sentinel/wiki/%E9%99%90%E6%B5%81---%E5%86%B7%E5%90%AF%E5%8A%A8">ColdFactor</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.zuul.order.pre</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The order of SentinelZuulPreFilter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.zuul.order.post</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The order of SentinelZuulPostFilter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.zuul.order.error</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The order of SentinelZuulErrorFilter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.scg.fallback.mode</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Response mode after Spring Cloud Gateway circuit break (select <code>redirect</code> or <code>response</code>)</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.scg.fallback.redirect</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Cloud Gateway response mode is the redirect URL corresponding to 'redirect' mode</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.scg.fallback.response-body</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Cloud Gateway response mode is response content corresponding to 'response' mode</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.scg.fallback.response-status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Cloud Gateway response mode is the response code corresponding to 'response' mode</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">429</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.scg.fallback.content-type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The Spring Cloud Gateway response mode is the content-type corresponding to the 'response' mode.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">application/json</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+These configurations will only take effect in servlet environment. RestTemplate and Feign will not take effect for these configurations.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
+<script type="text/javascript" src="js/toc.js"></script>
+<link rel="stylesheet" href="js/highlight/styles/atom-one-dark-reasonable.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
+</body>
+</html>

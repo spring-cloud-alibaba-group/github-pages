@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.8">
+<title>Spring Cloud AliCloud SchedulerX</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+<script type="text/javascript">
+function addBlockSwitches() {
+	$('.primary').each(function() {
+		primary = $(this);
+		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
+		primary.children('.title').remove();
+	});
+	$('.secondary').each(function(idx, node) {
+		secondary = $(node);
+		primary = findPrimary(secondary);
+		switchItem = createSwitchItem(secondary, primary.children('.switch'));
+		switchItem.content.addClass('hidden');
+		findPrimary(secondary).append(switchItem.content);
+		secondary.remove();
+	});
+}
+
+function createBlockSwitch(primary) {
+	blockSwitch = $('<div class="switch"></div>');
+	primary.prepend(blockSwitch);
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	candidate = secondary.prev();
+	while (!candidate.is('.primary')) {
+		candidate = candidate.prev();
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	blockName = block.children('.title').text();
+	content = block.children('.content').first().append(block.next('.colist'));
+	item = $('<div class="switch--item">' + blockName + '</div>');
+	item.on('click', '', content, function(e) {
+		$(this).addClass('selected');
+		$(this).siblings().removeClass('selected');
+		e.data.siblings('.content').addClass('hidden');
+		e.data.removeClass('hidden');
+	});
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+$(addBlockSwitches);
+</script>
+
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_spring_cloud_alicloud_schedulerx">Spring Cloud AliCloud SchedulerX</a>
+<ul class="sectlevel2">
+<li><a href="#_如何引入_spring_cloud_alicloud_schedulerx">如何引入 Spring Cloud AliCloud SchedulerX</a></li>
+<li><a href="#_启动schedulerx任务调度">启动SchedulerX任务调度</a></li>
+<li><a href="#_编写一个简单任务">编写一个简单任务</a></li>
+<li><a href="#_对任务进行调度">对任务进行调度</a></li>
+<li><a href="#_生产环境使用">生产环境使用</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_spring_cloud_alicloud_schedulerx"><a class="link" href="#_spring_cloud_alicloud_schedulerx">Spring Cloud AliCloud SchedulerX</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>SchedulerX（分布式任务调度） 是隶属于阿里云EDAS产品的组件， Spring Cloud AliCloud SchedulerX 提供了在Spring Cloud的配置规范下，分布式任务调度的功能支持。SchedulerX可提供秒级、精准、高可靠、高可用的定时任务调度服务，并支持多种类型的任务调度，如简单单机任务、简单多机任务、脚本任务以及网格任务。</p>
+</div>
+<div class="sect2">
+<h3 id="_如何引入_spring_cloud_alicloud_schedulerx"><a class="link" href="#_如何引入_spring_cloud_alicloud_schedulerx">如何引入 Spring Cloud AliCloud SchedulerX</a></h3>
+<div class="paragraph">
+<p>如果要在您的项目中引入 SchedulerX，使用 group ID 为 <code>com.alibaba.cloud</code> 和 artifact ID 为 <code>spring-cloud-starter-alicloud-schedulerX</code> 的 starter。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-alicloud-schedulerX&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_启动schedulerx任务调度"><a class="link" href="#_启动schedulerx任务调度">启动SchedulerX任务调度</a></h3>
+<div class="paragraph">
+<p>当客户端引入了 Spring Cloud AliCloud SchedulerX Starter 以后，只需要进行一些简单的配置，就可以自动初始化SchedulerX的任务调度服务。</p>
+</div>
+<div class="paragraph">
+<p>以下是一个简单的应用示例。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+public class ScxApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ScxApplication.class, args);
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>在application.properties中，需要加上以下配置。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">server.port=18033
+# 其中cn-test是SchedulerX的测试区域
+spring.cloud.alicloud.scx.group-id=***
+spring.cloud.alicloud.edas.namespace=cn-test</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>在获取group-id之前，需要首先 <a href="https://account.aliyun.com/register/register.htm?spm=5176.8142029.388261.26.e9396d3eEIv28g&amp;oauth_callback=https%3A%2F%2Fwww.aliyun.com%2F">注册阿里云账号</a> ，然后 <a href="https://common-buy.aliyun.com/?spm=5176.11451019.0.0.6f5965c0Uq5tue&amp;commodityCode=edaspostpay#/buy">开通EDAS服务</a> ，并 <a href="https://edas.console.aliyun.com/#/edasTools">开通分布式任务管理组件</a> 。</p>
+</div>
+<div class="paragraph">
+<p>其中group-id的获取，请参考 <a href="https://help.aliyun.com/document_detail/98784.html?spm=a2c4g.11186623.2.17.23c87da9P2F3tG">这里</a>。</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+在创建group的时候，要选择"测试"区域。
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_编写一个简单任务"><a class="link" href="#_编写一个简单任务">编写一个简单任务</a></h3>
+<div class="paragraph">
+<p>简单任务是最常用的任务类型，只需要实现 ScxSimpleJobProcessor 接口即可。</p>
+</div>
+<div class="paragraph">
+<p>以下是一个简单的单机类型任务示例。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class SimpleTask implements ScxSimpleJobProcessor {
+
+	@Override
+	public ProcessResult process(ScxSimpleJobContext context) {
+		System.out.println("-----------Hello world---------------");
+		ProcessResult processResult = new ProcessResult(true);
+		return processResult;
+	}
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_对任务进行调度"><a class="link" href="#_对任务进行调度">对任务进行调度</a></h3>
+<div class="paragraph">
+<p>进入 <a href="https://edas.console.aliyun.com/#/edasSchedulerXJob?regionNo=cn-test">SchedulerX任务列表</a> 页面，选择上方"测试"区域，点击右上角"新建Job"，创建一个Job，即如下所示。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">Job分组：测试——***-*-*-****
+Job处理接口：org.springframework.cloud.alibaba.cloud.examples.SimpleTask
+类型：简单Job单机版
+定时表达式：默认选项——0 * * * * ?
+Job描述：无
+自定义参数：无</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>以上任务类型选择了"简单Job单机版"，并且制定了Cron表达式为"0 * * * * ?"，这意味着，每过一分钟，任务将会被执行且只执行一次。</p>
+</div>
+<div class="paragraph">
+<p>更多任务类型，请参考 <a href="https://help.aliyun.com/document_detail/43136.html">SchedulerX官方文档</a>。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_生产环境使用"><a class="link" href="#_生产环境使用">生产环境使用</a></h3>
+<div class="paragraph">
+<p>以上使用的都是SchedulerX的"测试"区域，主要用于本地调试和测试。</p>
+</div>
+<div class="paragraph">
+<p>在生产级别，除了上面的group-id和namespace以外，还需要一些额外的配置，如下所示。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">server.port=18033
+# 其中cn-test是SchedulerX的测试区域
+spring.cloud.alicloud.scx.group-id=***
+spring.cloud.alicloud.edas.namespace=***
+# 当应用运行在EDAS上时，以下配置不需要手动配置。
+spring.cloud.alicloud.access-key=***
+spring.cloud.alicloud.secret-key=***
+# 以下配置不是必须的，请参考SchedulerX文档
+spring.cloud.alicloud.scx.domain-name=***</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>其中group-id与之前的获取方式一样，namespace则是从EDAS控制台左侧"命名空间"列表中获取命名空间ID。</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+group-id必须创建在namespace当中。
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>access-key以及secret-key为阿里云账号的AK/SK信息，如果应用在EDAS上部署，则不需要填写这两项信息，否则请前往 <a href="https://usercenter.console.aliyun.com/#/manage/ak">安全信息管理</a>获取。</p>
+</div>
+<div class="paragraph">
+<p>domain-name并不是必须的，具体请参考 <a href="https://help.aliyun.com/document_detail/35359.html">SchedulerX官方文档</a>。</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<link rel="stylesheet" href="js/highlight/styles/atom-one-dark-reasonable.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
+</body>
+</html>

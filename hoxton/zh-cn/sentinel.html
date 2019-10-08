@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.8">
+<title>Spring Cloud Alibaba Sentinel</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+<script type="text/javascript">
+function addBlockSwitches() {
+	$('.primary').each(function() {
+		primary = $(this);
+		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
+		primary.children('.title').remove();
+	});
+	$('.secondary').each(function(idx, node) {
+		secondary = $(node);
+		primary = findPrimary(secondary);
+		switchItem = createSwitchItem(secondary, primary.children('.switch'));
+		switchItem.content.addClass('hidden');
+		findPrimary(secondary).append(switchItem.content);
+		secondary.remove();
+	});
+}
+
+function createBlockSwitch(primary) {
+	blockSwitch = $('<div class="switch"></div>');
+	primary.prepend(blockSwitch);
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	candidate = secondary.prev();
+	while (!candidate.is('.primary')) {
+		candidate = candidate.prev();
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	blockName = block.children('.title').text();
+	content = block.children('.content').first().append(block.next('.colist'));
+	item = $('<div class="switch--item">' + blockName + '</div>');
+	item.on('click', '', content, function(e) {
+		$(this).addClass('selected');
+		$(this).siblings().removeClass('selected');
+		e.data.siblings('.content').addClass('hidden');
+		e.data.removeClass('hidden');
+	});
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+$(addBlockSwitches);
+</script>
+
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_spring_cloud_alibaba_sentinel">Spring Cloud Alibaba Sentinel</a>
+<ul class="sectlevel2">
+<li><a href="#_sentinel_介绍">Sentinel 介绍</a></li>
+<li><a href="#_如何使用_sentinel">如何使用 Sentinel</a></li>
+<li><a href="#_openfeign_支持">OpenFeign 支持</a></li>
+<li><a href="#_resttemplate_支持">RestTemplate 支持</a></li>
+<li><a href="#_动态数据源支持">动态数据源支持</a></li>
+<li><a href="#_zuul_支持">Zuul 支持</a></li>
+<li><a href="#_spring_cloud_gateway_支持">Spring Cloud Gateway 支持</a></li>
+<li><a href="#_sentinel_对外暴露的_endpoint">Sentinel 对外暴露的 Endpoint</a></li>
+<li><a href="#_关于_sentinel_starter_更多的配置项信息">关于 Sentinel Starter 更多的配置项信息</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_spring_cloud_alibaba_sentinel"><a class="link" href="#_spring_cloud_alibaba_sentinel">Spring Cloud Alibaba Sentinel</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_sentinel_介绍"><a class="link" href="#_sentinel_介绍">Sentinel 介绍</a></h3>
+<div class="paragraph">
+<p>随着微服务的流行，服务和服务之间的稳定性变得越来越重要。 <a href="https://github.com/alibaba/Sentinel">Sentinel</a> 以流量为切入点，从流量控制、熔断降级、系统负载保护等多个维度保护服务的稳定性。</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/alibaba/Sentinel">Sentinel</a> 具有以下特征:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>丰富的应用场景</strong>： Sentinel 承接了阿里巴巴近 10 年的双十一大促流量的核心场景，例如秒杀（即突发流量控制在系统容量可以承受的范围）、消息削峰填谷、实时熔断下游不可用应用等。</p>
+</li>
+<li>
+<p><strong>完备的实时监控</strong>： Sentinel 同时提供实时的监控功能。您可以在控制台中看到接入应用的单台机器秒级数据，甚至 500 台以下规模的集群的汇总运行情况。</p>
+</li>
+<li>
+<p><strong>广泛的开源生态</strong>： Sentinel 提供开箱即用的与其它开源框架/库的整合模块，例如与 Spring Cloud、Dubbo、gRPC 的整合。您只需要引入相应的依赖并进行简单的配置即可快速地接入 Sentinel。</p>
+</li>
+<li>
+<p><strong>完善的 SPI 扩展点</strong>： Sentinel 提供简单易用、完善的 SPI 扩展点。您可以通过实现扩展点，快速的定制逻辑。例如定制规则管理、适配数据源等。</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_如何使用_sentinel"><a class="link" href="#_如何使用_sentinel">如何使用 Sentinel</a></h3>
+<div class="paragraph">
+<p>如果要在您的项目中引入 Sentinel，使用 group ID 为 <code>com.alibaba.cloud</code> 和 artifact ID 为 <code>spring-cloud-starter-alibaba-sentinel</code> 的 starter。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">[source,yaml]
+&lt;dependency&gt;
+    &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-alibaba-sentinel&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>下面这个例子就是一个最简单的使用 Sentinel 的例子:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+public class Application {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ServiceApplication.class, args);
+    }
+
+}
+
+@RestController
+public class TestController {
+
+    @GetMapping(value = "/hello")
+    @SentinelResource("hello")
+    public String hello() {
+        return "Hello Sentinel";
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>@SentinelResource 注解用来标识资源是否被限流、降级。上述例子上该注解的属性 'hello' 表示资源名。</p>
+</div>
+<div class="paragraph">
+<p>@SentinelResource 还提供了其它额外的属性如 <code>blockHandler</code>，<code>blockHandlerClass</code>，<code>fallback</code> 用于表示限流或降级的操作，更多内容可以参考 <a href="https://github.com/alibaba/Sentinel/wiki/%E6%B3%A8%E8%A7%A3%E6%94%AF%E6%8C%81">Sentinel注解支持</a>。</p>
+</div>
+<div class="paragraph">
+<p>以上例子都是在 WebServlet 环境下使用的，Sentinel 目前已经支持 WebFlux，需要配合 <code>spring-boot-starter-webflux</code> 依赖触发 sentinel-starter 中 WebFlux 相关的自动化配置。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+public class Application {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ServiceApplication.class, args);
+    }
+
+}
+
+@RestController
+public class TestController {
+
+    @GetMapping("/mono")
+    @SentinelResource("hello")
+    public Mono&lt;String&gt; mono() {
+	return Mono.just("simple string")
+			.transform(new SentinelReactorTransformer&lt;&gt;("otherResourceName"));
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_sentinel_控制台"><a class="link" href="#_sentinel_控制台">Sentinel 控制台</a></h5>
+<div class="paragraph">
+<p>Sentinel 控制台提供一个轻量级的控制台，它提供机器发现、单机资源实时监控、集群资源汇总，以及规则管理的功能。您只需要对应用进行简单的配置，就可以使用这些功能。</p>
+</div>
+<div class="paragraph">
+<p><strong>注意</strong>: 集群资源汇总仅支持 500 台以下的应用集群，有大概 1 - 2 秒的延时。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://github.com/alibaba/Sentinel/wiki/image/dashboard.png" alt="dashboard">
+</div>
+<div class="title">Figure 1. Sentinel Dashboard</div>
+</div>
+<div class="paragraph">
+<p>开启该功能需要3个步骤：</p>
+</div>
+<div class="sect5">
+<h6 id="_获取控制台"><a class="link" href="#_获取控制台">获取控制台</a></h6>
+<div class="paragraph">
+<p>您可以从 <a href="https://github.com/alibaba/Sentinel/releases">release 页面</a> 下载最新版本的控制台 jar 包。</p>
+</div>
+<div class="paragraph">
+<p>您也可以从最新版本的源码自行构建 Sentinel 控制台：</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>下载 <a href="https://github.com/alibaba/Sentinel/tree/master/sentinel-dashboard">控制台</a> 工程</p>
+</li>
+<li>
+<p>使用以下命令将代码打包成一个 fat jar: <code>mvn clean package</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_启动控制台"><a class="link" href="#_启动控制台">启动控制台</a></h6>
+<div class="paragraph">
+<p>Sentinel 控制台是一个标准的 SpringBoot 应用，以 SpringBoot 的方式运行 jar 包即可。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">java -Dserver.port=8080 -Dcsp.sentinel.dashboard.server=localhost:8080 -Dproject.name=sentinel-dashboard -jar sentinel-dashboard.jar</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>如若8080端口冲突，可使用 <code>-Dserver.port=新端口</code> 进行设置。</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_配置控制台信息"><a class="link" href="#_配置控制台信息">配置控制台信息</a></h4>
+<div class="listingblock">
+<div class="title">application.yml</div>
+<div class="content">
+<pre>spring:
+  cloud:
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: localhost:8080</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>这里的 <code>spring.cloud.sentinel.transport.port</code> 端口配置会在应用对应的机器上启动一个 Http Server，该 Server 会与 Sentinel 控制台做交互。比如 Sentinel 控制台添加了1个限流规则，会把规则数据 push 给这个 Http Server 接收，Http Server 再将规则注册到 Sentinel 中。</p>
+</div>
+<div class="paragraph">
+<p>更多 Sentinel 控制台的使用及问题参考： <a href="https://github.com/alibaba/Sentinel/wiki/%E6%8E%A7%E5%88%B6%E5%8F%B0">Sentinel控制台</a></p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_openfeign_支持"><a class="link" href="#_openfeign_支持">OpenFeign 支持</a></h3>
+<div class="paragraph">
+<p>Sentinel 适配了 <a href="https://github.com/OpenFeign/feign">OpenFeign</a> 组件。如果想使用，除了引入 <code>sentinel-starter</code> 的依赖外还需要 2 个步骤：</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>配置文件打开 sentinel 对 feign 的支持：<code>feign.sentinel.enabled=true</code></p>
+</li>
+<li>
+<p>加入 <code>openfeign starter</code> 依赖使 <code>sentinel starter</code> 中的自动化配置类生效：</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>这是一个 <code>FeignClient</code> 的简单使用示例：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@FeignClient(name = "service-provider", fallback = EchoServiceFallback.class, configuration = FeignConfiguration.class)
+public interface EchoService {
+    @GetMapping(value = "/echo/{str}")
+    String echo(@PathVariable("str") String str);
+}
+
+class FeignConfiguration {
+    @Bean
+    public EchoServiceFallback echoServiceFallback() {
+        return new EchoServiceFallback();
+    }
+}
+
+class EchoServiceFallback implements EchoService {
+    @Override
+    public String echo(@PathVariable("str") String str) {
+        return "echo fallback";
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Feign 对应的接口中的资源名策略定义：httpmethod:protocol://requesturl。<code>@FeignClient</code> 注解中的所有属性，Sentinel 都做了兼容。
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><code>EchoService</code> 接口中方法 <code>echo</code> 对应的资源名为 <code>GET:http://service-provider/echo/{str}</code>。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_resttemplate_支持"><a class="link" href="#_resttemplate_支持">RestTemplate 支持</a></h3>
+<div class="paragraph">
+<p>Spring Cloud Alibaba Sentinel 支持对 <code>RestTemplate</code> 的服务调用使用 Sentinel 进行保护，在构造 <code>RestTemplate</code> bean的时候需要加上 <code>@SentinelRestTemplate</code> 注解。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+@SentinelRestTemplate(blockHandler = "handleException", blockHandlerClass = ExceptionUtil.class)
+public RestTemplate restTemplate() {
+    return new RestTemplate();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>@SentinelRestTemplate</code> 注解的属性支持限流(<code>blockHandler</code>, <code>blockHandlerClass</code>)和降级(<code>fallback</code>, <code>fallbackClass</code>)的处理。</p>
+</div>
+<div class="paragraph">
+<p>其中 <code>blockHandler</code> 或 <code>fallback</code> 属性对应的方法必须是对应 <code>blockHandlerClass</code> 或 <code>fallbackClass</code> 属性中的静态方法。</p>
+</div>
+<div class="paragraph">
+<p>该方法的参数跟返回值跟 <code>org.springframework.http.client.ClientHttpRequestInterceptor#interceptor</code> 方法一致，其中参数多出了一个 <code>BlockException</code> 参数用于获取 Sentinel 捕获的异常。</p>
+</div>
+<div class="paragraph">
+<p>比如上述 <code>@SentinelRestTemplate</code> 注解中 <code>ExceptionUtil</code> 的 <code>handleException</code> 属性对应的方法声明如下：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class ExceptionUtil {
+    public static ClientHttpResponse handleException(HttpRequest request, byte[] body, ClientHttpRequestExecution execution, BlockException exception) {
+        ...
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+应用启动的时候会检查 <code>@SentinelRestTemplate</code> 注解对应的限流或降级方法是否存在，如不存在会抛出异常
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><code>@SentinelRestTemplate</code> 注解的限流(<code>blockHandler</code>, <code>blockHandlerClass</code>)和降级(<code>fallback</code>, <code>fallbackClass</code>)属性不强制填写。</p>
+</div>
+<div class="paragraph">
+<p>当使用 <code>RestTemplate</code> 调用被 Sentinel 熔断后，会返回 <code>RestTemplate request block by sentinel</code> 信息，或者也可以编写对应的方法自行处理返回信息。这里提供了 <code>SentinelClientHttpResponse</code> 用于构造返回信息。</p>
+</div>
+<div class="paragraph">
+<p>Sentinel RestTemplate 限流的资源规则提供两种粒度：</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>httpmethod:schema://host:port/path</code>：协议、主机、端口和路径</p>
+</li>
+<li>
+<p><code>httpmethod:schema://host:port</code>：协议、主机和端口</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+以 <code><a href="https://www.taobao.com/test" class="bare">https://www.taobao.com/test</a></code> 这个 url 并使用 GET 方法为例。对应的资源名有两种粒度，分别是 <code>GET:https://www.taobao.com</code> 以及 <code>GET:https://www.taobao.com/test</code>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_动态数据源支持"><a class="link" href="#_动态数据源支持">动态数据源支持</a></h3>
+<div class="paragraph">
+<p><code>SentinelProperties</code> 内部提供了 <code>TreeMap</code> 类型的 <code>datasource</code> 属性用于配置数据源信息。</p>
+</div>
+<div class="paragraph">
+<p>比如配置 4 个数据源：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.cloud.sentinel.datasource.ds1.file.file=classpath: degraderule.json
+spring.cloud.sentinel.datasource.ds1.file.rule-type=flow
+
+#spring.cloud.sentinel.datasource.ds1.file.file=classpath: flowrule.json
+#spring.cloud.sentinel.datasource.ds1.file.data-type=custom
+#spring.cloud.sentinel.datasource.ds1.file.converter-class=org.springframework.cloud.alibaba.cloud.examples.JsonFlowRuleListConverter
+#spring.cloud.sentinel.datasource.ds1.file.rule-type=flow
+
+spring.cloud.sentinel.datasource.ds2.nacos.server-addr=localhost:8848
+spring.cloud.sentinel.datasource.ds2.nacos.data-id=sentinel
+spring.cloud.sentinel.datasource.ds2.nacos.group-id=DEFAULT_GROUP
+spring.cloud.sentinel.datasource.ds2.nacos.data-type=json
+spring.cloud.sentinel.datasource.ds2.nacos.rule-type=degrade
+
+spring.cloud.sentinel.datasource.ds3.zk.path = /Sentinel-Demo/SYSTEM-CODE-DEMO-FLOW
+spring.cloud.sentinel.datasource.ds3.zk.server-addr = localhost:2181
+spring.cloud.sentinel.datasource.ds3.zk.rule-type=authority
+
+spring.cloud.sentinel.datasource.ds4.apollo.namespace-name = application
+spring.cloud.sentinel.datasource.ds4.apollo.flow-rules-key = sentinel
+spring.cloud.sentinel.datasource.ds4.apollo.default-flow-rule-value = test
+spring.cloud.sentinel.datasource.ds4.apollo.rule-type=param-flow</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>这种配置方式参考了 Spring Cloud Stream Binder 的配置，内部使用了 <code>TreeMap</code> 进行存储，comparator 为 <code>String.CASE_INSENSITIVE_ORDER</code> 。</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+d1, ds2, ds3, ds4 是 <code>ReadableDataSource</code> 的名字，可随意编写。后面的 <code>file</code> ，<code>zk</code> ，<code>nacos</code> , <code>apollo</code> 就是对应具体的数据源。 它们后面的配置就是这些具体数据源各自的配置。
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>每种数据源都有两个共同的配置项： <code>data-type</code>、 <code>converter-class</code> 以及 <code>rule-type</code>。</p>
+</div>
+<div class="paragraph">
+<p><code>data-type</code> 配置项表示 <code>Converter</code> 类型，Spring Cloud Alibaba Sentinel 默认提供两种内置的值，分别是 <code>json</code> 和 <code>xml</code> (不填默认是json)。 如果不想使用内置的 <code>json</code> 或 <code>xml</code> 这两种 <code>Converter</code>，可以填写 <code>custom</code> 表示自定义 <code>Converter</code>，然后再配置 <code>converter-class</code> 配置项，该配置项需要写类的全路径名(比如 <code>spring.cloud.sentinel.datasource.ds1.file.converter-class=org.springframework.cloud.alibaba.cloud.examples.JsonFlowRuleListConverter</code>)。</p>
+</div>
+<div class="paragraph">
+<p><code>rule-type</code> 配置表示该数据源中的规则属于哪种类型的规则(<code>flow</code>，<code>degrade</code>，<code>authority</code>，<code>system</code>, <code>param-flow</code>, <code>gw-flow</code>, <code>gw-api-group</code>)。</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+当某个数据源规则信息加载失败的情况下，不会影响应用的启动，会在日志中打印出错误信息。
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+默认情况下，xml 格式是不支持的。需要添加 <code>jackson-dataformat-xml</code> 依赖后才会自动生效。
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>关于 Sentinel 动态数据源的实现原理，参考： <a href="https://github.com/alibaba/Sentinel/wiki/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%99%E6%89%A9%E5%B1%95">动态规则扩展</a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_zuul_支持"><a class="link" href="#_zuul_支持">Zuul 支持</a></h3>
+<div class="paragraph">
+<p><a href="https://github.com/alibaba/Sentinel/wiki/%E7%BD%91%E5%85%B3%E9%99%90%E6%B5%81">参考 Sentinel 网关限流</a></p>
+</div>
+<div class="paragraph">
+<p>若想跟 Sentinel Starter 配合使用，需要加上 <code>spring-cloud-alibaba-sentinel-gateway</code> 依赖，同时需要添加 <code>spring-cloud-starter-netflix-zuul</code> 依赖来让 <code>spring-cloud-alibaba-sentinel-gateway</code> 模块里的 Zuul 自动化配置类生效：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-alibaba-sentinel&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-alibaba-sentinel-gateway&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-netflix-zuul&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_spring_cloud_gateway_支持"><a class="link" href="#_spring_cloud_gateway_支持">Spring Cloud Gateway 支持</a></h3>
+<div class="paragraph">
+<p><a href="https://github.com/alibaba/Sentinel/wiki/%E7%BD%91%E5%85%B3%E9%99%90%E6%B5%81">参考 Sentinel 网关限流</a></p>
+</div>
+<div class="paragraph">
+<p>若想跟 Sentinel Starter 配合使用，需要加上 <code>spring-cloud-alibaba-sentinel-gateway</code> 依赖，同时需要添加 <code>spring-cloud-starter-gateway</code> 依赖来让 <code>spring-cloud-alibaba-sentinel-gateway</code> 模块里的 Spring Cloud Gateway 自动化配置类生效：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-alibaba-sentinel&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-alibaba-sentinel-gateway&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-gateway&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sentinel_对外暴露的_endpoint"><a class="link" href="#_sentinel_对外暴露的_endpoint">Sentinel 对外暴露的 Endpoint</a></h3>
+<div class="paragraph">
+<p>Sentinel 内部提供了一个 Endpoint, 对应的 endpoint id 为 <code>sentinel</code>。</p>
+</div>
+<div class="paragraph">
+<p>Endpoint 暴露的 json 中包含了多种属性:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>appName: 应用名</p>
+</li>
+<li>
+<p>logDir: 日志所在目录</p>
+</li>
+<li>
+<p>logUsePid: 日志文件名是否带上进程id</p>
+</li>
+<li>
+<p>blockPage: 限流 block 之后跳转的页面</p>
+</li>
+<li>
+<p>metricsFileSize: metrics 文件的大小</p>
+</li>
+<li>
+<p>metricsFileCharset: metrics 文件对应的字符集</p>
+</li>
+<li>
+<p>totalMetricsFileCount: metrics 最多保留的文件数</p>
+</li>
+<li>
+<p>consoleServer: sentinel dashboard 地址</p>
+</li>
+<li>
+<p>clientIp: 客户端 ip</p>
+</li>
+<li>
+<p>heartbeatIntervalMs: 客户端跟 dashboard 的心跳间隔时间</p>
+</li>
+<li>
+<p>clientPort: 客户端需要暴露的端口跟 dashboard 进行交互</p>
+</li>
+<li>
+<p>coldFactor: 冷启动因子</p>
+</li>
+<li>
+<p>filter: CommonFilter 相关的属性， 比如 order, urlPatterns 以及 enable</p>
+</li>
+<li>
+<p>datasource: 客户端配置的数据源信息</p>
+</li>
+<li>
+<p>rules: 客户端生效的规则，内部含有 flowRules, degradeRules, systemRules, authorityRule, paramFlowRule</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>这是 Endpoint 暴露的 json 示例:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+	"blockPage": null,
+	"appName": "sentinel-example",
+	"consoleServer": "localhost:8080",
+	"coldFactor": "3",
+	"rules": {
+		"flowRules": [{
+			"resource": "GET:http://www.taobao.com",
+			"limitApp": "default",
+			"grade": 1,
+			"count": 0.0,
+			"strategy": 0,
+			"refResource": null,
+			"controlBehavior": 0,
+			"warmUpPeriodSec": 10,
+			"maxQueueingTimeMs": 500,
+			"clusterMode": false,
+			"clusterConfig": null
+		}, {
+			"resource": "/test",
+			"limitApp": "default",
+			"grade": 1,
+			"count": 0.0,
+			"strategy": 0,
+			"refResource": null,
+			"controlBehavior": 0,
+			"warmUpPeriodSec": 10,
+			"maxQueueingTimeMs": 500,
+			"clusterMode": false,
+			"clusterConfig": null
+		}, {
+			"resource": "/hello",
+			"limitApp": "default",
+			"grade": 1,
+			"count": 1.0,
+			"strategy": 0,
+			"refResource": null,
+			"controlBehavior": 0,
+			"warmUpPeriodSec": 10,
+			"maxQueueingTimeMs": 500,
+			"clusterMode": false,
+			"clusterConfig": null
+		}]
+	},
+	"metricsFileCharset": "UTF-8",
+	"filter": {
+		"order": -2147483648,
+		"urlPatterns": ["/*"],
+		"enabled": true
+	},
+	"totalMetricsFileCount": 6,
+	"datasource": {
+		"ds1": {
+			"file": {
+				"dataType": "json",
+				"ruleType": "FLOW",
+				"converterClass": null,
+				"file": "...",
+				"charset": "utf-8",
+				"recommendRefreshMs": 3000,
+				"bufSize": 1048576
+			},
+			"nacos": null,
+			"zk": null,
+			"apollo": null,
+			"redis": null
+		}
+	},
+	"clientIp": "30.5.121.91",
+	"clientPort": "8719",
+	"logUsePid": false,
+	"metricsFileSize": 52428800,
+	"logDir": "...",
+	"heartbeatIntervalMs": 10000
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_关于_sentinel_starter_更多的配置项信息"><a class="link" href="#_关于_sentinel_starter_更多的配置项信息">关于 Sentinel Starter 更多的配置项信息</a></h3>
+<div class="paragraph">
+<p>下表显示当应用的 <code>ApplicationContext</code> 中存在对应的Bean的类型时，会进行自动化设置：</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">存在Bean的类型</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">操作</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">作用</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>UrlCleaner</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCallbackManager.setUrlCleaner(urlCleaner)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">资源清理(资源（比如将满足 /foo/:id 的 URL 都归到 /foo/* 资源下）)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>UrlBlockHandler</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCallbackManager.setUrlBlockHandler(urlBlockHandler)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">自定义限流处理逻辑</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>RequestOriginParser</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCallbackManager.setRequestOriginParser(requestOriginParser)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">设置来源信息</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Spring Cloud Alibaba Sentinel 提供了这些配置选项</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">配置项</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">含义</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">默认值</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.application.name</code> or <code>project.name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sentinel项目名</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sentinel自动化配置是否生效</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.eager</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">是否提前触发 Sentinel 初始化</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.transport.port</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">应用与Sentinel控制台交互的端口，应用本地会起一个该端口占用的HttpServer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8719</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.transport.dashboard</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sentinel 控制台地址</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.transport.heartbeat-interval-ms</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">应用与Sentinel控制台的心跳间隔时间</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.transport.client-ip</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">此配置的客户端IP将被注册到 Sentinel Server 端</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.filter.order</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Servlet Filter的加载顺序。Starter内部会构造这个filter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Integer.MIN_VALUE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.filter.url-patterns</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">数据类型是数组。表示Servlet Filter的url pattern集合</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/*</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.filter.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enable to instance CommonFilter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.metric.charset</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">metric文件字符集</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UTF-8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.metric.file-single-size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sentinel metric 单个文件的大小</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.metric.file-total-count</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sentinel metric 总文件数量</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.log.dir</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sentinel 日志文件所在的目录</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.log.switch-pid</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sentinel 日志文件名是否需要带上pid</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.servlet.block-page</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">自定义的跳转 URL，当请求被限流时会自动跳转至设定好的 URL</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.flow.cold-factor</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/alibaba/Sentinel/wiki/%E9%99%90%E6%B5%81---" class="bare">https://github.com/alibaba/Sentinel/wiki/%E9%99%90%E6%B5%81---</a>
+%E5%86%B7%E5%90%AF%E5%8A%A8[冷启动因子]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.zuul.order.pre</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SentinelZuulPreFilter 的 order</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.zuul.order.post</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SentinelZuulPostFilter 的 order</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.zuul.order.error</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SentinelZuulErrorFilter 的 order</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.scg.fallback.mode</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Cloud Gateway 熔断后的响应模式(选择 <code>redirect</code> or <code>response</code>)</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.scg.fallback.redirect</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Cloud Gateway 响应模式为 'redirect' 模式对应的重定向 URL</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.scg.fallback.response-body</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Cloud Gateway 响应模式为 'response' 模式对应的响应内容</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.scg.fallback.response-status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Cloud Gateway 响应模式为 'response' 模式对应的响应码</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">429</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.sentinel.scg.fallback.content-type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Cloud Gateway 响应模式为 'response' 模式对应的 content-type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">application/json</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+请注意。这些配置只有在 Servlet 环境下才会生效，RestTemplate 和 Feign 针对这些配置都无法生效
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<link rel="stylesheet" href="js/highlight/styles/atom-one-dark-reasonable.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
+</body>
+</html>

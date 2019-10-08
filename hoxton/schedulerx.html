@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.8">
+<title>Spring Cloud Alibaba Cloud SchedulerX</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+<script type="text/javascript">
+function addBlockSwitches() {
+	$('.primary').each(function() {
+		primary = $(this);
+		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
+		primary.children('.title').remove();
+	});
+	$('.secondary').each(function(idx, node) {
+		secondary = $(node);
+		primary = findPrimary(secondary);
+		switchItem = createSwitchItem(secondary, primary.children('.switch'));
+		switchItem.content.addClass('hidden');
+		findPrimary(secondary).append(switchItem.content);
+		secondary.remove();
+	});
+}
+
+function createBlockSwitch(primary) {
+	blockSwitch = $('<div class="switch"></div>');
+	primary.prepend(blockSwitch);
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	candidate = secondary.prev();
+	while (!candidate.is('.primary')) {
+		candidate = candidate.prev();
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	blockName = block.children('.title').text();
+	content = block.children('.content').first().append(block.next('.colist'));
+	item = $('<div class="switch--item">' + blockName + '</div>');
+	item.on('click', '', content, function(e) {
+		$(this).addClass('selected');
+		$(this).siblings().removeClass('selected');
+		e.data.siblings('.content').addClass('hidden');
+		e.data.removeClass('hidden');
+	});
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+$(addBlockSwitches);
+</script>
+
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_spring_cloud_alibaba_cloud_schedulerx">Spring Cloud Alibaba Cloud SchedulerX</a>
+<ul class="sectlevel2">
+<li><a href="#_how_to_introduce_spring_cloud_alibaba_cloud_schedulerx">How to Introduce Spring Cloud Alibaba Cloud SchedulerX</a></li>
+<li><a href="#_start_schedulerx">Start SchedulerX</a></li>
+<li><a href="#_compile_a_simple_job">Compile a simple job</a></li>
+<li><a href="#_job_scheduling">Job Scheduling</a></li>
+<li><a href="#_usage_in_production_environment">Usage in Production Environment</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_spring_cloud_alibaba_cloud_schedulerx"><a class="link" href="#_spring_cloud_alibaba_cloud_schedulerx">Spring Cloud Alibaba Cloud SchedulerX</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>SchedulerX（Distributed job scheduling） is a component of EDAS, an Alibaba Cloud product. Spring Cloud Alibaba Cloud SchedulerX provides distributed job scheduling in conformity with the Spring Cloud specifications. SchedulerX provides timed job scheduling service with high accuracy with seconds, high stability and high availabiliy, and supports multiple job types, such as simple single-server jobs, simple multi-host jobs, script jobs, and grid jobs.</p>
+</div>
+<div class="sect2">
+<h3 id="_how_to_introduce_spring_cloud_alibaba_cloud_schedulerx"><a class="link" href="#_how_to_introduce_spring_cloud_alibaba_cloud_schedulerx">How to Introduce Spring Cloud Alibaba Cloud SchedulerX</a></h3>
+<div class="paragraph">
+<p>If you want to use SchedulerX in your project, please use the starter with the group ID as <code>com.alibaba.cloud</code> and the artifact ID as <code>spring-cloud-starter-alicloud-schedulerX</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-alicloud-schedulerX&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_start_schedulerx"><a class="link" href="#_start_schedulerx">Start SchedulerX</a></h3>
+<div class="paragraph">
+<p>After Spring Cloud Alibaba Cloud SchedulerX Starter is introduced into the client, you only need to complete a few simple configurations and you will be able to initialize the SchedulerX service automatically.</p>
+</div>
+<div class="paragraph">
+<p>The following is a simple example.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+public class ScxApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ScxApplication.class, args);
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Add the following configurations in the application.properties file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">server.port=18033
+# cn-test is the test region of SchedulerX
+spring.cloud.alicloud.scx.group-id=***
+spring.cloud.alicloud.edas.namespace=cn-test</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Before getting the group-id, please <a href="https://account.aliyun.com/register/register.htm?spm=5176.8142029.388261.26.e9396d3eEIv28g&amp;oauth_callback=https%3A%2F%2Fwww.aliyun.com%2F">Register an Alibaba Cloud account</a>, and then <a href="https://common-buy.aliyun.com/?spm=5176.11451019.0.0.6f5965c0Uq5tue&amp;commodityCode=edaspostpay#/buy">Sign up for EDAS</a> and <a href="https://edas.console.aliyun.com/#/edasTools">Sign up for SchedulerX</a> as well.</p>
+</div>
+<div class="paragraph">
+<p>To get the group-id, refer to the <a href="https://help.aliyun.com/document_detail/98784.html">SchedulerX Documentation</a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+When you create a group, please select the “test” region.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_compile_a_simple_job"><a class="link" href="#_compile_a_simple_job">Compile a simple job</a></h3>
+<div class="paragraph">
+<p>Simple job is the most commonly used job type. You only need to implement the ScxSimpleJobProcessor interface.</p>
+</div>
+<div class="paragraph">
+<p>The following is a sample of a simple single-server job.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class SimpleTask implements ScxSimpleJobProcessor {
+
+	@Override
+	public ProcessResult process(ScxSimpleJobContext context) {
+		System.out.println("-----------Hello world---------------");
+		ProcessResult processResult = new ProcessResult(true);
+		return processResult;
+	}
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_job_scheduling"><a class="link" href="#_job_scheduling">Job Scheduling</a></h3>
+<div class="paragraph">
+<p>Go to the <a href="https://edas.console.aliyun.com/#/edasSchedulerXJob?regionNo=cn-test">SchedulerX Jobs</a> page, select the “Test” region, and click “Create Job” on the upper-right corner to create a job, as shown below.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">Job Group： Test——***-*-*-****
+Job process interface：SimpleTask
+Type： Simple Single-Server Job
+Quartz Cron Expression： Default Option——0 * * * * ?
+Job Description： Empty
+Custom Parameters： Empty</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The job above is a “Simple Single-Server Job”, and speficied a Cron expression of "0 * * * * ?" . This means that the job will be executed once and once only in every minute.</p>
+</div>
+<div class="paragraph">
+<p>For more job types, refer to <a href="https://help.aliyun.com/document_detail/43136.html">SchedulerX Documentation</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_usage_in_production_environment"><a class="link" href="#_usage_in_production_environment">Usage in Production Environment</a></h3>
+<div class="paragraph">
+<p>The previous examples shows how to use SchedulerX in the “Test” region, which is mainly used for local testing.</p>
+</div>
+<div class="paragraph">
+<p>At the production level, you need to complete some other configurations in addition to the group-id and namespace as mentioned above. See examples below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">server.port=18033
+# cn-test is the test region of SchedulerX
+spring.cloud.alicloud.scx.group-id=***
+spring.cloud.alicloud.edas.namespace=***
+# If your application runs on EDAS, you do not need to configure the following.
+spring.cloud.alicloud.access-key=***
+spring.cloud.alicloud.secret-key=***
+# The following configurations are not mandatory. You can refer to the SchedulerX documentation for details.
+spring.cloud.alicloud.scx.domain-name=***</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The way to get the group-id is the same as described in the previous examples, and you can get the namespace by clicking “Namespaces” in the left-side navigation pane of the EDAS console.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Group-id must be created within a namespace.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Access-key and secret-key are the AK/SK of your Alibaba Cloud account. If you deploy you applications on EDAS, then you do not need to fill in this information. Otherwise please go to  <a href="https://usercenter.console.aliyun.com/#/manage/ak">Security Information</a> to get your AccessKeys.</p>
+</div>
+<div class="paragraph">
+<p>Domain-name is not mandatory. You can refer to  <a href="https://help.aliyun.com/document_detail/35359.html">SchedulerX Documentation</a> for details.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
+<script type="text/javascript" src="js/toc.js"></script>
+<link rel="stylesheet" href="js/highlight/styles/atom-one-dark-reasonable.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
+</body>
+</html>

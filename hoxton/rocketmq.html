@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.8">
+<title>Spring Cloud Alibaba RocketMQ Binder</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+<script type="text/javascript">
+function addBlockSwitches() {
+	$('.primary').each(function() {
+		primary = $(this);
+		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
+		primary.children('.title').remove();
+	});
+	$('.secondary').each(function(idx, node) {
+		secondary = $(node);
+		primary = findPrimary(secondary);
+		switchItem = createSwitchItem(secondary, primary.children('.switch'));
+		switchItem.content.addClass('hidden');
+		findPrimary(secondary).append(switchItem.content);
+		secondary.remove();
+	});
+}
+
+function createBlockSwitch(primary) {
+	blockSwitch = $('<div class="switch"></div>');
+	primary.prepend(blockSwitch);
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	candidate = secondary.prev();
+	while (!candidate.is('.primary')) {
+		candidate = candidate.prev();
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	blockName = block.children('.title').text();
+	content = block.children('.content').first().append(block.next('.colist'));
+	item = $('<div class="switch--item">' + blockName + '</div>');
+	item.on('click', '', content, function(e) {
+		$(this).addClass('selected');
+		$(this).siblings().removeClass('selected');
+		e.data.siblings('.content').addClass('hidden');
+		e.data.removeClass('hidden');
+	});
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+$(addBlockSwitches);
+</script>
+
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_spring_cloud_alibaba_rocketmq_binder">Spring Cloud Alibaba RocketMQ Binder</a>
+<ul class="sectlevel2">
+<li><a href="#_introduction_of_rocketmq">Introduction of RocketMQ</a></li>
+<li><a href="#_rocketmq_usages">RocketMQ Usages</a></li>
+<li><a href="#_introduction_of_spring_cloud_stream">Introduction of Spring Cloud Stream</a></li>
+<li><a href="#_how_to_use_spring_cloud_alibaba_rocketmq_binder">How to use Spring Cloud Alibaba RocketMQ Binder</a></li>
+<li><a href="#_how_spring_cloud_alibaba_rocketmq_binder_works">How Spring Cloud Alibaba RocketMQ Binder Works</a></li>
+<li><a href="#_support_messagesource">Support MessageSource</a></li>
+<li><a href="#_configuration_options">Configuration Options</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_spring_cloud_alibaba_rocketmq_binder"><a class="link" href="#_spring_cloud_alibaba_rocketmq_binder">Spring Cloud Alibaba RocketMQ Binder</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_introduction_of_rocketmq"><a class="link" href="#_introduction_of_rocketmq">Introduction of RocketMQ</a></h3>
+<div class="paragraph">
+<p><a href="https://rocketmq.apache.org">RocketMQ</a> is an open-source distributed message system. It is based on highly available distributed cluster technologies and provides message publishing and subscription service with low latency and high stability. RocketMQ is widely used in a variety of industries, such as decoupling of asynchronous communication, enterprise sulotions, financial settlements, telecommunication, e-commerce, logistics, marketing, social media, instant messaging, mobile applications, mobile games, vedios, IoT, and Internet of Vehicles.</p>
+</div>
+<div class="paragraph">
+<p>It has the following features:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Strict order of message sending and consumption</p>
+</li>
+<li>
+<p>Rich modes of message pulling</p>
+</li>
+<li>
+<p>Horizontal scalability of consumers</p>
+</li>
+<li>
+<p>Real-time message subscription</p>
+</li>
+<li>
+<p>Billion-level message accumulation capability</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_rocketmq_usages"><a class="link" href="#_rocketmq_usages">RocketMQ Usages</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Download RocketMQ</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Download <a href="https://www.apache.org/dyn/closer.cgi?path=rocketmq/4.3.2/rocketmq-all-4.3.2-bin-release.zip">Latest Binary File of RocketMQ</a>, and decompress it.</p>
+</div>
+<div class="paragraph">
+<p>The decompressed directory is as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code>apache-rocketmq
+├── LICENSE
+├── NOTICE
+├── README.md
+├── benchmark
+├── bin
+├── conf
+└── lib</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Start NameServer</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">nohup sh bin/mqnamesrv &amp;
+tail -f ~/logs/rocketmqlogs/namesrv.log</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Start Broker</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">nohup sh bin/mqbroker -n localhost:9876 &amp;
+tail -f ~/logs/rocketmqlogs/broker.log</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Send and Receive Messages</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Send messages:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Producer</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Output when the message is successfuly sent: <code>SendResult [sendStatus=SEND_OK, msgId= &#8230;&#8203;</code></p>
+</div>
+<div class="paragraph">
+<p>Receive messages:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Consumer</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Output when the message is successfully received： <code>ConsumeMessageThread_%d Receive New Messages: [MessageExt&#8230;&#8203;</code></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Disable Server</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sh bin/mqshutdown broker
+sh bin/mqshutdown namesrv</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_introduction_of_spring_cloud_stream"><a class="link" href="#_introduction_of_spring_cloud_stream">Introduction of Spring Cloud Stream</a></h3>
+<div class="paragraph">
+<p>Spring Cloud Stream is a microservice framework used to build architectures based on messages. It helps you to create production-ready single-server Spring applications based on SpringBoot, and connects with Broker using <code>Spring Integration</code>.</p>
+</div>
+<div class="paragraph">
+<p>Spring Cloud Stream provides unified abstractions of message middleware configurations, and puts forward concepts such as publish-subscribe, consumer groups and partition.</p>
+</div>
+<div class="paragraph">
+<p>There are two concepts in Spring Cloud Stream: Binder and Binding</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Binder: A component used to integrate with external message middleware, and is used to create binding. Different message middleware products have their own binder implementations.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For example, <code>Kafka</code> uses <code>KafkaMessageChannelBinder</code>, <code>RabbitMQ</code> uses <code>RabbitMessageChannelBinder</code>, while <code>RocketMQ</code> uses <code>RocketMQMessageChannelBinder</code>.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Binding: Includes Input Binding and Output Binding.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Binding serves as a bridge between message middleware and the provider and consumer of the applications. Developers only need to use the Provider or Consumer to produce or consume data, and do not need to worry about the interactions with the message middleware.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://docs.spring.io/spring-cloud-stream/docs/current/reference/htmlsingle/images/SCSt-overview.png" alt="SCSt overview">
+</div>
+<div class="title">Figure 1. Spring Cloud Stream</div>
+</div>
+<div class="paragraph">
+<p>Now let’s use Spring Cloud Stream to write a simple code for sending and receiving messages:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">MessageChannel messageChannel = new DirectChannel();
+
+// Message subscription
+((SubscribableChannel) messageChannel).subscribe(new MessageHandler() {
+    @Override
+    public void handleMessage(Message&lt;? &gt; message) throws MessagingException {
+        System.out.println("receive msg: " + message.getPayload());
+    }
+});
+
+// Message sending
+messageChannel.send(MessageBuilder.withPayload("simple msg").build());</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>All the message types in this code are provided by the `spring-messaging`module. It shields the lower-layer implementations of message middleware. If you would like to change the message middleware, you only need to configure the related message middleware information in the configuration file and modify the binder dependency.</p>
+</div>
+<div class="paragraph">
+<p><strong>The lower layer of Spring Cloud Stream also implements various code abstractions based on the previous code.</strong></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_to_use_spring_cloud_alibaba_rocketmq_binder"><a class="link" href="#_how_to_use_spring_cloud_alibaba_rocketmq_binder">How to use Spring Cloud Alibaba RocketMQ Binder</a></h3>
+<div class="paragraph">
+<p>For using the Spring Cloud Alibaba RocketMQ Binder, you just need to add it to your Spring Cloud Stream application, using the following Maven coordinates:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+  &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-cloud-stream-binder-rocketmq&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively, you can also use the Spring Cloud Stream RocketMQ Starter:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-stream-rocketmq&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_spring_cloud_alibaba_rocketmq_binder_works"><a class="link" href="#_how_spring_cloud_alibaba_rocketmq_binder_works">How Spring Cloud Alibaba RocketMQ Binder Works</a></h3>
+<div class="paragraph">
+<p>This is the implementation architecture of Spring Cloud Stream RocketMQ Binder:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://img.alicdn.com/tfs/TB1v8rcbUY1gK0jSZFCXXcwqXXa-1236-773.png" alt="TB1v8rcbUY1gK0jSZFCXXcwqXXa 1236 773">
+</div>
+<div class="title">Figure 2. SCS RocketMQ Binder</div>
+</div>
+<div class="paragraph">
+<p>The implementation of RocketMQ Binder depend on the <a href="https://github.com/apache/rocketmq-spring">RocketMQ-Spring</a> framework.</p>
+</div>
+<div class="paragraph">
+<p>RocketMQ Spring framework is an integration of RocketMQ and Spring Boot. It provides three main features:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>RocketMQTemplate</code>: Sending messages, including synchronous, asynchronous, and transactional messages.</p>
+</li>
+<li>
+<p><code>@RocketMQTransactionListener</code>: Listen and check for transaction messages.</p>
+</li>
+<li>
+<p><code>@RocketMQMessageListener</code>: Consume messages.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><code>RocketMQMessageChannelBinder</code> is a standard implementation of Binder, it will build <code>RocketMQInboundChannelAdapter</code> and <code>RocketMQMessageHandler</code> internally.</p>
+</div>
+<div class="paragraph">
+<p><code>RocketMQMessageHandler</code> will construct <code>RocketMQTemplate</code> based on the Binding configuration. <code>RocketMQTemplate</code> will convert the <code>org.springframework.messaging.Message</code> message class of <code>spring-messaging</code> module to the RocketMQ message class <code>org.apache.rocketmq.common .message.Message</code> internally, then send it out.</p>
+</div>
+<div class="paragraph">
+<p><code>RocketMQInboundChannelAdapter</code> will also construct <code>RocketMQListenerBindingContainer</code> based on the Binding configuration, and <code>RocketMQListenerBindingContainer</code> will start the RocketMQ <code>Consumer</code> to receive the messages.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+RocketMQ Binder Application can also be used to configure rocketmq.** to trigger RocketMQ Spring related AutoConfiguration
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Currently Binder supports setting the relevant key in <code>Header</code> to set the properties of the RocketMQ message.</p>
+</div>
+<div class="paragraph">
+<p>For example, <code>TAGS</code>, <code>DELAY</code>, <code>TRANSACTIONAL_ARG</code>, <code>KEYS</code>, <code>WAIT_STORE_MSG_OK</code>, <code>FLAG</code> represent the labels corresponding to the RocketMQ message.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">MessageBuilder builder = MessageBuilder.withPayload(msg)
+    .setHeader(RocketMQHeaders.TAGS, "binder")
+    .setHeader(RocketMQHeaders.KEYS, "my-key")
+    .setHeader(MessageConst.PROPERTY_DELAY_TIME_LEVEL, "1");
+Message message = builder.build();
+output().send(message);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_support_messagesource"><a class="link" href="#_support_messagesource">Support MessageSource</a></h3>
+<div class="paragraph">
+<p>SCS RocketMQ Binder support <code>MessageSource</code>，which can receive messages by pull mode：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+@EnableBinding(MQApplication.PolledProcessor.class)
+public class MQApplication {
+
+  private final Logger logger =
+  	  LoggerFactory.getLogger(MQApplication.class);
+
+  public static void main(String[] args) {
+    SpringApplication.run(MQApplication.class, args);
+  }
+
+  @Bean
+  public ApplicationRunner runner(PollableMessageSource source,
+  	    MessageChannel dest) {
+    return args -&gt; {
+      while (true) {
+        boolean result = source.poll(m -&gt; {
+          String payload = (String) m.getPayload();
+          logger.info("Received: " + payload);
+          dest.send(MessageBuilder.withPayload(payload.toUpperCase())
+              .copyHeaders(m.getHeaders())
+              .build());
+        }, new ParameterizedTypeReference&lt;String&gt;() { });
+        if (result) {
+          logger.info("Processed a message");
+        }
+        else {
+          logger.info("Nothing to do");
+        }
+        Thread.sleep(5_000);
+      }
+    };
+  }
+
+  public static interface PolledProcessor {
+
+    @Input
+    PollableMessageSource source();
+
+    @Output
+    MessageChannel dest();
+
+  }
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configuration_options"><a class="link" href="#_configuration_options">Configuration Options</a></h3>
+<div class="sect3">
+<h4 id="_rocketmq_binder_properties"><a class="link" href="#_rocketmq_binder_properties">RocketMQ Binder Properties</a></h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">spring.cloud.stream.rocketmq.binder.name-server</dt>
+<dd>
+<p>The name server of RocketMQ Server(Older versions use the namesrv-addr configuration item).</p>
+<div class="paragraph">
+<p>Default: <code>127.0.0.1:9876</code>.</p>
+</div>
+</dd>
+<dt class="hdlist1">spring.cloud.stream.rocketmq.binder.access-key</dt>
+<dd>
+<p>The AccessKey of Alibaba Cloud Account.</p>
+<div class="paragraph">
+<p>Default: null.</p>
+</div>
+</dd>
+<dt class="hdlist1">spring.cloud.stream.rocketmq.binder.secret-key</dt>
+<dd>
+<p>The SecretKey of Alibaba Cloud Account.</p>
+<div class="paragraph">
+<p>Default: null.</p>
+</div>
+</dd>
+<dt class="hdlist1">spring.cloud.stream.rocketmq.binder.enable-msg-trace</dt>
+<dd>
+<p>Enable Message Trace feature for all producers and consumers.</p>
+<div class="paragraph">
+<p>Default: <code>true</code>.</p>
+</div>
+</dd>
+<dt class="hdlist1">spring.cloud.stream.rocketmq.binder.customized-trace-topic</dt>
+<dd>
+<p>The trace topic for message trace.</p>
+<div class="paragraph">
+<p>Default: <code>RMQ_SYS_TRACE_TOPIC</code>.</p>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_rocketmq_consumer_properties"><a class="link" href="#_rocketmq_consumer_properties">RocketMQ Consumer Properties</a></h4>
+<div class="paragraph">
+<p>The following properties are available for RocketMQ producers only and must be prefixed with <code>spring.cloud.stream.rocketmq.bindings.&lt;channelName&gt;.consumer.</code>.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">enable</dt>
+<dd>
+<p>Enable Consumer Binding.</p>
+<div class="paragraph">
+<p>Default: <code>true</code>.</p>
+</div>
+</dd>
+<dt class="hdlist1">tags</dt>
+<dd>
+<p>Consumer subscription tags expression, tags split by <code>||</code>.</p>
+<div class="paragraph">
+<p>Default: empty.</p>
+</div>
+</dd>
+<dt class="hdlist1">sql</dt>
+<dd>
+<p>Consumer subscription sql expression.</p>
+<div class="paragraph">
+<p>Default: empty.</p>
+</div>
+</dd>
+<dt class="hdlist1">broadcasting</dt>
+<dd>
+<p>Control message mode, if you want all subscribers receive message all message, broadcasting is a good choice.</p>
+<div class="paragraph">
+<p>Default: <code>false</code>.</p>
+</div>
+</dd>
+<dt class="hdlist1">orderly</dt>
+<dd>
+<p>Receiving message concurrently or orderly.</p>
+<div class="paragraph">
+<p>Default: <code>false</code>.</p>
+</div>
+</dd>
+<dt class="hdlist1">delayLevelWhenNextConsume</dt>
+<dd>
+<p>Message consume retry strategy for concurrently consume:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>-1,no retry,put into DLQ directly</p>
+</li>
+<li>
+<p>0,broker control retry frequency</p>
+</li>
+<li>
+<p>&gt;0,client control retry frequency</p>
+<div class="paragraph">
+<p>Default: <code>0</code>.</p>
+</div>
+</li>
+</ul>
+</div>
+</dd>
+<dt class="hdlist1">suspendCurrentQueueTimeMillis</dt>
+<dd>
+<p>Time interval of message consume retry for orderly consume.</p>
+<div class="paragraph">
+<p>Default: <code>1000</code>.</p>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_rocketmq_provider_properties"><a class="link" href="#_rocketmq_provider_properties">RocketMQ Provider Properties</a></h4>
+<div class="paragraph">
+<p>The following properties are available for RocketMQ producers only and must be prefixed with <code>spring.cloud.stream.rocketmq.bindings.&lt;channelName&gt;.producer.</code>.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">enable</dt>
+<dd>
+<p>Enable Producer Binding.</p>
+<div class="paragraph">
+<p>Default: <code>true</code>.</p>
+</div>
+</dd>
+<dt class="hdlist1">group</dt>
+<dd>
+<p>Producer group name.</p>
+<div class="paragraph">
+<p>Default: empty.</p>
+</div>
+</dd>
+<dt class="hdlist1">maxMessageSize</dt>
+<dd>
+<p>Maximum allowed message size in bytes.</p>
+<div class="paragraph">
+<p>Default: <code>8249344</code>.</p>
+</div>
+</dd>
+<dt class="hdlist1">transactional</dt>
+<dd>
+<p>Send Transactional Message.</p>
+<div class="paragraph">
+<p>Default: <code>false</code>.</p>
+</div>
+</dd>
+<dt class="hdlist1">sync</dt>
+<dd>
+<p>Send message in synchronous mode.</p>
+<div class="paragraph">
+<p>Default: <code>false</code>.</p>
+</div>
+</dd>
+<dt class="hdlist1">vipChannelEnabled</dt>
+<dd>
+<p>Send message with vip channel.</p>
+<div class="paragraph">
+<p>Default: <code>true</code>.</p>
+</div>
+</dd>
+<dt class="hdlist1">sendMessageTimeout</dt>
+<dd>
+<p>Millis of send message timeout.</p>
+<div class="paragraph">
+<p>Default: <code>3000</code>.</p>
+</div>
+</dd>
+<dt class="hdlist1">compressMessageBodyThreshold</dt>
+<dd>
+<p>Compress message body threshold, namely, message body larger than 4k will be compressed on default.</p>
+<div class="paragraph">
+<p>Default: <code>4096</code>.</p>
+</div>
+</dd>
+<dt class="hdlist1">retryTimesWhenSendFailed</dt>
+<dd>
+<p>Maximum number of retry to perform internally before claiming sending failure in synchronous mode.</p>
+<div class="paragraph">
+<p>Default: <code>2</code>.</p>
+</div>
+</dd>
+<dt class="hdlist1">retryTimesWhenSendAsyncFailed</dt>
+<dd>
+<p>Maximum number of retry to perform internally before claiming sending failure in asynchronous mode.</p>
+<div class="paragraph">
+<p>Default: <code>2</code>.</p>
+</div>
+</dd>
+<dt class="hdlist1">retryNextServer</dt>
+<dd>
+<p>Indicate whether to retry another broker on sending failure internally.</p>
+<div class="paragraph">
+<p>Default: <code>false</code>.</p>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
+<script type="text/javascript" src="js/toc.js"></script>
+<link rel="stylesheet" href="js/highlight/styles/atom-one-dark-reasonable.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
+</body>
+</html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.8">
+<title>Spring Cloud Alibaba Sidecar</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+<script type="text/javascript">
+function addBlockSwitches() {
+	$('.primary').each(function() {
+		primary = $(this);
+		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
+		primary.children('.title').remove();
+	});
+	$('.secondary').each(function(idx, node) {
+		secondary = $(node);
+		primary = findPrimary(secondary);
+		switchItem = createSwitchItem(secondary, primary.children('.switch'));
+		switchItem.content.addClass('hidden');
+		findPrimary(secondary).append(switchItem.content);
+		secondary.remove();
+	});
+}
+
+function createBlockSwitch(primary) {
+	blockSwitch = $('<div class="switch"></div>');
+	primary.prepend(blockSwitch);
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	candidate = secondary.prev();
+	while (!candidate.is('.primary')) {
+		candidate = candidate.prev();
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	blockName = block.children('.title').text();
+	content = block.children('.content').first().append(block.next('.colist'));
+	item = $('<div class="switch--item">' + blockName + '</div>');
+	item.on('click', '', content, function(e) {
+		$(this).addClass('selected');
+		$(this).siblings().removeClass('selected');
+		e.data.siblings('.content').addClass('hidden');
+		e.data.removeClass('hidden');
+	});
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+$(addBlockSwitches);
+</script>
+
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_spring_cloud_alibaba_sidecar">Spring Cloud Alibaba Sidecar</a>
+<ul class="sectlevel2">
+<li><a href="#_术语">术语</a></li>
+<li><a href="#_why_or_why_not">Why or Why not?</a></li>
+<li><a href="#_原理">原理</a></li>
+<li><a href="#_要求">要求</a></li>
+<li><a href="#_使用示例">使用示例</a></li>
+<li><a href="#_alibaba_sidecar优缺点分析">Alibaba Sidecar优缺点分析</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_spring_cloud_alibaba_sidecar"><a class="link" href="#_spring_cloud_alibaba_sidecar">Spring Cloud Alibaba Sidecar</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>Spring Cloud Alibaba Sidecar</code> 是一个用来快速<strong>完美整合</strong> Spring Cloud
+与 <strong>异构微服务</strong> 的框架，灵感来自
+<a href="https://github.com/spring-cloud/spring-cloud-netflix/tree/master/spring-cloud-netflix-sidecar">Spring
+Cloud Netflix Sidecar</a> 。目前支持的服务发现组件：</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Nacos</p>
+</li>
+<li>
+<p>Consul</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_术语"><a class="link" href="#_术语">术语</a></h3>
+<div class="sect3">
+<h4 id="_异构微服务"><a class="link" href="#_异构微服务">异构微服务</a></h4>
+<div class="paragraph">
+<p>非Spring Cloud应用，统称异构微服务。比如你的遗留项目，或者非JVM应用。</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_完美整合的三层含义"><a class="link" href="#_完美整合的三层含义">``完美整合''的三层含义</a></h4>
+<div class="ulist">
+<ul>
+<li>
+<p>享受服务发现的优势</p>
+</li>
+<li>
+<p>有负载均衡</p>
+</li>
+<li>
+<p>有断路器</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_why_or_why_not"><a class="link" href="#_why_or_why_not">Why or Why not?</a></h3>
+<div class="sect3">
+<h4 id="_为什么要编写alibaba_sidecar"><a class="link" href="#_为什么要编写alibaba_sidecar">为什么要编写Alibaba Sidecar？</a></h4>
+<div class="paragraph">
+<p>原因有两点：</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Spring Cloud子项目 <code>Spring Cloud Netflix Sidecar</code>
+是可以快速整合异构微服务的。然而，Sidecar只支持使用Eureka作为服务发现，<strong>如果使用其他服务发现组件就抓瞎了</strong>。</p>
+</li>
+<li>
+<p><strong>Sidecar是基于Zuul 1.x的</strong>，Spring
+Cloud官方明确声明，未来将会逐步淘汰Zuul。今年早些时候，我有给Spring
+Cloud官方提出需求，希望官方实现一个基于Spring Cloud
+Gateway的新一代Sidecar，然而官方表示并没有该计划。详见：https://github.com/spring-cloud/spring-cloud-gateway/issues/735</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>既然没有，索性自己写了。</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_为什么不用service_mesh"><a class="link" href="#_为什么不用service_mesh">为什么不用Service Mesh？</a></h4>
+<div class="ulist">
+<ul>
+<li>
+<p>目前Mesh主要使用场景在Kubernetes领域（Istio、Linkerd
+2等，大多将Kubernetes作为First
+Class支持，虽然Istio也可部署在非Kubernetes环境），而目前业界，Spring
+Cloud应用未必有试试Mesh的环境；</p>
+</li>
+<li>
+<p>使用Alibaba
+Sidecar一个小组件就能解决问题了（核心代码不超过200行），引入整套Mesh方案，颇有点屠龙刀杀黄鳝的意思。</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_原理"><a class="link" href="#_原理">原理</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Alibaba
+Sidecar根据配置的异构微服务的IP、端口等信息，<strong>将异构微服务的IP/端口注册到服务发现组件上</strong>
+。</p>
+</li>
+<li>
+<p>Alibaba Sidecar实现了 <strong>健康检查</strong> ，Alibaba
+Sidecar会定时检测异构微服务是否健康。如果发现异构微服务不健康，Alibaba
+Sidecar会自动将代表异构微服务的Alibaba
+Sidecar实例下线；如果异构微服务恢复正常，则会自动上线。最长延迟是30秒，详见
+<code>Alibaba SidecarChecker#check</code> 。</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_要求"><a class="link" href="#_要求">要求</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p>【必须】你的异构微服务需使用HTTP通信。这一点严格来说不算要求，因为Spring
+Cloud本身就是基于HTTP的；</p>
+</li>
+<li>
+<p>【可选】如果微服务配置了 <code>sidecar.health-check-url</code>
+，则表示开启健康检查，此时，你的异构微服务需实现健康检查（可以是空实现，只要暴露一个端点，返回类似
+<code>{"status": "UP"}</code> 的字符串即可）。</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_使用示例"><a class="link" href="#_使用示例">使用示例</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p>如使用Nacos作为服务发现组件，详见`spring-cloud-alibaba-examples/spring-cloud-alibaba-sidecar-examples/spring-cloud-alibaba-sidecar-nacos-example`</p>
+</li>
+<li>
+<p>如使用Consul作为服务发现组件，详见`spring-cloud-alibaba-examples/spring-cloud-alibaba-sidecar-examples/spring-cloud-alibaba-sidecar-nacos-example`</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_示例代码以nacos服务发现为例"><a class="link" href="#_示例代码以nacos服务发现为例">示例代码（以Nacos服务发现为例）</a></h4>
+<div class="ulist">
+<ul>
+<li>
+<p>加依赖：</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+  &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-cloud-starter-alibaba-sidecar&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>写配置：</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">server:
+  port: 8070
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+  application:
+    name: node-service
+sidecar:
+  # 异构微服务的IP
+  ip: 127.0.0.1
+  # 异构微服务的端口
+  port: 8060
+  # 异构微服务的健康检查URL
+  health-check-url: http://localhost:8060/health.json
+management:
+endpoint:
+    health:
+      show-details: always</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>配置比较简单，就是把Alibaba Sidecar注册到Nacos上，然后添加了几行Alibaba
+Sidecar的配置。</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_异构微服务_2"><a class="link" href="#_异构微服务_2">异构微服务</a></h4>
+<div class="paragraph">
+<p>我准备了一个NodeJS编写的简单微服务。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-javascript hljs" data-lang="javascript">var http = require('http');
+var url = require("url");
+var path = require('path');
+
+// 创建server
+var server = http.createServer(function(req, res) {
+    // 获得请求的路径
+    var pathname = url.parse(req.url).pathname;
+    res.writeHead(200, { 'Content-Type' : 'application/json; charset=utf-8' });
+    // 访问http://localhost:8060/，将会返回{"index":"欢迎来到首页"}
+    if (pathname === '/') {
+        res.end(JSON.stringify({ "index" : "欢迎来到首页" }));
+    }
+    // 访问http://localhost:8060/health，将会返回{"status":"UP"}
+    else if (pathname === '/health.json') {
+        res.end(JSON.stringify({ "status" : "UP" }));
+    }
+    // 其他情况返回404
+    else {
+        res.end("404");
+    }
+});
+// 创建监听，并打印日志
+server.listen(8060, function() {
+    console.log('listening on localhost:8060');
+});</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_测试"><a class="link" href="#_测试">测试</a></h4>
+<div class="sect4">
+<h5 id="_测试1spring_cloud微服务完美调用异构微服务"><a class="link" href="#_测试1spring_cloud微服务完美调用异构微服务">测试1：Spring Cloud微服务完美调用异构微服务</a></h5>
+<div class="paragraph">
+<p>为你的Spring Cloud微服务整合Ribbon，然后构建 <code><a href="http://node-service/" class="bare">http://node-service/</a><strong></code>
+，就可以请求到异构微服务的 <code>/</strong></code> 了。</p>
+</div>
+<div class="paragraph">
+<p>示例：</p>
+</div>
+<div class="paragraph">
+<p>Ribbon请求 <code><a href="http://node-service/" class="bare">http://node-service/</a></code> 会请求到 <code><a href="http://localhost:8060/" class="bare">http://localhost:8060/</a></code>
+，以此类推。</p>
+</div>
+<div class="paragraph">
+<p>至于断路器，正常为你的Spring
+Cloud微服务整合Sentinel或者Hystirx、Resilience4J即可 。</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_测试2异构微服务完美调用spring_cloud微服务"><a class="link" href="#_测试2异构微服务完美调用spring_cloud微服务">测试2：异构微服务完美调用Spring Cloud微服务</a></h5>
+<div class="paragraph">
+<p>由于Alibaba Sidecar基于Spring Cloud Gateway，而网关自带转发能力。</p>
+</div>
+<div class="paragraph">
+<p>示例：</p>
+</div>
+<div class="paragraph">
+<p>如果你有一个Spring Cloud微服务叫做 <code>spring-cloud-microservice</code>
+，那么NodeJS应用只需构建
+<code><a href="http://localhost:8070/spring-cloud-microservice/" class="bare">http://localhost:8070/spring-cloud-microservice/</a><strong></code> ，Alibaba
+Sidecar就会把请求转发到 <code>spring-cloud-microservice</code> 的 <code>/</strong></code> 。</p>
+</div>
+<div class="paragraph">
+<p>而Spring Cloud Gateway是整合了Ribbon的，所以实现了负载均衡；Spring Cloud
+Gateway还可以整合Sentinel或者Hystirx、Resilience4J，所以也带有了断路器。</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_alibaba_sidecar优缺点分析"><a class="link" href="#_alibaba_sidecar优缺点分析">Alibaba Sidecar优缺点分析</a></h3>
+<div class="paragraph">
+<p>Alibaba
+Sidecar的设计和Sidecar基本一致，优缺点和Sidecar的优缺点也是一样的。</p>
+</div>
+<div class="paragraph">
+<p>优点：</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>接入简单，几行代码就可以将异构微服务整合到Spring Cloud生态</p>
+</li>
+<li>
+<p>不侵入原代码</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>缺点：</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>每接入一个异构微服务实例，都需要额外部署一个Alibaba
+Sidecar实例，增加了部署成本（虽然这个成本在Kubernetes环境中几乎可以忽略不计（只需将Alibaba
+Sidecar实例和异构微服务作为一个Pod部署即可））；</p>
+</li>
+<li>
+<p>异构微服务调用Spring Cloud微服务时，本质是把Alibaba
+Sidecar当网关在使用，经过了一层转发，性能有一定下降。</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<link rel="stylesheet" href="js/highlight/styles/atom-one-dark-reasonable.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
+</body>
+</html>

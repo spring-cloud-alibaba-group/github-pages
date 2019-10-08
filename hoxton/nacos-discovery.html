@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.8">
+<title>Spring Cloud Alibaba Nacos Discovery</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+<script type="text/javascript">
+function addBlockSwitches() {
+	$('.primary').each(function() {
+		primary = $(this);
+		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
+		primary.children('.title').remove();
+	});
+	$('.secondary').each(function(idx, node) {
+		secondary = $(node);
+		primary = findPrimary(secondary);
+		switchItem = createSwitchItem(secondary, primary.children('.switch'));
+		switchItem.content.addClass('hidden');
+		findPrimary(secondary).append(switchItem.content);
+		secondary.remove();
+	});
+}
+
+function createBlockSwitch(primary) {
+	blockSwitch = $('<div class="switch"></div>');
+	primary.prepend(blockSwitch);
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	candidate = secondary.prev();
+	while (!candidate.is('.primary')) {
+		candidate = candidate.prev();
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	blockName = block.children('.title').text();
+	content = block.children('.content').first().append(block.next('.colist'));
+	item = $('<div class="switch--item">' + blockName + '</div>');
+	item.on('click', '', content, function(e) {
+		$(this).addClass('selected');
+		$(this).siblings().removeClass('selected');
+		e.data.siblings('.content').addClass('hidden');
+		e.data.removeClass('hidden');
+	});
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+$(addBlockSwitches);
+</script>
+
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_spring_cloud_alibaba_nacos_discovery">Spring Cloud Alibaba Nacos Discovery</a>
+<ul class="sectlevel2">
+<li><a href="#_service_registrationdiscovery_nacos_discovery">Service Registration/Discovery: Nacos Discovery</a></li>
+<li><a href="#_how_to_introduce_nacos_discovery_for_service_registrationdiscovery">How to Introduce Nacos Discovery for service registration/discovery</a></li>
+<li><a href="#_an_example_of_using_nacos_discovery_for_service_registrationdiscovery_and_call">An example of using Nacos Discovery for service registration/discovery and call</a></li>
+<li><a href="#_nacos_discovery_endpoint">Nacos Discovery Endpoint</a></li>
+<li><a href="#_more_information_about_nacos_discovery_starter_configurations">More Information about Nacos Discovery Starter Configurations</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_spring_cloud_alibaba_nacos_discovery"><a class="link" href="#_spring_cloud_alibaba_nacos_discovery">Spring Cloud Alibaba Nacos Discovery</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Nacos is an easy-to-use dynamic service discovery, configuration and service management platform for building cloud native applications.</p>
+</div>
+<div class="paragraph">
+<p>With Spring Cloud Alibaba Nacos Discovery, you can quickly access the Nacos service registration feature based on Spring Cloud&#8217;s programming model.</p>
+</div>
+<div class="sect2">
+<h3 id="_service_registrationdiscovery_nacos_discovery"><a class="link" href="#_service_registrationdiscovery_nacos_discovery">Service Registration/Discovery: Nacos Discovery</a></h3>
+<div class="paragraph">
+<p>Service discovery is one of the key components in the microservices architecture. In such a architecture, configuring a service list for every client manually could be a daunting task, and makes dynamic scaling extremely difficult.
+ Nacos Discovery helps you to register your service to the Nacos server automatically, and the Nacos server keeps track of the services and refreshes the service list dynamically. In addition, Nacos
+Discovery registers some of the metadata of the service instance, such as host, port, health check URL, homepage to Nacos. For details about how to download and start Nacos, refer to the <a href="https://nacos.io/zh-cn/docs/quick-start.html">Nacos Website</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_to_introduce_nacos_discovery_for_service_registrationdiscovery"><a class="link" href="#_how_to_introduce_nacos_discovery_for_service_registrationdiscovery">How to Introduce Nacos Discovery for service registration/discovery</a></h3>
+<div class="paragraph">
+<p>please use the starter with the group ID as <code>com.alibaba.cloud</code> and the artifact ID as <code>spring-cloud-starter-alibaba-nacos-discovery</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-discovery&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_an_example_of_using_nacos_discovery_for_service_registrationdiscovery_and_call"><a class="link" href="#_an_example_of_using_nacos_discovery_for_service_registrationdiscovery_and_call">An example of using Nacos Discovery for service registration/discovery and call</a></h3>
+<div class="paragraph">
+<p>Nacos Discovery integrate with the Netflix Ribbon, RestTemplate or OpenFeign can be used for service-to-service calls.</p>
+</div>
+<div class="sect3">
+<h4 id="_nacos_server_startup"><a class="link" href="#_nacos_server_startup">Nacos Server Startup</a></h4>
+<div class="paragraph">
+<p>For details about how to download and start Nacos, refer to the <a href="https://nacos.io/zh-cn/docs/quick-start.html">Nacos Website</a>.</p>
+</div>
+<div class="paragraph">
+<p>After Nacos Server starts, go to <a href="http://ip:8848" class="bare">http://ip:8848</a> to view the console (default account name/password is nacos/nacos):</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://img.alicdn.com/tfs/TB1XEfwbQH0gK0jSZPiXXavapXa-2790-1060.png" alt="TB1XEfwbQH0gK0jSZPiXXavapXa 2790 1060">
+</div>
+<div class="title">Figure 1. Nacos Dashboard</div>
+</div>
+<div class="paragraph">
+<p>For more Nacos Server versions, you can download the latest version from <a href="https://github.com/alibaba/nacos/releases">release page</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_start_a_provider_application"><a class="link" href="#_start_a_provider_application">Start a Provider Application</a></h4>
+<div class="paragraph">
+<p>The following sample illustrates how to register a service to Nacos.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Configuration of pom.xml The following is a complete example of pom.xml：</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">pom.xml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;open.source.test&lt;/groupId&gt;
+    &lt;artifactId&gt;nacos-discovery-test&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;name&gt;nacos-discovery-test&lt;/name&gt;
+
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;${spring.boot.version}&lt;/version&gt;
+        &lt;relativePath/&gt;
+    &lt;/parent&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+        &lt;java.version&gt;1.8&lt;/java.version&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencyManagement&gt;
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-cloud-dependencies&lt;/artifactId&gt;
+                &lt;version&gt;${spring.cloud.version}&lt;/version&gt;
+                &lt;type&gt;pom&lt;/type&gt;
+                &lt;scope&gt;import&lt;/scope&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-cloud-alibaba-dependencies&lt;/artifactId&gt;
+                &lt;version&gt;${spring.cloud.alibaba.version}&lt;/version&gt;
+                &lt;type&gt;pom&lt;/type&gt;
+                &lt;scope&gt;import&lt;/scope&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+    &lt;/dependencyManagement&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-discovery&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Configuration of application.properties Some of the basic configurations of Nacos must be included in application.properties(or application.yaml), as shown below：</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">application.properties</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">server.port=8081
+spring.application.name=nacos-provider
+spring.cloud.nacos.discovery.server-addr=127.0.0.1:8848
+management.endpoints.web.exposure.include=*</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you do not want to use Nacos for service registration and discovery, you can set <code>spring.cloud.nacos.discovery</code> to <code>false</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The following is a sample for starting Provider:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+@EnableDiscoveryClient
+public class NacosProviderDemoApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(NacosProviderDemoApplication.class, args);
+    }
+
+    @RestController
+    public class EchoController {
+        @GetMapping(value = "/echo/{string}")
+        public String echo(@PathVariable String string) {
+            return "Hello Nacos Discovery " + string;
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now you can see the registered services on the Nacos console.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Before you start the provider application, please start Nacos first. Refer to <a href="https://nacos.io/zh-cn/docs/quick-start.html">Naco Website</a> for more details.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_start_a_consumer_application"><a class="link" href="#_start_a_consumer_application">Start a Consumer Application</a></h4>
+<div class="paragraph">
+<p>It might not be as easy as starting a provider application, because the consumer needs to call the RESTful service of the provider. In this example, we will use the most primitive way, that is,
+combining the LoadBalanceClient and RestTemolate explicitly to access the RESTful service.
+You can refer to section 1.2 for pom.xml and application.properties configurations. The following is the sample code for starting a consumer application.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You can also access the service by using RestTemplate and FeignClient with load balancing.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+@EnableDiscoveryClient
+public class NacosConsumerApp {
+
+    @RestController
+    public class NacosController{
+
+        @Autowired
+        private LoadBalancerClient loadBalancerClient;
+        @Autowired
+        private RestTemplate restTemplate;
+
+        @Value("${spring.application.name}")
+        private String appName;
+
+        @GetMapping("/echo/app-name")
+        public String echoAppName(){
+            //Access through the combination of LoadBalanceClient and RestTemplate
+            ServiceInstance serviceInstance = loadBalancerClient.choose("nacos-provider");
+            String path = String.format("http://%s:%s/echo/%s",serviceInstance.getHost(),serviceInstance.getPort(),appName);
+            System.out.println("request path:" +path);
+            return restTemplate.getForObject(path,String.class);
+        }
+
+    }
+
+    //Instantiate RestTemplate Instance
+    @Bean
+    public RestTemplate restTemplate(){
+
+        return new RestTemplate();
+    }
+
+    public static void main(String[] args) {
+
+        SpringApplication.run(NacosConsumerApp.class,args);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this example, we injected a LoadBalancerClient instance, and instantiated a RestTemplate manually. At the same time, we injected the configuration value of <code>spring.application.name</code> into the application,
+so that the current application name can be displayed when calling the service of the provider.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Please start Nacos before you start the consumer application. For details, please refer to <a href="https://nacos.io/zh-cn/docs/quick-start.html">Nacos Website</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Next, access the <code><a href="http://ip:port/echo/app-name" class="bare">http://ip:port/echo/app-name</a></code> interface provided by the consumer. Here we started the port of 8082. The access result is shown below：</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Address：http://127.0.0.1:8082/echo/app-name
+Access result： Hello Nacos Discovery nacos-consumer</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_nacos_discovery_endpoint"><a class="link" href="#_nacos_discovery_endpoint">Nacos Discovery Endpoint</a></h3>
+<div class="paragraph">
+<p>Nacos Discovery provides an Endpoint internally with a corresponding endpoint id of <code>nacos-discovery</code>.</p>
+</div>
+<div class="paragraph">
+<p>Endpoint exposed json contains two properties:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>subscribe: Shows the current service subscribers</p>
+</li>
+<li>
+<p>NacosDiscoveryProperties: Shows the current basic Nacos configurations of the current service</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The followings shows how a service instance accesses the Endpoint:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+  "subscribe": [
+    {
+      "jsonFromServer": "",
+      "name": "nacos-provider",
+      "clusters": "",
+      "cacheMillis": 10000,
+      "hosts": [
+        {
+          "instanceId": "30.5.124.156#8081#DEFAULT#nacos-provider",
+          "ip": "30.5.124.156",
+          "port": 8081,
+          "weight": 1.0,
+          "healthy": true,
+          "enabled": true,
+          "cluster": {
+            "serviceName": null,
+            "name": null,
+            "healthChecker": {
+              "type": "TCP"
+            },
+            "defaultPort": 80,
+            "defaultCheckPort": 80,
+            "useIPPort4Check": true,
+            "metadata": {
+
+            }
+          },
+          "service": null,
+          "metadata": {
+
+          }
+        }
+      ],
+      "lastRefTime": 1541755293119,
+      "checksum": "e5a699c9201f5328241c178e804657e11541755293119",
+      "allIPs": false,
+      "key": "nacos-provider",
+      "valid": true
+    }
+  ],
+  "NacosDiscoveryProperties": {
+    "serverAddr": "127.0.0.1:8848",
+    "endpoint": "",
+    "namespace": "",
+    "logName": "",
+    "service": "nacos-provider",
+    "weight": 1.0,
+    "clusterName": "DEFAULT",
+    "metadata": {
+
+    },
+    "registerEnabled": true,
+    "ip": "30.5.124.201",
+    "networkInterface": "",
+    "port": 8082,
+    "secure": false,
+    "accessKey": "",
+    "secretKey": ""
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_more_information_about_nacos_discovery_starter_configurations"><a class="link" href="#_more_information_about_nacos_discovery_starter_configurations">More Information about Nacos Discovery Starter Configurations</a></h3>
+<div class="paragraph">
+<p>The following shows the other configurations of the starter of Nacos Discovery:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Configuration</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default Value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Server address</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.discovery.server-addr</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IP and port of the Nacos Server listener</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Service name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.discovery.service</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>${spring.application.name}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name the current service</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Weight</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.discovery.weight</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value range: 1 to 100. The bigger the value, the greater the weight</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Network card name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.discovery.network-interface</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the IP address is not specified, the registered IP address is the IP address of the network card. If this is not specified either, the IP address of the first network card will be used by default.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Registered IP address</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.discovery.ip</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Highest priority</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Registered port</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.discovery.port</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>-1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Will be detected automatically by default. Do not need to be configured.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Namespace</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.discovery.namespace</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A typical scenario is to isolate the service registration for different environment, such as resource (configurations, services etc.) isolation between testing and production environment</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AccessKey</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.discovery.access-key</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Alibaba Cloud account accesskey</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SecretKey</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.discovery.secret-key</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Alibaba Cloud account secretkey</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Metadata</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.discovery.metadata</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">You can define some of the metadata for your services in the Map format</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Log file name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.discovery.log-name</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cluster Name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.discovery.cluster-name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>DEFAULT</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cluster name of Nacos</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Endpoint</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.discovery.endpoint</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The domain name of a certain service in a specific region. You can retrieve the server address dynamically with this domain name</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Integrate Ribbon or not</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ribbon.nacos.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set to true in most cases</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enable Nacos Watch</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.discovery.watch.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">set to false to close watch</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
+<script type="text/javascript" src="js/toc.js"></script>
+<link rel="stylesheet" href="js/highlight/styles/atom-one-dark-reasonable.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
+</body>
+</html>

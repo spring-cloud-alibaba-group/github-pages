@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.8">
+<title>Spring Cloud AliCloud OSS</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+<script type="text/javascript">
+function addBlockSwitches() {
+	$('.primary').each(function() {
+		primary = $(this);
+		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
+		primary.children('.title').remove();
+	});
+	$('.secondary').each(function(idx, node) {
+		secondary = $(node);
+		primary = findPrimary(secondary);
+		switchItem = createSwitchItem(secondary, primary.children('.switch'));
+		switchItem.content.addClass('hidden');
+		findPrimary(secondary).append(switchItem.content);
+		secondary.remove();
+	});
+}
+
+function createBlockSwitch(primary) {
+	blockSwitch = $('<div class="switch"></div>');
+	primary.prepend(blockSwitch);
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	candidate = secondary.prev();
+	while (!candidate.is('.primary')) {
+		candidate = candidate.prev();
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	blockName = block.children('.title').text();
+	content = block.children('.content').first().append(block.next('.colist'));
+	item = $('<div class="switch--item">' + blockName + '</div>');
+	item.on('click', '', content, function(e) {
+		$(this).addClass('selected');
+		$(this).siblings().removeClass('selected');
+		e.data.siblings('.content').addClass('hidden');
+		e.data.removeClass('hidden');
+	});
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+$(addBlockSwitches);
+</script>
+
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_spring_cloud_alicloud_oss">Spring Cloud AliCloud OSS</a>
+<ul class="sectlevel2">
+<li><a href="#_如何引入_spring_cloud_alicloud_oss">如何引入 Spring Cloud AliCloud OSS</a></li>
+<li><a href="#_如何使用_oss_api">如何使用 OSS API</a></li>
+<li><a href="#_与_spring_框架的_resource_结合">与 Spring 框架的 Resource 结合</a></li>
+<li><a href="#_采用_sts_授权">采用 STS 授权</a></li>
+<li><a href="#_更多客户端配置">更多客户端配置</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_spring_cloud_alicloud_oss"><a class="link" href="#_spring_cloud_alicloud_oss">Spring Cloud AliCloud OSS</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>OSS（Object Storage Service）是阿里云的一款对象存储服务产品， Spring Cloud AliCloud OSS 提供了Spring Cloud规范下商业版的对象存储服务，提供简单易用的API，并且支持与 Spring 框架中 Resource 的整合。</p>
+</div>
+<div class="sect2">
+<h3 id="_如何引入_spring_cloud_alicloud_oss"><a class="link" href="#_如何引入_spring_cloud_alicloud_oss">如何引入 Spring Cloud AliCloud OSS</a></h3>
+<div class="paragraph">
+<p>如果要在您的项目中引入 OSS，使用 group ID 为 <code>org.springframework.cloud</code> 和 artifact ID 为 <code>spring-cloud-starter-alicloud-oss</code> 的 starter。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-alicloud-oss&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_如何使用_oss_api"><a class="link" href="#_如何使用_oss_api">如何使用 OSS API</a></h3>
+<div class="sect3">
+<h4 id="_配置_oss"><a class="link" href="#_配置_oss">配置 OSS</a></h4>
+<div class="paragraph">
+<p>使用 Spring Cloud AliCloud OSS 之前，需要在 application.properties 中加入以下配置。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.cloud.alicloud.access-key=你的阿里云AK
+spring.cloud.alicloud.secret-key=你的阿里云SK
+spring.cloud.alicloud.oss.endpoint=***.aliyuncs.com</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>access-key 和 secret-key 是阿里云账号的AK/SK，需要首先注册阿里云账号，然后登陆 <a href="https://usercenter.console.aliyun.com/#/manage/ak">阿里云AK/SK管理页面</a> ，即可看到 AccessKey ID 和 Access Key Secret ，如果没有的话，需要点击"创建AccessKey"按钮创建。</p>
+</div>
+<div class="paragraph">
+<p>endpoint可以到 OSS 的 <a href="https://help.aliyun.com/document_detail/31837.html?spm=a2c4g.11186623.2.9.7dc72841Z2hGqa#concept-zt4-cvy-5db">官方文档</a>中查看，根据所在的 region ，填写对应的 endpoint 即可。</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_引入_oss_api"><a class="link" href="#_引入_oss_api">引入 OSS API</a></h4>
+<div class="paragraph">
+<p>Spring Cloud Alicloud OSS 中的 OSS API 基于阿里云官方OSS SDK提供，具备上传、下载、查看等所有对象存储类操作API。</p>
+</div>
+<div class="paragraph">
+<p>一个简单的使用 OSS API 的应用如下。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+public class OssApplication {
+
+    @Autowired
+    private OSS ossClient;
+
+    @RequestMapping("/")
+    public String home() {
+        ossClient.putObject("bucketName", "fileName", new FileInputStream("/your/local/file/path"));
+        return "upload success";
+    }
+
+    public static void main(String[] args) throws URISyntaxException {
+        SpringApplication.run(OssApplication.class, args);
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>在上传文件之前，首先需要 <a href="https://account.aliyun.com/register/register.htm?spm=5176.8142029.388261.26.e9396d3eaYK2sG&amp;oauth_callback=https%3A%2F%2Fwww.aliyun.com%2F">注册阿里云账号</a> ，如果已经有的话，请 <a href="https://common-buy.aliyun.com/?spm=5176.8465980.unusable.dopen.4cdf1450rg8Ujb&amp;commodityCode=oss#/open">开通OSS服务</a>。</p>
+</div>
+<div class="paragraph">
+<p>进入 <a href="https://oss.console.aliyun.com/overview">OSS控制台</a>，点击左侧"新建Bucket"，按照提示创建一个Bucket，然后将bucket名称替换掉上面代码中的"bucketName"，而"fileName"取任意文件名，"/your/local/file/path"取任意本地文件路径，然后 curl <a href="http://127.0.0.1:端口/" class="bare">http://127.0.0.1:端口/</a> 即可上传文件，可以到 <a href="https://oss.console.aliyun.com/overview">OSS控制台</a>查看效果。</p>
+</div>
+<div class="paragraph">
+<p>更多关于 OSS API 的操作，可以参考 <a href="https://help.aliyun.com/document_detail/32008.html">OSS官方SDK文档</a>。</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_与_spring_框架的_resource_结合"><a class="link" href="#_与_spring_框架的_resource_结合">与 Spring 框架的 Resource 结合</a></h3>
+<div class="paragraph">
+<p>Spring Cloud AliCloud OSS 整合了 Spring 框架的 Resource 规范，可以让用户很方便的引用 OSS 的资源。</p>
+</div>
+<div class="paragraph">
+<p>一个简单的使用 Resource 的例子如下。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+public class OssApplication {
+
+    @Value("oss://bucketName/fileName")
+    private Resource file;
+
+    @GetMapping("/file")
+    public String fileResource() {
+        try {
+            return "get file resource success. content: " + StreamUtils.copyToString(
+                file.getInputStream(), Charset.forName(CharEncoding.UTF_8));
+        } catch (Exception e) {
+            return "get resource fail: " + e.getMessage();
+        }
+    }
+
+    public static void main(String[] args) throws URISyntaxException {
+        SpringApplication.run(OssApplication.class, args);
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+以上示例运行的前提是，在 OSS 上需要有名为"bucketName"的Bucket，同时在该Bucket下，存在名为"fileName"的文件。
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_采用_sts_授权"><a class="link" href="#_采用_sts_授权">采用 STS 授权</a></h3>
+<div class="paragraph">
+<p>Spring Cloud AliCloud OSS 除了 AccessKey/SecretKey 的授权方式以外，还支持 STS 授权方式。 STS 是临时访问令牌的方式，一般用于授权第三方，临时访问自己的资源。</p>
+</div>
+<div class="paragraph">
+<p>作为第三方，也就是被授权者，只需要配置以下内容，就可以访问临时被授权的资源。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.cloud.alicloud.oss.authorization-mode=STS
+spring.cloud.alicloud.oss.endpoint=***.aliyuncs.com
+spring.cloud.alicloud.oss.sts.access-key=你被授权的AK
+spring.cloud.alicloud.oss.sts.secret-key=你被授权的SK
+spring.cloud.alicloud.oss.sts.security-token=你被授权的ST</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>其中 spring.cloud.alicloud.oss.authorization-mode 是枚举类型，此时填写 STS ，代表采用 STS 的方式授权。 endpoint可以到 OSS 的 <a href="https://help.aliyun.com/document_detail/31837.html?spm=a2c4g.11186623.2.9.7dc72841Z2hGqa#concept-zt4-cvy-5db">官方文档</a>中查看，根据所在的 region ，填写对应的 endpoint 即可。</p>
+</div>
+<div class="paragraph">
+<p>access-key、secret-key和security-token需要由授权方颁发，如果对 STS 不了解的话，可以参考 <a href="https://help.aliyun.com/document_detail/31867.html">STS官方文档</a>。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_更多客户端配置"><a class="link" href="#_更多客户端配置">更多客户端配置</a></h3>
+<div class="paragraph">
+<p>除了基本的配置项以外， Spring Cloud AliCloud OSS 还支持很多额外的配置，也是在 application.properties 文件中。</p>
+</div>
+<div class="paragraph">
+<p>以下是一些简单的示例。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.cloud.alicloud.oss.authorization-mode=STS
+spring.cloud.alicloud.oss.endpoint=***.aliyuncs.com
+spring.cloud.alicloud.oss.sts.access-key=你被授权的AK
+spring.cloud.alicloud.oss.sts.secret-key=你被授权的SK
+spring.cloud.alicloud.oss.sts.security-token=你被授权的ST
+
+spring.cloud.alicloud.oss.config.connection-timeout=3000
+spring.cloud.alicloud.oss.config.max-connections=1000</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>如果想了解更多的配置项，可以参考 <a href="https://help.aliyun.com/document_detail/32010.html?spm=a2c4g.11186623.6.703.50b25413nGsYHc">OSSClient配置项</a> 的末尾表格。</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+通常情况下，都需要将 <a href="https://help.aliyun.com/document_detail/32010.html?spm=a2c4g.11186623.6.703.50b25413nGsYHc">OSSClient配置项</a> 末尾表格中的参数名更换成"-"连接，且所有字母小写。例如 ConnectionTimeout，对应 connection-timeout。
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<link rel="stylesheet" href="js/highlight/styles/atom-one-dark-reasonable.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
+</body>
+</html>
