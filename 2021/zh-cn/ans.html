@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.8">
+<title>Spring Cloud AliCloud ANS</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+<script type="text/javascript">
+function addBlockSwitches() {
+	$('.primary').each(function() {
+		primary = $(this);
+		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
+		primary.children('.title').remove();
+	});
+	$('.secondary').each(function(idx, node) {
+		secondary = $(node);
+		primary = findPrimary(secondary);
+		switchItem = createSwitchItem(secondary, primary.children('.switch'));
+		switchItem.content.addClass('hidden');
+		findPrimary(secondary).append(switchItem.content);
+		secondary.remove();
+	});
+}
+
+function createBlockSwitch(primary) {
+	blockSwitch = $('<div class="switch"></div>');
+	primary.prepend(blockSwitch);
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	candidate = secondary.prev();
+	while (!candidate.is('.primary')) {
+		candidate = candidate.prev();
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	blockName = block.children('.title').text();
+	content = block.children('.content').first().append(block.next('.colist'));
+	item = $('<div class="switch--item">' + blockName + '</div>');
+	item.on('click', '', content, function(e) {
+		$(this).addClass('selected');
+		$(this).siblings().removeClass('selected');
+		e.data.siblings('.content').addClass('hidden');
+		e.data.removeClass('hidden');
+	});
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+$(addBlockSwitches);
+</script>
+
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_spring_cloud_alicloud_ans">Spring Cloud AliCloud ANS</a>
+<ul class="sectlevel2">
+<li><a href="#_如何引入_spring_cloud_alicloud_ans">如何引入 Spring Cloud AliCloud ANS</a></li>
+<li><a href="#_使用ans进行服务注册">使用ANS进行服务注册</a></li>
+<li><a href="#_启动注册中心">启动注册中心</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_spring_cloud_alicloud_ans"><a class="link" href="#_spring_cloud_alicloud_ans">Spring Cloud AliCloud ANS</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ANS（Application Naming Service） 是隶属于阿里云 EDAS 产品的组件， Spring Cloud AliCloud ANS 提供了 Spring Cloud 规范下商业版的服务注册与发现，可以让用户方便的在本地开发，同时也可以运行在云环境里。</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+目前 EDAS 已经支持直接部署 Nacos Discovery 应用
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_如何引入_spring_cloud_alicloud_ans"><a class="link" href="#_如何引入_spring_cloud_alicloud_ans">如何引入 Spring Cloud AliCloud ANS</a></h3>
+<div class="paragraph">
+<p>如果要在您的项目中引入 ANS，使用 group ID 为 <code>com.alibaba.cloud</code> 和 artifact ID 为 <code>spring-cloud-starter-alicloud-ans</code> 的 starter。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-alicloud-ans&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_使用ans进行服务注册"><a class="link" href="#_使用ans进行服务注册">使用ANS进行服务注册</a></h3>
+<div class="paragraph">
+<p>当客户端引入了 Spring Cloud AliCloud ANS Starter 以后，服务的元数据会被自动注册到注册中心，比如IP、端口、权重等信息。客户端会与服务端保持心跳，来证明自己可以正常提供服务。</p>
+</div>
+<div class="paragraph">
+<p>以下是一个简单的应用示例。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+@EnableDiscoveryClient
+@RestController
+public class ProviderApplication {
+
+    @RequestMapping("/")
+    public String home() {
+        return "Hello world";
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(ProviderApplication.class, args);
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>既然服务会被注册到注册中心，那么肯定需要配置注册中心的地址，在 application.properties 中，还需要配置上以下地址。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"># 应用名会被作为服务名称使用，因此会必选
+spring.application.name=ans-provider
+server.port=18081
+# 以下就是注册中心的IP和端口配置
+spring.cloud.alicloud.ans.server-list=127.0.0.1
+spring.cloud.alicloud.ans.server-port=8080</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+此时没有启动注册中心，启动应用会报错，因此在应用启动之前，应当首先启动注册中心。
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_启动注册中心"><a class="link" href="#_启动注册中心">启动注册中心</a></h3>
+<div class="paragraph">
+<p>ANS 使用的注册中心有两种，一种是完全免费的轻量版配置中心，主要用于开发和本地调试，一种是云上注册中心，ANS 依托于阿里云 EDAS 产品提供服务注册的功能。通常情况下，可以使用轻量版配置中心作为开发和测试环境，使用云上的 EDAS 作为灰度和生产环境。</p>
+</div>
+<div class="sect3">
+<h4 id="_启动轻量版配置中心"><a class="link" href="#_启动轻量版配置中心">启动轻量版配置中心</a></h4>
+<div class="paragraph">
+<p>轻量版配置中心的下载和启动方式可参考 <a href="https://help.aliyun.com/document_detail/44163.html?spm=a2c4g.11186623.6.677.5f206b82Z2mTCF">这里</a></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+只需要进行第1步（下载轻量配置中心）和第2步（启动轻量配置中心）即可，第3步（配置hosts）在与 ANS 结合使用时，不需要操作。
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>启动完轻量版配置中心以后，直接启动 ProviderApplication ，即可将服务注册到轻量版配置中心，由于轻量版配置中心的默认端口是8080，因此你可以打开 <a href="http://127.0.0.1:8080" class="bare">http://127.0.0.1:8080</a> ，点击左侧"服务列表"，查看注册上来的服务。</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_使用云上注册中心"><a class="link" href="#_使用云上注册中心">使用云上注册中心</a></h4>
+<div class="paragraph">
+<p>使用云上注册中心，可以省去服务端的维护工作，同时稳定性也会更有保障。当使用云上注册中心时，代码部分和使用轻量配置中心并没有区别，但是配置上会有一些区别。</p>
+</div>
+<div class="paragraph">
+<p>以下是一个简单的使用云上配置中心的配置示例。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"># 应用名会被作为服务名称使用，因此是必选
+spring.application.name=ans-provider
+# 端口配置自由配置即可
+server.port=18081
+# 以下就是注册中心的IP和端口配置，因为默认就是127.0.0.1和8080，因此以下两行配置也可以省略
+spring.cloud.alicloud.ans.server-mode=EDAS
+spring.cloud.alicloud.access-key=你的阿里云AK
+spring.cloud.alicloud.secret-key=你的阿里云SK
+spring.cloud.alicloud.edas.namespace=cn-xxxxx</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>server-mode 的默认值为 LOCAL ，如果要使用云上注册中心，则需要更改为 EDAS 。</p>
+</div>
+<div class="paragraph">
+<p>access-key 和 secret-key 则是阿里云账号的 AK/SK，需要首先注册阿里云账号，然后登陆 <a href="https://usercenter.console.aliyun.com/#/manage/ak">阿里云AK/SK管理页面</a> ，即可看到 AccessKey ID 和 Access Key Secret ，如果没有的话，需要点击"创建 AccessKey"按钮创建。</p>
+</div>
+<div class="paragraph">
+<p>namespace 是阿里云 EDAS 产品的概念，用于隔离不同的环境，比如测试环境和生产环境。要获取 namespace 需要 <a href="https://common-buy.aliyun.com/?spm=5176.11451019.0.0.6f5965c0Uq5tue&amp;commodityCode=edaspostpay#/buy">开通 EDAS 服务</a>，按量计费模式下开通是免费的，开通以后进入 <a href="https://edas.console.aliyun.com/#/namespaces?regionNo=cn-hangzhou">EDAS控制台</a>，即可看到对应的 namespace，比如 cn-hangzhou。</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+EDAS 提供应用托管服务，如果你将应用托管到 EDAS，那么 EDAS 将会自动为你填充所有配置。
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
+<script type="text/javascript" src="js/tocbot.js"></script>
+<link rel="stylesheet" href="js/highlight/styles/atom-one-dark-reasonable.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
+</body>
+</html>

@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.8">
+<title>Spring Cloud Alibaba Nacos Config</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+<script type="text/javascript">
+function addBlockSwitches() {
+	$('.primary').each(function() {
+		primary = $(this);
+		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
+		primary.children('.title').remove();
+	});
+	$('.secondary').each(function(idx, node) {
+		secondary = $(node);
+		primary = findPrimary(secondary);
+		switchItem = createSwitchItem(secondary, primary.children('.switch'));
+		switchItem.content.addClass('hidden');
+		findPrimary(secondary).append(switchItem.content);
+		secondary.remove();
+	});
+}
+
+function createBlockSwitch(primary) {
+	blockSwitch = $('<div class="switch"></div>');
+	primary.prepend(blockSwitch);
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	candidate = secondary.prev();
+	while (!candidate.is('.primary')) {
+		candidate = candidate.prev();
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	blockName = block.children('.title').text();
+	content = block.children('.content').first().append(block.next('.colist'));
+	item = $('<div class="switch--item">' + blockName + '</div>');
+	item.on('click', '', content, function(e) {
+		$(this).addClass('selected');
+		$(this).siblings().removeClass('selected');
+		e.data.siblings('.content').addClass('hidden');
+		e.data.removeClass('hidden');
+	});
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+$(addBlockSwitches);
+</script>
+
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_spring_cloud_alibaba_nacos_config">Spring Cloud Alibaba Nacos Config</a>
+<ul class="sectlevel2">
+<li><a href="#_如何引入_nacos_config_进行配置管理">如何引入 Nacos Config 进行配置管理</a></li>
+<li><a href="#_快速开始">快速开始</a></li>
+<li><a href="#_基于_dataid_为_yaml_的文件扩展名配置方式">基于 DataId 为 yaml 的文件扩展名配置方式</a></li>
+<li><a href="#_支持配置的动态更新">支持配置的动态更新</a></li>
+<li><a href="#_支持profile粒度的配置">支持profile粒度的配置</a></li>
+<li><a href="#_支持自定义_namespace_的配置">支持自定义 namespace 的配置</a></li>
+<li><a href="#_支持自定义_group_的配置">支持自定义 Group 的配置</a></li>
+<li><a href="#_支持自定义扩展的_data_id_配置">支持自定义扩展的 Data Id 配置</a></li>
+<li><a href="#_配置的优先级">配置的优先级</a></li>
+<li><a href="#_nacos_config_对外暴露的_endpoint">Nacos Config 对外暴露的 Endpoint</a></li>
+<li><a href="#_完全关闭_nacos_config_的自动化配置">完全关闭 Nacos Config 的自动化配置</a></li>
+<li><a href="#_关于_nacos_config_starter_更多的配置项信息">关于 Nacos Config Starter 更多的配置项信息</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_spring_cloud_alibaba_nacos_config"><a class="link" href="#_spring_cloud_alibaba_nacos_config">Spring Cloud Alibaba Nacos Config</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Nacos 是一个 Alibaba 开源的、易于构建云原生应用的动态服务发现、配置管理和服务管理平台。</p>
+</div>
+<div class="paragraph">
+<p>使用 Spring Cloud Alibaba Nacos Config，可基于 Spring Cloud 的编程模型快速接入 Nacos 配置管理功能。</p>
+</div>
+<div class="sect2">
+<h3 id="_如何引入_nacos_config_进行配置管理"><a class="link" href="#_如何引入_nacos_config_进行配置管理">如何引入 Nacos Config 进行配置管理</a></h3>
+<div class="paragraph">
+<p>如果要在您的项目中使用 Nacos 来实现配置管理，使用 group ID 为 <code>com.alibaba.cloud</code> 和 artifact ID 为 <code>spring-cloud-starter-alibaba-nacos-config</code> 的 starter。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-config&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_快速开始"><a class="link" href="#_快速开始">快速开始</a></h3>
+<div class="paragraph">
+<p>Nacos Config 使用 DataId 和 GROUP 确定一个配置。</p>
+</div>
+<div class="paragraph">
+<p>下图表示 DataId 使用 <code>myDataid</code>, GROUP 使用 <code>DEFAULT_GROUP</code>，配置格式为 Properties 的一个配置项:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://img.alicdn.com/tfs/TB1Yli3bUY1gK0jSZFMXXaWcVXa-2436-1138.png" alt="TB1Yli3bUY1gK0jSZFMXXaWcVXa 2436 1138">
+</div>
+<div class="title">Figure 1. Nacos Config Item</div>
+</div>
+<div class="sect3">
+<h4 id="_nacos_服务端初始化"><a class="link" href="#_nacos_服务端初始化">Nacos 服务端初始化</a></h4>
+<div class="paragraph">
+<p>具体启动方式参考 Spring Cloud Alibaba Nacos Discovery 小节的 "Nacos Server 启动" 章节。</p>
+</div>
+<div class="paragraph">
+<p>Nacos Server 启动完毕后，添加如何配置:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code>Data ID:    nacos-config.properties
+
+Group  :    DEFAULT_GROUP
+
+配置格式:    Properties
+
+配置内容：   user.name=nacos-config-properties
+            user.age=90</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+注意DataId是以 properties(默认的文件扩展名方式)为扩展名。
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_客户端使用方式"><a class="link" href="#_客户端使用方式">客户端使用方式</a></h4>
+<div class="paragraph">
+<p>如果要在您的项目中使用 Nacos 来实现应用的外部化配置，使用 group ID 为 <code>com.alibaba.cloud</code> 和 artifact ID 为 <code>spring-cloud-starter-alibaba-nacos-config</code> 的 starter。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-config&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>现在创建一个标准的 Spring Boot 应用。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+public class NacosConfigApplication {
+
+    public static void main(String[] args) {
+        ConfigurableApplicationContext applicationContext = SpringApplication.run(ConfigApplication.class, args);
+        String userName = applicationContext.getEnvironment().getProperty("user.name");
+        String userAge = applicationContext.getEnvironment().getProperty("user.age");
+        System.err.println("user name :"+userName+"; age: "+userAge);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>在运行此 NacosConfigApplication 之前， 必须使用 <code>bootstrap.properties</code> 配置文件来配置 Nacos Server 地址，例如：</p>
+</div>
+<div class="listingblock">
+<div class="title">bootstrap.properties</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"># DataId 默认使用 `spring.application.name` 配置跟文件扩展名结合(配置格式默认使用 properties), GROUP 不配置默认使用 DEFAULT_GROUP。因此该配置文件对应的 Nacos Config 配置的 DataId 为 nacos-config.properties, GROUP 为 DEFAULT_GROUP
+spring.application.name=nacos-config
+spring.cloud.nacos.config.server-addr=127.0.0.1:8848</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+注意当你使用域名的方式来访问 Nacos 时，<code>spring.cloud.nacos.config.server-addr</code> 配置的方式为 <code>域名:port</code>。
+例如 Nacos 的域名为abc.com.nacos，监听的端口为 80，则 <code>spring.cloud.nacos.config.server-addr=abc.com.nacos:80</code>。
+注意 80 端口不能省略。
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>启动这个 Example，可以看到如下输出结果：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code>2018-11-02 14:24:51.638  INFO 32700 --- [main] c.a.demo.provider.ConfigApplication    : Started ConfigApplication in 14.645 seconds (JVM running for 15.139)
+user name :nacos-config-properties; age: 90
+2018-11-02 14:24:51.688  INFO 32700 --- [-127.0.0.1:8848] s.c.a.AnnotationConfigApplicationContext : Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@a8c5e74: startup date [Fri Nov 02 14:24:51 CST 2018]; root of context hierarchy</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_基于_dataid_为_yaml_的文件扩展名配置方式"><a class="link" href="#_基于_dataid_为_yaml_的文件扩展名配置方式">基于 DataId 为 yaml 的文件扩展名配置方式</a></h3>
+<div class="paragraph">
+<p>Nacos Config 除了支持 properties 格式以外，也支持 yaml 格式。这个时候只需要完成以下两步：</p>
+</div>
+<div class="paragraph">
+<p>1、在应用的 bootstrap.properties 配置文件中显示的声明 DataId 文件扩展名。如下所示</p>
+</div>
+<div class="listingblock">
+<div class="title">bootstrap.properties</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring.cloud.nacos.config.file-extension=yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>2、在 Nacos 的控制台新增一个DataId为yaml为扩展名的配置，如下所示：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code>Data ID:        nacos-config.yaml
+
+Group  :        DEFAULT_GROUP
+
+配置格式:        YAML
+
+配置内容:        user.name: nacos-config-yaml
+                user.age: 68</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>这两步完成后，重启测试程序，可以看到如下输出结果。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code>2018-11-02 14:59:00.484  INFO 32928 --- [main] c.a.demo.provider.ConfigApplication:Started ConfigApplication in 14.183 seconds (JVM running for 14.671)
+user name :nacos-config-yaml; age: 68
+2018-11-02 14:59:00.529  INFO 32928 --- [-127.0.0.1:8848] s.c.a.AnnotationConfigApplicationContext : Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@265a478e: startup date [Fri Nov 02 14:59:00 CST 2018]; root of context hierarchy</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_支持配置的动态更新"><a class="link" href="#_支持配置的动态更新">支持配置的动态更新</a></h3>
+<div class="paragraph">
+<p>Nacos Config 默认支持配置的动态更新，启动 Spring Boot 应用测试的代码如下：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+public class ConfigApplication {
+
+    public static void main(String[] args) {
+        ConfigurableApplicationContext applicationContext = SpringApplication.run(ConfigApplication.class, args);
+        while(true) {
+            //当动态配置刷新时，会更新到 Enviroment中，因此这里每隔一秒中从Enviroment中获取配置
+            String userName = applicationContext.getEnvironment().getProperty("user.name");
+            String userAge = applicationContext.getEnvironment().getProperty("user.age");
+            System.err.println("user name :" + userName + "; age: " + userAge);
+            TimeUnit.SECONDS.sleep(1);
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>如下所示，当变更user.name时，应用程序中能够获取到最新的值：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code>user name :nacos-config-yaml; age: 68
+user name :nacos-config-yaml; age: 68
+user name :nacos-config-yaml; age: 68
+2018-11-02 15:04:25.069  INFO 32957 --- [-127.0.0.1:8848] o.s.boot.SpringApplication               : Started application in 0.144 seconds (JVM running for 71.752)
+2018-11-02 15:04:25.070  INFO 32957 --- [-127.0.0.1:8848] s.c.a.AnnotationConfigApplicationContext : Closing org.springframework.context.annotation.AnnotationConfigApplicationContext@10c89124: startup date [Fri Nov 02 15:04:25 CST 2018]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@6520af7
+2018-11-02 15:04:25.071  INFO 32957 --- [-127.0.0.1:8848] s.c.a.AnnotationConfigApplicationContext : Closing org.springframework.context.annotation.AnnotationConfigApplicationContext@6520af7: startup date [Fri Nov 02 15:04:24 CST 2018]; root of context hierarchy
+//从 Enviroment 中 读取到更改后的值
+user name :nacos-config-yaml-update; age: 68
+user name :nacos-config-yaml-update; age: 68</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+你可以通过配置 <code>spring.cloud.nacos.config.refresh.enabled=false</code> 来关闭动态刷新
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_支持profile粒度的配置"><a class="link" href="#_支持profile粒度的配置">支持profile粒度的配置</a></h3>
+<div class="paragraph">
+<p>Nacos Config 在加载配置的时候，不仅仅加载了以 DataId 为 <code>${spring.application.name}.${file-extension:properties}</code>   为前缀的基础配置，还加载了DataId为 <code>${spring.application.name}-${profile}.${file-extension:properties}</code> 的基础配置。在日常开发中如果遇到多套环境下的不同配置，可以通过Spring 提供的 <code>${spring.profiles.active}</code> 这个配置项来配置。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.profiles.active=develop</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+${spring.profiles.active} 当通过配置文件来指定时必须放在 bootstrap.properties 文件中。
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Nacos 上新增一个DataId为：nacos-config-develop.yaml的基础配置，如下所示：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code>Data ID:        nacos-config-develop.yaml
+
+Group  :        DEFAULT_GROUP
+
+配置格式:        YAML
+
+配置内容:        current.env: develop-env</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>启动 Spring Boot 应用测试的代码如下：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+public class ConfigApplication {
+
+    public static void main(String[] args) {
+        ConfigurableApplicationContext applicationContext = SpringApplication.run(ConfigApplication.class, args);
+        while(true) {
+            String userName = applicationContext.getEnvironment().getProperty("user.name");
+            String userAge = applicationContext.getEnvironment().getProperty("user.age");
+            //获取当前部署的环境
+            String currentEnv = applicationContext.getEnvironment().getProperty("current.env");
+            System.err.println("in "+currentEnv+" enviroment; "+"user name :" + userName + "; age: " + userAge);
+            TimeUnit.SECONDS.sleep(1);
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>启动后，可见控制台的输出结果：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code>in develop-env enviroment; user name :nacos-config-yaml-update; age: 68
+2018-11-02 15:34:25.013  INFO 33014 --- [ Thread-11] ConfigServletWebServerApplicationContext : Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@6f1c29b7: startup date [Fri Nov 02 15:33:57 CST 2018]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@63355449</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>如果需要切换到生产环境，只需要更改 <code>${spring.profiles.active}</code> 参数配置即可。如下所示：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.profiles.active=product</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>同时生产环境上 Nacos 需要添加对应 DataId 的基础配置。例如，在生成环境下的 Naocs 添加了DataId为：nacos-config-product.yaml的配置：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code>Data ID:        nacos-config-product.yaml
+
+Group  :        DEFAULT_GROUP
+
+配置格式:        YAML
+
+配置内容:        current.env: product-env</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>启动测试程序，输出结果如下：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code>in product-env enviroment; user name :nacos-config-yaml-update; age: 68
+2018-11-02 15:42:14.628  INFO 33024 --- [Thread-11] ConfigServletWebServerApplicationContext : Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@6aa8e115: startup date [Fri Nov 02 15:42:03 CST 2018]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@19bb07ed</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+此案例中我们通过 <code>spring.profiles.active=&lt;profilename&gt;</code> 的方式写死在配置文件中，而在真正的项目实施过程中这个变量的值是需要不同环境而有不同的值。这个时候通常的做法是通过 <code>-Dspring.profiles.active=&lt;profile&gt;</code> 参数指定其配置来达到环境间灵活的切换。
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_支持自定义_namespace_的配置"><a class="link" href="#_支持自定义_namespace_的配置">支持自定义 namespace 的配置</a></h3>
+<div class="paragraph">
+<p>Nacos 内部有 <a href="https://nacos.io/zh-cn/docs/concepts.html">Namespace 的概念</a>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+用于进行租户粒度的配置隔离。不同的命名空间下，可以存在相同的 Group 或 Data ID 的配置。Namespace 的常用场景之一是不同环境的配置的区分隔离，例如开发测试环境和生产环境的资源（如配置、服务）隔离等。
+</blockquote>
+</div>
+<div class="paragraph">
+<p>在没有明确指定 <code>${spring.cloud.nacos.config.namespace}</code> 配置的情况下， 默认使用的是 Nacos 上 Public 这个namespae。如果需要使用自定义的命名空间，可以通过以下配置来实现：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.cloud.nacos.config.namespace=b3404bc0-d7dc-4855-b519-570ed34b62d7</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+该配置必须放在 bootstrap.properties 文件中。此外 <code>spring.cloud.nacos.config.namespace</code> 的值是 namespace 对应的 id，id 值可以在 Nacos 的控制台获取。并且在添加配置时注意不要选择其他的 namespae，否则将会导致读取不到正确的配置。
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_支持自定义_group_的配置"><a class="link" href="#_支持自定义_group_的配置">支持自定义 Group 的配置</a></h3>
+<div class="paragraph">
+<p>在没有明确指定 <code>${spring.cloud.nacos.config.group}</code> 配置的情况下， 默认使用的是 DEFAULT_GROUP 。如果需要自定义自己的 Group，可以通过以下配置来实现：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.cloud.nacos.config.group=DEVELOP_GROUP</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+该配置必须放在 bootstrap.properties 文件中。并且在添加配置时 Group 的值一定要和 <code>spring.cloud.nacos.config.group</code> 的配置值一致。
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_支持自定义扩展的_data_id_配置"><a class="link" href="#_支持自定义扩展的_data_id_配置">支持自定义扩展的 Data Id 配置</a></h3>
+<div class="paragraph">
+<p>Nacos Config 从 0.2.1 版本后，可支持自定义 Data Id 的配置。关于这部分详细的设计可参考 <a href="https://github.com/spring-cloud-incubator/spring-cloud-alibaba/issues/141">这里</a>。
+一个完整的配置案例如下所示：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.application.name=opensource-service-provider
+spring.cloud.nacos.config.server-addr=127.0.0.1:8848
+
+# config external configuration
+# 1、Data Id 在默认的组 DEFAULT_GROUP,不支持配置的动态刷新
+spring.cloud.nacos.config.ext-config[0].data-id=ext-config-common01.properties
+
+# 2、Data Id 不在默认的组，不支持动态刷新
+spring.cloud.nacos.config.ext-config[1].data-id=ext-config-common02.properties
+spring.cloud.nacos.config.ext-config[1].group=GLOBALE_GROUP
+
+# 3、Data Id 既不在默认的组，也支持动态刷新
+spring.cloud.nacos.config.ext-config[2].data-id=ext-config-common03.properties
+spring.cloud.nacos.config.ext-config[2].group=REFRESH_GROUP
+spring.cloud.nacos.config.ext-config[2].refresh=true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>可以看到:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>通过 <code>spring.cloud.nacos.config.ext-config[n].data-id</code> 的配置方式来支持多个 Data Id 的配置。</p>
+</li>
+<li>
+<p>通过 <code>spring.cloud.nacos.config.ext-config[n].group</code> 的配置方式自定义 Data Id 所在的组，不明确配置的话，默认是 DEFAULT_GROUP。</p>
+</li>
+<li>
+<p>通过 <code>spring.cloud.nacos.config.ext-config[n].refresh</code> 的配置方式来控制该 Data Id 在配置变更时，是否支持应用中可动态刷新，
+感知到最新的配置值。默认是不支持的。</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+多个 Data Id 同时配置时，他的优先级关系是 <code>spring.cloud.nacos.config.ext-config[n].data-id</code> 其中 n 的值越大，优先级越高。
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>spring.cloud.nacos.config.ext-config[n].data-id</code> 的值必须带文件扩展名，文件扩展名既可支持 properties，又可以支持 yaml/yml。
+此时 <code>spring.cloud.nacos.config.file-extension</code> 的配置对自定义扩展配置的 Data Id 文件扩展名没有影响。
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>通过自定义扩展的 Data Id 配置，既可以解决多个应用间配置共享的问题，又可以支持一个应用有多个配置文件。</p>
+</div>
+<div class="paragraph">
+<p>为了更加清晰的在多个应用间配置共享的 Data Id ，你可以通过以下的方式来配置：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.cloud.nacos.config.shared-dataids=bootstrap-common.properties,all-common.properties
+spring.cloud.nacos.config.refreshable-dataids=bootstrap-common.properties</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>可以看到：</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>通过 <code>spring.cloud.nacos.config.shared-dataids</code> 来支持多个共享 Data Id 的配置，多个之间用逗号隔开。</p>
+</li>
+<li>
+<p>通过 <code>spring.cloud.nacos.config.refreshable-dataids</code> 来支持哪些共享配置的 Data Id 在配置变化时，应用中是否可动态刷新，
+感知到最新的配置值，多个 Data Id 之间用逗号隔开。如果没有明确配置，默认情况下所有共享配置的 Data Id 都不支持动态刷新。</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+通过 <code>spring.cloud.nacos.config.shared-dataids</code> 来支持多个共享配置的 Data Id 时，
+多个共享配置间的一个优先级的关系我们约定：按照配置出现的先后顺序，即后面的优先级要高于前面。
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+通过 <code>spring.cloud.nacos.config.shared-dataids</code> 来配置时，Data Id 必须带文件扩展名，文件扩展名既可支持 properties，也可以支持 yaml/yml。
+此时 <code>spring.cloud.nacos.config.file-extension</code> 的配置对自定义扩展配置的 Data Id 文件扩展名没有影响。
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>spring.cloud.nacos.config.refreshable-dataids</code> 给出哪些需要支持动态刷新时，Data Id 的值也必须明确给出文件扩展名。
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_配置的优先级"><a class="link" href="#_配置的优先级">配置的优先级</a></h3>
+<div class="paragraph">
+<p>Nacos Config 目前提供了三种配置能力从 Nacos 拉取相关的配置</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A: 通过 <code>spring.cloud.nacos.config.shared-dataids</code> 支持多个共享 Data Id 的配置</p>
+</li>
+<li>
+<p>B: 通过 <code>spring.cloud.nacos.config.ext-config[n].data-id</code> 的方式支持多个扩展 Data Id 的配置</p>
+</li>
+<li>
+<p>C: 通过内部相关规则(应用名、应用名+ Profile )自动生成相关的 Data Id 配置</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>当三种方式共同使用时，他们的一个优先级关系是:A &lt; B &lt; C</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_nacos_config_对外暴露的_endpoint"><a class="link" href="#_nacos_config_对外暴露的_endpoint">Nacos Config 对外暴露的 Endpoint</a></h3>
+<div class="paragraph">
+<p>Nacos Config 内部提供了一个 Endpoint, 对应的 endpoint id 为 <code>nacos-config</code>。</p>
+</div>
+<div class="paragraph">
+<p>Endpoint 暴露的 json 中包含了三种属性:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Sources: 当前应用配置的数据信息</p>
+</li>
+<li>
+<p>RefreshHistory: 配置刷新的历史记录</p>
+</li>
+<li>
+<p>NacosConfigProperties: 当前应用 Nacos 的基础配置信息</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>这是 Endpoint 暴露的 json 示例:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+	"NacosConfigProperties": {
+		"serverAddr": "127.0.0.1:8848",
+		"encode": null,
+		"group": "DEFAULT_GROUP",
+		"prefix": null,
+		"fileExtension": "properties",
+		"timeout": 3000,
+		"endpoint": null,
+		"namespace": null,
+		"accessKey": null,
+		"secretKey": null,
+		"contextPath": null,
+		"clusterName": null,
+		"name": null,
+		"sharedDataids": "base-common.properties,common.properties",
+		"refreshableDataids": "common.properties",
+		"extConfig": null
+	},
+	"RefreshHistory": [{
+		"timestamp": "2019-07-29 11:20:04",
+		"dataId": "nacos-config-example.properties",
+		"md5": "7d5d7f1051ff6571e2ec9f90887d9d91"
+	}],
+	"Sources": [{
+		"lastSynced": "2019-07-29 11:19:04",
+		"dataId": "common.properties"
+	}, {
+		"lastSynced": "2019-07-29 11:19:04",
+		"dataId": "base-common.properties"
+	}, {
+		"lastSynced": "2019-07-29 11:19:04",
+		"dataId": "nacos-config-example.properties"
+	}]
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_完全关闭_nacos_config_的自动化配置"><a class="link" href="#_完全关闭_nacos_config_的自动化配置">完全关闭 Nacos Config 的自动化配置</a></h3>
+<div class="paragraph">
+<p>通过设置 spring.cloud.nacos.config.enabled = false 来完全关闭 Spring Cloud Nacos Config</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_关于_nacos_config_starter_更多的配置项信息"><a class="link" href="#_关于_nacos_config_starter_更多的配置项信息">关于 Nacos Config Starter 更多的配置项信息</a></h3>
+<div class="paragraph">
+<p>更多关于 Nacos Config Starter 的配置项如下所示:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">配置项</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">默认值</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">说明</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">服务端地址</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.config.server-addr</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Nacos Server 启动监听的ip地址和端口</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">配置对应的 DataId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.config.name</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">先取 prefix，再去 name，最后取 spring.application.name</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">配置对应的 DataId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.config.prefix</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">先取 prefix，再去 name，最后取 spring.application.name</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">配置内容编码</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.config.encode</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">读取的配置内容对应的编码</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GROUP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.config.group</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>DEFAULT_GROUP</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">配置对应的组</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">文件扩展名</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.config.fileExtension</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>properties</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">配置项对应的文件扩展名，目前支持 properties 和 yaml(yml)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">获取配置超时时间</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.config.timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>3000</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">客户端获取配置的超时时间(毫秒)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">接入点</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.config.endpoint</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">地域的某个服务的入口域名，通过此域名可以动态地拿到服务端地址</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">命名空间</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.config.namespace</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">常用场景之一是不同环境的配置的区分隔离，例如开发测试环境和生产环境的资源（如配置、服务）隔离等</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AccessKey</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.config.accessKey</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">当要上阿里云时，阿里云上面的一个云账号名</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SecretKey</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.config.secretKey</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">当要上阿里云时，阿里云上面的一个云账号密码</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Nacos Server 对应的 context path</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.config.contextPath</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Nacos Server 对外暴露的 context path</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">集群</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.config.clusterName</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">配置成Nacos集群名称</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">共享配置</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.config.sharedDataids</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">共享配置的 DataId, "," 分割</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">共享配置动态刷新</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.config.refreshableDataids</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">共享配置中需要动态刷新的 DataId, "," 分割</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">自定义 Data Id 配置</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.config.extConfig</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">属性是个集合，内部由 <code>Config</code> POJO 组成。<code>Config</code> 有 3 个属性，分别是 <code>dataId</code>, <code>group</code> 以及 <code>refresh</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
+<script type="text/javascript" src="js/tocbot.js"></script>
+<link rel="stylesheet" href="js/highlight/styles/atom-one-dark-reasonable.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
+</body>
+</html>

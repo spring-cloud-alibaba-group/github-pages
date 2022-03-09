@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.8">
+<title>Spring Cloud Alibaba Cloud ANS</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+<script type="text/javascript">
+function addBlockSwitches() {
+	$('.primary').each(function() {
+		primary = $(this);
+		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
+		primary.children('.title').remove();
+	});
+	$('.secondary').each(function(idx, node) {
+		secondary = $(node);
+		primary = findPrimary(secondary);
+		switchItem = createSwitchItem(secondary, primary.children('.switch'));
+		switchItem.content.addClass('hidden');
+		findPrimary(secondary).append(switchItem.content);
+		secondary.remove();
+	});
+}
+
+function createBlockSwitch(primary) {
+	blockSwitch = $('<div class="switch"></div>');
+	primary.prepend(blockSwitch);
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	candidate = secondary.prev();
+	while (!candidate.is('.primary')) {
+		candidate = candidate.prev();
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	blockName = block.children('.title').text();
+	content = block.children('.content').first().append(block.next('.colist'));
+	item = $('<div class="switch--item">' + blockName + '</div>');
+	item.on('click', '', content, function(e) {
+		$(this).addClass('selected');
+		$(this).siblings().removeClass('selected');
+		e.data.siblings('.content').addClass('hidden');
+		e.data.removeClass('hidden');
+	});
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+$(addBlockSwitches);
+</script>
+
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_spring_cloud_alibaba_cloud_ans">Spring Cloud Alibaba Cloud ANS</a>
+<ul class="sectlevel2">
+<li><a href="#_how_to_introduce_spring_cloud_alibaba_cloud_ans">How to Introduce Spring Cloud Alibaba Cloud ANS</a></li>
+<li><a href="#_use_ans_to_register_service">Use ANS to Register Service</a></li>
+<li><a href="#_start_registration_center">Start Registration Center</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_spring_cloud_alibaba_cloud_ans"><a class="link" href="#_spring_cloud_alibaba_cloud_ans">Spring Cloud Alibaba Cloud ANS</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ANS(Application Naming Service) is a component of EDAS.  Spring Cloud Alibaba Cloud ANS provides the commercial version of service registration and discovery in conformity with the Spring Cloud specifications, so that you can develop your applications locally and run them on the cloud.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+EDAS currently supports direct deployment of Nacos Discovery applications
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_how_to_introduce_spring_cloud_alibaba_cloud_ans"><a class="link" href="#_how_to_introduce_spring_cloud_alibaba_cloud_ans">How to Introduce Spring Cloud Alibaba Cloud ANS</a></h3>
+<div class="paragraph">
+<p>If you want to use ANS in your project, please use the starter with the group ID as <code>com.alibaba.cloud</code> and the artifact ID as <code>spring-cloud-starter-alicloud-ans</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-alicloud-ans&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_use_ans_to_register_service"><a class="link" href="#_use_ans_to_register_service">Use ANS to Register Service</a></h3>
+<div class="paragraph">
+<p>When Spring Cloud AliCloud ANS Starter is introduced on the client, the metadata of the service such as IP, port number and weright will be registered to the registration center automatically. The client will maintain heartbeat with the server to prove that it is capable of providing service properly.</p>
+</div>
+<div class="paragraph">
+<p>The following is a simple illustration.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+@EnableDiscoveryClient
+@RestController
+public class ProviderApplication {
+
+    @RequestMapping("/")
+    public String home() {
+        return "Hello world";
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(ProviderApplication.class, args);
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As the service will registered to the registration center, we will need to configure the address of the registration center. We also need to add the following address in application.properties.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"># The application name will be used as the service name, therefore it is mandatory.
+spring.application.name=ans-provider
+server.port=18081
+# The following is the IP and port number of the registration center.
+spring.cloud.alicloud.ans.server-list=127.0.0.1
+spring.cloud.alicloud.ans.server-port=8080</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+By now the registration center is not started yet, so you will get an error message if your application is started. Therefore, start the registration center before you start your application.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_start_registration_center"><a class="link" href="#_start_registration_center">Start Registration Center</a></h3>
+<div class="paragraph">
+<p>ANS uses two types of registration centers. One is the free lightweight configuration center and the other is the registration center on cloud, which is provided through EDAS. Generally, you can use the lightweight version for application development and local testing, and use EDAS for canary deployment or production.</p>
+</div>
+<div class="sect3">
+<h4 id="_start_lightweight_configuration_center"><a class="link" href="#_start_lightweight_configuration_center">Start Lightweight Configuration Center</a></h4>
+<div class="paragraph">
+<p>Refer to the <a href="https://help.aliyun.com/document_detail/44163.html">Configure Lightweight Configuration Center</a> for details about how to download and install lightweight configuration center.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You only need to perform step 1(Download lightweight configuration center) and step 2(Start lightweight configuration center). Step 3(Configure hosts) is not required if you use ANS at the same time.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>After you start the lightweight configuration center, start ProviderApplication directly, and you will be able to register your service to the configuration center. The default port of the lightweight configuration center is 8080, therefore you can open <a href="http://127.0.0.1:8080" class="bare">http://127.0.0.1:8080</a>, click “Services” on the left and see the registered service.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_user_registration_center_on_the_cloud"><a class="link" href="#_user_registration_center_on_the_cloud">User Registration Center on the Cloud</a></h4>
+<div class="paragraph">
+<p>Using the registration center on the cloud saves you from the tedious work of server maintenance while at the same time provides a better stability. There is no difference at the code level between using the registration center on cloud and lightweight configuration center, but there are some differences in configurations.</p>
+</div>
+<div class="paragraph">
+<p>The following is a simple sample of using the registration center on the cloud.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"># The application name will be used the service name, and is therefore mandatory.
+spring.application.name=ans-provider
+# Configure your own port number
+server.port=18081
+# The following is the IP and port number of the configuration center. The default value is 127.0.0.1 and 8080, so the following lines can be omitted.
+spring.cloud.alicloud.ans.server-mode=EDAS
+spring.cloud.alicloud.access-key=Your Alibaba Cloud AK
+spring.cloud.alicloud.secret-key=Your Alibaba Cloud SK
+spring.cloud.alicloud.edas.namespace=cn-xxxxx</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The default value of server-mode is LOCAL. If you want to use the registration center on cloud, you need to change it to EDAS.</p>
+</div>
+<div class="paragraph">
+<p>Access-key and secret-key are the AK/SK of your Alibaba Cloud account. Register an Alibaba Cloud account first and log on to the Cloud Console <a href="https://usercenter.console.aliyun.com/#/manage/ak">Alibaba Cloud AK/SK</a>  to copy your AccessKey ID and Access Key Secret. If you haven’t created one, click the “Create AccessKey” button.</p>
+</div>
+<div class="paragraph">
+<p>Namespace is a concept in EDAS, which is used to isolate environments, such as testing environment and production environment. To find your namespace, click to <a href="https://common-buy.aliyun.com/?spm=5176.11451019.0.0.6f5965c0Uq5tue&amp;commodityCode=edaspostpay#/buy">Sign up for EDAS</a> first. You will not be charged under the pay-as-you-go mode. Then log on to the <a href="https://edas.console.aliyun.com/#/namespaces?regionNo=cn-hangzhou">EDAS Console</a> and you will be able to see your namespace, for example cn-hangzhou.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+EDAS provides application hosting service and will fill in all configurations automatically for the hosted applications.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
+<script type="text/javascript" src="js/toc.js"></script>
+<link rel="stylesheet" href="js/highlight/styles/atom-one-dark-reasonable.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
+</body>
+</html>
