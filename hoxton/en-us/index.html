@@ -2,102 +2,450 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 1.5.8">
+<meta name="generator" content="Asciidoctor 2.0.16">
 <meta name="author" content="Jim Fang, Jing Xiao, Mercy Ma, Xiaolong Zuo, Bingting Peng, Yuxin Wang">
 <title>Spring Cloud Alibaba Reference Documentation</title>
-<link rel="stylesheet" href="css/spring.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
-.hidden {
-	display: none;
-}
-
-.switch {
-	border-width: 1px 1px 0 1px;
-	border-style: solid;
-	border-color: #7a2518;
-	display: inline-block;
-}
-
-.switch--item {
-	padding: 10px;
-	background-color: #ffffff;
-	color: #7a2518;
-	display: inline-block;
-	cursor: pointer;
-}
-
-.switch--item:not(:first-child) {
-	border-width: 0 0 0 1px;
-	border-style: solid;
-	border-color: #7a2518;
-}
-
-.switch--item.selected {
-	background-color: #7a2519;
-	color: #ffffff;
-}
+/*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
+/* Uncomment the following line when using as a custom stylesheet */
+/* @import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700"; */
+html{font-family:sans-serif;-webkit-text-size-adjust:100%}
+a{background:none}
+a:focus{outline:thin dotted}
+a:active,a:hover{outline:0}
+h1{font-size:2em;margin:.67em 0}
+b,strong{font-weight:bold}
+abbr{font-size:.9em}
+abbr[title]{cursor:help;border-bottom:1px dotted #dddddf;text-decoration:none}
+dfn{font-style:italic}
+hr{height:0}
+mark{background:#ff0;color:#000}
+code,kbd,pre,samp{font-family:monospace;font-size:1em}
+pre{white-space:pre-wrap}
+q{quotes:"\201C" "\201D" "\2018" "\2019"}
+small{font-size:80%}
+sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
+sup{top:-.5em}
+sub{bottom:-.25em}
+img{border:0}
+svg:not(:root){overflow:hidden}
+figure{margin:0}
+audio,video{display:inline-block}
+audio:not([controls]){display:none;height:0}
+fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}
+legend{border:0;padding:0}
+button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}
+button,input{line-height:normal}
+button,select{text-transform:none}
+button,html input[type=button],input[type=reset],input[type=submit]{-webkit-appearance:button;cursor:pointer}
+button[disabled],html input[disabled]{cursor:default}
+input[type=checkbox],input[type=radio]{padding:0}
+button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
+textarea{overflow:auto;vertical-align:top}
+table{border-collapse:collapse;border-spacing:0}
+*,::before,::after{box-sizing:border-box}
+html,body{font-size:100%}
+body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;line-height:1;position:relative;cursor:auto;-moz-tab-size:4;-o-tab-size:4;tab-size:4;word-wrap:anywhere;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}
+a:hover{cursor:pointer}
+img,object,embed{max-width:100%;height:auto}
+object,embed{height:100%}
+img{-ms-interpolation-mode:bicubic}
+.left{float:left!important}
+.right{float:right!important}
+.text-left{text-align:left!important}
+.text-right{text-align:right!important}
+.text-center{text-align:center!important}
+.text-justify{text-align:justify!important}
+.hide{display:none}
+img,object,svg{display:inline-block;vertical-align:middle}
+textarea{height:auto;min-height:50px}
+select{width:100%}
+.subheader,.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{line-height:1.45;color:#7a2518;font-weight:400;margin-top:0;margin-bottom:.25em}
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6,pre,form,p,blockquote,th,td{margin:0;padding:0}
+a{color:#2156a5;text-decoration:underline;line-height:inherit}
+a:hover,a:focus{color:#1d4b8f}
+a img{border:0}
+p{line-height:1.6;margin-bottom:1.25em;text-rendering:optimizeLegibility}
+p aside{font-size:.875em;line-height:1.35;font-style:italic}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{font-family:"Open Sans","DejaVu Sans",sans-serif;font-weight:300;font-style:normal;color:#ba3925;text-rendering:optimizeLegibility;margin-top:1em;margin-bottom:.5em;line-height:1.0125em}
+h1 small,h2 small,h3 small,#toctitle small,.sidebarblock>.content>.title small,h4 small,h5 small,h6 small{font-size:60%;color:#e99b8f;line-height:0}
+h1{font-size:2.125em}
+h2{font-size:1.6875em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.375em}
+h4,h5{font-size:1.125em}
+h6{font-size:1em}
+hr{border:solid #dddddf;border-width:1px 0 0;clear:both;margin:1.25em 0 1.1875em}
+em,i{font-style:italic;line-height:inherit}
+strong,b{font-weight:bold;line-height:inherit}
+small{font-size:60%;line-height:inherit}
+code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;color:rgba(0,0,0,.9)}
+ul,ol,dl{line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
+ul,ol{margin-left:1.5em}
+ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0}
+ul.square li ul,ul.circle li ul,ul.disc li ul{list-style:inherit}
+ul.square{list-style-type:square}
+ul.circle{list-style-type:circle}
+ul.disc{list-style-type:disc}
+ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
+dl dt{margin-bottom:.3125em;font-weight:bold}
+dl dd{margin-bottom:1.25em}
+blockquote{margin:0 0 1.25em;padding:.5625em 1.25em 0 1.1875em;border-left:1px solid #ddd}
+blockquote,blockquote p{line-height:1.6;color:rgba(0,0,0,.85)}
+@media screen and (min-width:768px){h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2}
+h1{font-size:2.75em}
+h2{font-size:2.3125em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.6875em}
+h4{font-size:1.4375em}}
+table{background:#fff;margin-bottom:1.25em;border:1px solid #dedede;word-wrap:normal}
+table thead,table tfoot{background:#f7f8f7}
+table thead tr th,table thead tr td,table tfoot tr th,table tfoot tr td{padding:.5em .625em .625em;font-size:inherit;color:rgba(0,0,0,.8);text-align:left}
+table tr th,table tr td{padding:.5625em .625em;font-size:inherit;color:rgba(0,0,0,.8)}
+table tr.even,table tr.alt{background:#f8f8f7}
+table thead tr th,table tfoot tr th,table tbody tr td,table tr td,table tfoot tr td{line-height:1.6}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2;word-spacing:-.05em}
+h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title strong,h4 strong,h5 strong,h6 strong{font-weight:400}
+.center{margin-left:auto;margin-right:auto}
+.stretch{width:100%}
+.clearfix::before,.clearfix::after,.float-group::before,.float-group::after{content:" ";display:table}
+.clearfix::after,.float-group::after{clear:both}
+:not(pre).nobreak{word-wrap:normal}
+:not(pre).nowrap{white-space:nowrap}
+:not(pre).pre-wrap{white-space:pre-wrap}
+:not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed}
+pre{color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;line-height:1.45;text-rendering:optimizeSpeed}
+pre code,pre pre{color:inherit;font-size:inherit;line-height:inherit}
+pre>code{display:block}
+pre.nowrap,pre.nowrap pre{white-space:pre;word-wrap:normal}
+em em{font-style:normal}
+strong strong{font-weight:400}
+.keyseq{color:rgba(51,51,51,.8)}
+kbd{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;display:inline-block;color:rgba(0,0,0,.8);font-size:.65em;line-height:1.45;background:#f7f7f7;border:1px solid #ccc;border-radius:3px;box-shadow:0 1px 0 rgba(0,0,0,.2),inset 0 0 0 .1em #fff;margin:0 .15em;padding:.2em .5em;vertical-align:middle;position:relative;top:-.1em;white-space:nowrap}
+.keyseq kbd:first-child{margin-left:0}
+.keyseq kbd:last-child{margin-right:0}
+.menuseq,.menuref{color:#000}
+.menuseq b:not(.caret),.menuref{font-weight:inherit}
+.menuseq{word-spacing:-.02em}
+.menuseq b.caret{font-size:1.25em;line-height:.8}
+.menuseq i.caret{font-weight:bold;text-align:center;width:.45em}
+b.button::before,b.button::after{position:relative;top:-1px;font-weight:400}
+b.button::before{content:"[";padding:0 3px 0 2px}
+b.button::after{content:"]";padding:0 2px 0 3px}
+p a>code:hover{color:rgba(0,0,0,.9)}
+#header,#content,#footnotes,#footer{width:100%;margin:0 auto;max-width:62.5em;*zoom:1;position:relative;padding-left:.9375em;padding-right:.9375em}
+#header::before,#header::after,#content::before,#content::after,#footnotes::before,#footnotes::after,#footer::before,#footer::after{content:" ";display:table}
+#header::after,#content::after,#footnotes::after,#footer::after{clear:both}
+#content{margin-top:1.25em}
+#content::before{content:none}
+#header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
+#header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
+#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
+#header .details span:first-child{margin-left:-.125em}
+#header .details span.email a{color:rgba(0,0,0,.85)}
+#header .details br{display:none}
+#header .details br+span::before{content:"\00a0\2013\00a0"}
+#header .details br+span.author::before{content:"\00a0\22c5\00a0";color:rgba(0,0,0,.85)}
+#header .details br+span#revremark::before{content:"\00a0|\00a0"}
+#header #revnumber{text-transform:capitalize}
+#header #revnumber::after{content:"\00a0"}
+#content>h1:first-child:not([class]){color:rgba(0,0,0,.85);border-bottom:1px solid #dddddf;padding-bottom:8px;margin-top:0;padding-top:1rem;margin-bottom:1.25rem}
+#toc{border-bottom:1px solid #e7e7e9;padding-bottom:.5em}
+#toc>ul{margin-left:.125em}
+#toc ul.sectlevel0>li>a{font-style:italic}
+#toc ul.sectlevel0 ul.sectlevel1{margin:.5em 0}
+#toc ul{font-family:"Open Sans","DejaVu Sans",sans-serif;list-style-type:none}
+#toc li{line-height:1.3334;margin-top:.3334em}
+#toc a{text-decoration:none}
+#toc a:active{text-decoration:underline}
+#toctitle{color:#7a2518;font-size:1.2em}
+@media screen and (min-width:768px){#toctitle{font-size:1.375em}
+body.toc2{padding-left:15em;padding-right:0}
+#toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
+#toc.toc2>ul{font-size:.9em;margin-bottom:0}
+#toc.toc2 ul ul{margin-left:0;padding-left:1em}
+#toc.toc2 ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
+body.toc2.toc-right{padding-left:0;padding-right:15em}
+body.toc2.toc-right #toc.toc2{border-right-width:0;border-left:1px solid #e7e7e9;left:auto;right:0}}
+@media screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
+#toc.toc2{width:20em}
+#toc.toc2 #toctitle{font-size:1.375em}
+#toc.toc2>ul{font-size:.95em}
+#toc.toc2 ul ul{padding-left:1.25em}
+body.toc2.toc-right{padding-left:0;padding-right:20em}}
+#content #toc{border:1px solid #e0e0dc;margin-bottom:1.25em;padding:1.25em;background:#f8f8f7;border-radius:4px}
+#content #toc>:first-child{margin-top:0}
+#content #toc>:last-child{margin-bottom:0}
+#footer{max-width:none;background:rgba(0,0,0,.8);padding:1.25em}
+#footer-text{color:hsla(0,0%,100%,.8);line-height:1.44}
+#content{margin-bottom:.625em}
+.sect1{padding-bottom:.625em}
+@media screen and (min-width:768px){#content{margin-bottom:1.25em}
+.sect1{padding-bottom:1.25em}}
+.sect1:last-child{padding-bottom:0}
+.sect1+.sect1{border-top:1px solid #e7e7e9}
+#content h1>a.anchor,h2>a.anchor,h3>a.anchor,#toctitle>a.anchor,.sidebarblock>.content>.title>a.anchor,h4>a.anchor,h5>a.anchor,h6>a.anchor{position:absolute;z-index:1001;width:1.5ex;margin-left:-1.5ex;display:block;text-decoration:none!important;visibility:hidden;text-align:center;font-weight:400}
+#content h1>a.anchor::before,h2>a.anchor::before,h3>a.anchor::before,#toctitle>a.anchor::before,.sidebarblock>.content>.title>a.anchor::before,h4>a.anchor::before,h5>a.anchor::before,h6>a.anchor::before{content:"\00A7";font-size:.85em;display:block;padding-top:.1em}
+#content h1:hover>a.anchor,#content h1>a.anchor:hover,h2:hover>a.anchor,h2>a.anchor:hover,h3:hover>a.anchor,#toctitle:hover>a.anchor,.sidebarblock>.content>.title:hover>a.anchor,h3>a.anchor:hover,#toctitle>a.anchor:hover,.sidebarblock>.content>.title>a.anchor:hover,h4:hover>a.anchor,h4>a.anchor:hover,h5:hover>a.anchor,h5>a.anchor:hover,h6:hover>a.anchor,h6>a.anchor:hover{visibility:visible}
+#content h1>a.link,h2>a.link,h3>a.link,#toctitle>a.link,.sidebarblock>.content>.title>a.link,h4>a.link,h5>a.link,h6>a.link{color:#ba3925;text-decoration:none}
+#content h1>a.link:hover,h2>a.link:hover,h3>a.link:hover,#toctitle>a.link:hover,.sidebarblock>.content>.title>a.link:hover,h4>a.link:hover,h5>a.link:hover,h6>a.link:hover{color:#a53221}
+details,.audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock{margin-bottom:1.25em}
+details{margin-left:1.25rem}
+details>summary{cursor:pointer;display:block;position:relative;line-height:1.6;margin-bottom:.625rem;-webkit-tap-highlight-color:transparent}
+details>summary::before{content:"";border:solid transparent;border-left:solid;border-width:.3em 0 .3em .5em;position:absolute;top:.5em;left:-1.25rem;transform:translateX(15%)}
+details[open]>summary::before{border:solid transparent;border-top:solid;border-width:.5em .3em 0;transform:translateY(15%)}
+details>summary::after{content:"";width:1.25rem;height:1em;position:absolute;top:.3em;left:-1.25rem}
+.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{text-rendering:optimizeLegibility;text-align:left;font-family:"Noto Serif","DejaVu Serif",serif;font-size:1rem;font-style:italic}
+table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
+.paragraph.lead>p,#preamble>.sectionbody>[class=paragraph]:first-of-type p{font-size:1.21875em;line-height:1.6;color:rgba(0,0,0,.85)}
+.admonitionblock>table{border-collapse:separate;border:0;background:none;width:100%}
+.admonitionblock>table td.icon{text-align:center;width:80px}
+.admonitionblock>table td.icon img{max-width:none}
+.admonitionblock>table td.icon .title{font-weight:bold;font-family:"Open Sans","DejaVu Sans",sans-serif;text-transform:uppercase}
+.admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6);word-wrap:anywhere}
+.admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content{border:1px solid #e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;border-radius:4px}
+.exampleblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child{margin-bottom:0}
+.sidebarblock{border:1px solid #dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;border-radius:4px}
+.sidebarblock>:first-child{margin-top:0}
+.sidebarblock>:last-child{margin-bottom:0}
+.sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
+.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.literalblock pre,.listingblock>.content>pre{border-radius:4px;overflow-x:auto;padding:1em;font-size:.8125em}
+@media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
+@media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
+.literalblock pre,.listingblock>.content>pre:not(.highlight),.listingblock>.content>pre[class=highlight],.listingblock>.content>pre[class^="highlight "]{background:#f7f7f8}
+.literalblock.output pre{color:#f7f7f8;background:rgba(0,0,0,.9)}
+.listingblock>.content{position:relative}
+.listingblock code[data-lang]::before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:inherit;opacity:.5}
+.listingblock:hover code[data-lang]::before{display:block}
+.listingblock.terminal pre .command::before{content:attr(data-prompt);padding-right:.5em;color:inherit;opacity:.5}
+.listingblock.terminal pre .command:not([data-prompt])::before{content:"$"}
+.listingblock pre.highlightjs{padding:0}
+.listingblock pre.highlightjs>code{padding:1em;border-radius:4px}
+.listingblock pre.prettyprint{border-width:0}
+.prettyprint{background:#f7f7f8}
+pre.prettyprint .linenums{line-height:1.45;margin-left:2em}
+pre.prettyprint li{background:none;list-style-type:inherit;padding-left:0}
+pre.prettyprint li code[data-lang]::before{opacity:1}
+pre.prettyprint li:not(:first-child) code[data-lang]::before{display:none}
+table.linenotable{border-collapse:separate;border:0;margin-bottom:0;background:none}
+table.linenotable td[class]{color:inherit;vertical-align:top;padding:0;line-height:inherit;white-space:normal}
+table.linenotable td.code{padding-left:.75em}
+table.linenotable td.linenos{border-right:1px solid;opacity:.35;padding-right:.5em}
+pre.pygments .lineno{border-right:1px solid;opacity:.35;display:inline-block;margin-right:.75em}
+pre.pygments .lineno::before{content:"";margin-right:-.125em}
+.quoteblock{margin:0 1em 1.25em 1.5em;display:table}
+.quoteblock:not(.excerpt)>.title{margin-left:-1.5em;margin-bottom:.75em}
+.quoteblock blockquote,.quoteblock p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
+.quoteblock blockquote{margin:0;padding:0;border:0}
+.quoteblock blockquote::before{content:"\201c";float:left;font-size:2.75em;font-weight:bold;line-height:.6em;margin-left:-.6em;color:#7a2518;text-shadow:0 1px 2px rgba(0,0,0,.1)}
+.quoteblock blockquote>.paragraph:last-child p{margin-bottom:0}
+.quoteblock .attribution{margin-top:.75em;margin-right:.5ex;text-align:right}
+.verseblock{margin:0 1em 1.25em}
+.verseblock pre{font-family:"Open Sans","DejaVu Sans",sans-serif;font-size:1.15rem;color:rgba(0,0,0,.85);font-weight:300;text-rendering:optimizeLegibility}
+.verseblock pre strong{font-weight:400}
+.verseblock .attribution{margin-top:1.25rem;margin-left:.5ex}
+.quoteblock .attribution,.verseblock .attribution{font-size:.9375em;line-height:1.45;font-style:italic}
+.quoteblock .attribution br,.verseblock .attribution br{display:none}
+.quoteblock .attribution cite,.verseblock .attribution cite{display:block;letter-spacing:-.025em;color:rgba(0,0,0,.6)}
+.quoteblock.abstract blockquote::before,.quoteblock.excerpt blockquote::before,.quoteblock .quoteblock blockquote::before{display:none}
+.quoteblock.abstract blockquote,.quoteblock.abstract p,.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{line-height:1.6;word-spacing:0}
+.quoteblock.abstract{margin:0 1em 1.25em;display:block}
+.quoteblock.abstract>.title{margin:0 0 .375em;font-size:1.15em;text-align:center}
+.quoteblock.excerpt>blockquote,.quoteblock .quoteblock{padding:0 0 .25em 1em;border-left:.25em solid #dddddf}
+.quoteblock.excerpt,.quoteblock .quoteblock{margin-left:0}
+.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{color:inherit;font-size:1.0625rem}
+.quoteblock.excerpt .attribution,.quoteblock .quoteblock .attribution{color:inherit;font-size:.85rem;text-align:left;margin-right:0}
+p.tableblock:last-child{margin-bottom:0}
+td.tableblock>.content{margin-bottom:1.25em;word-wrap:anywhere}
+td.tableblock>.content>:last-child{margin-bottom:-1.25em}
+table.tableblock,th.tableblock,td.tableblock{border:0 solid #dedede}
+table.grid-all>*>tr>*{border-width:1px}
+table.grid-cols>*>tr>*{border-width:0 1px}
+table.grid-rows>*>tr>*{border-width:1px 0}
+table.frame-all{border-width:1px}
+table.frame-ends{border-width:1px 0}
+table.frame-sides{border-width:0 1px}
+table.frame-none>colgroup+*>:first-child>*,table.frame-sides>colgroup+*>:first-child>*{border-top-width:0}
+table.frame-none>:last-child>:last-child>*,table.frame-sides>:last-child>:last-child>*{border-bottom-width:0}
+table.frame-none>*>tr>:first-child,table.frame-ends>*>tr>:first-child{border-left-width:0}
+table.frame-none>*>tr>:last-child,table.frame-ends>*>tr>:last-child{border-right-width:0}
+table.stripes-all tr,table.stripes-odd tr:nth-of-type(odd),table.stripes-even tr:nth-of-type(even),table.stripes-hover tr:hover{background:#f8f8f7}
+th.halign-left,td.halign-left{text-align:left}
+th.halign-right,td.halign-right{text-align:right}
+th.halign-center,td.halign-center{text-align:center}
+th.valign-top,td.valign-top{vertical-align:top}
+th.valign-bottom,td.valign-bottom{vertical-align:bottom}
+th.valign-middle,td.valign-middle{vertical-align:middle}
+table thead th,table tfoot th{font-weight:bold}
+tbody tr th{background:#f7f8f7}
+tbody tr th,tbody tr th p,tfoot tr th,tfoot tr th p{color:rgba(0,0,0,.8);font-weight:bold}
+p.tableblock>code:only-child{background:none;padding:0}
+p.tableblock{font-size:1em}
+ol{margin-left:1.75em}
+ul li ol{margin-left:1.5em}
+dl dd{margin-left:1.125em}
+dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
+ol>li p,ul>li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
+ul.checklist,ul.none,ol.none,ul.no-bullet,ol.no-bullet,ol.unnumbered,ul.unstyled,ol.unstyled{list-style-type:none}
+ul.no-bullet,ol.no-bullet,ol.unnumbered{margin-left:.625em}
+ul.unstyled,ol.unstyled{margin-left:0}
+ul.checklist>li>p:first-child{margin-left:-1em}
+ul.checklist>li>p:first-child>.fa-square-o:first-child,ul.checklist>li>p:first-child>.fa-check-square-o:first-child{width:1.25em;font-size:.8em;position:relative;bottom:.125em}
+ul.checklist>li>p:first-child>input[type=checkbox]:first-child{margin-right:.25em}
+ul.inline{display:flex;flex-flow:row wrap;list-style:none;margin:0 0 .625em -1.25em}
+ul.inline>li{margin-left:1.25em}
+.unstyled dl dt{font-weight:400;font-style:normal}
+ol.arabic{list-style-type:decimal}
+ol.decimal{list-style-type:decimal-leading-zero}
+ol.loweralpha{list-style-type:lower-alpha}
+ol.upperalpha{list-style-type:upper-alpha}
+ol.lowerroman{list-style-type:lower-roman}
+ol.upperroman{list-style-type:upper-roman}
+ol.lowergreek{list-style-type:lower-greek}
+.hdlist>table,.colist>table{border:0;background:none}
+.hdlist>table>tbody>tr,.colist>table>tbody>tr{background:none}
+td.hdlist1,td.hdlist2{vertical-align:top;padding:0 .625em}
+td.hdlist1{font-weight:bold;padding-bottom:1.25em}
+td.hdlist2{word-wrap:anywhere}
+.literalblock+.colist,.listingblock+.colist{margin-top:-.5em}
+.colist td:not([class]):first-child{padding:.4em .75em 0;line-height:1;vertical-align:top}
+.colist td:not([class]):first-child img{max-width:none}
+.colist td:not([class]):last-child{padding:.25em 0}
+.thumb,.th{line-height:0;display:inline-block;border:4px solid #fff;box-shadow:0 0 0 1px #ddd}
+.imageblock.left{margin:.25em .625em 1.25em 0}
+.imageblock.right{margin:.25em 0 1.25em .625em}
+.imageblock>.title{margin-bottom:0}
+.imageblock.thumb,.imageblock.th{border-width:6px}
+.imageblock.thumb>.title,.imageblock.th>.title{padding:0 .125em}
+.image.left,.image.right{margin-top:.25em;margin-bottom:.25em;display:inline-block;line-height:0}
+.image.left{margin-right:.625em}
+.image.right{margin-left:.625em}
+a.image{text-decoration:none;display:inline-block}
+a.image object{pointer-events:none}
+sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
+sup.footnote a,sup.footnoteref a{text-decoration:none}
+sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+#footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
+#footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
+#footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
+#footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none;margin-left:-1.05em}
+#footnotes .footnote:last-of-type{margin-bottom:0}
+#content #footnotes{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
+.gist .file-data>table{border:0;background:#fff;width:100%;margin-bottom:0}
+.gist .file-data>table td.line-data{width:99%}
+div.unbreakable{page-break-inside:avoid}
+.big{font-size:larger}
+.small{font-size:smaller}
+.underline{text-decoration:underline}
+.overline{text-decoration:overline}
+.line-through{text-decoration:line-through}
+.aqua{color:#00bfbf}
+.aqua-background{background:#00fafa}
+.black{color:#000}
+.black-background{background:#000}
+.blue{color:#0000bf}
+.blue-background{background:#0000fa}
+.fuchsia{color:#bf00bf}
+.fuchsia-background{background:#fa00fa}
+.gray{color:#606060}
+.gray-background{background:#7d7d7d}
+.green{color:#006000}
+.green-background{background:#007d00}
+.lime{color:#00bf00}
+.lime-background{background:#00fa00}
+.maroon{color:#600000}
+.maroon-background{background:#7d0000}
+.navy{color:#000060}
+.navy-background{background:#00007d}
+.olive{color:#606000}
+.olive-background{background:#7d7d00}
+.purple{color:#600060}
+.purple-background{background:#7d007d}
+.red{color:#bf0000}
+.red-background{background:#fa0000}
+.silver{color:#909090}
+.silver-background{background:#bcbcbc}
+.teal{color:#006060}
+.teal-background{background:#007d7d}
+.white{color:#bfbfbf}
+.white-background{background:#fafafa}
+.yellow{color:#bfbf00}
+.yellow-background{background:#fafa00}
+span.icon>.fa{cursor:default}
+a span.icon>.fa{cursor:inherit}
+.admonitionblock td.icon [class^="fa icon-"]{font-size:2.5em;text-shadow:1px 1px 2px rgba(0,0,0,.5);cursor:default}
+.admonitionblock td.icon .icon-note::before{content:"\f05a";color:#19407c}
+.admonitionblock td.icon .icon-tip::before{content:"\f0eb";text-shadow:1px 1px 2px rgba(155,155,0,.8);color:#111}
+.admonitionblock td.icon .icon-warning::before{content:"\f071";color:#bf6900}
+.admonitionblock td.icon .icon-caution::before{content:"\f06d";color:#bf3400}
+.admonitionblock td.icon .icon-important::before{content:"\f06a";color:#bf0000}
+.conum[data-value]{display:inline-block;color:#fff!important;background:rgba(0,0,0,.8);border-radius:50%;text-align:center;font-size:.75em;width:1.67em;height:1.67em;line-height:1.67em;font-family:"Open Sans","DejaVu Sans",sans-serif;font-style:normal;font-weight:bold}
+.conum[data-value] *{color:#fff!important}
+.conum[data-value]+b{display:none}
+.conum[data-value]::after{content:attr(data-value)}
+pre .conum[data-value]{position:relative;top:-.125em}
+b.conum *{color:inherit!important}
+.conum:not([data-value]):empty{display:none}
+dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
+h1,h2,p,td.content,span.alt,summary{letter-spacing:-.01em}
+p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
+p,blockquote,dt,td.content,span.alt,summary{font-size:1.0625rem}
+p{margin-bottom:1.25rem}
+.sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
+.exampleblock>.content{background:#fffef7;border-color:#e0e0dc;box-shadow:0 1px 4px #e0e0dc}
+.print-only{display:none!important}
+@page{margin:1.25cm .75cm}
+@media print{*{box-shadow:none!important;text-shadow:none!important}
+html{font-size:80%}
+a{color:inherit!important;text-decoration:underline!important}
+a.bare,a[href^="#"],a[href^="mailto:"]{text-decoration:none!important}
+a[href^="http:"]:not(.bare)::after,a[href^="https:"]:not(.bare)::after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
+abbr[title]{border-bottom:1px dotted}
+abbr[title]::after{content:" (" attr(title) ")"}
+pre,blockquote,tr,img,object,svg{page-break-inside:avoid}
+thead{display:table-header-group}
+svg{max-width:100%}
+p,blockquote,dt,td.content{font-size:1em;orphans:3;widows:3}
+h2,h3,#toctitle,.sidebarblock>.content>.title{page-break-after:avoid}
+#header,#content,#footnotes,#footer{max-width:none}
+#toc,.sidebarblock,.exampleblock>.content{background:none!important}
+#toc{border-bottom:1px solid #dddddf!important;padding-bottom:0!important}
+body.book #header{text-align:center}
+body.book #header>h1:first-child{border:0!important;margin:2.5em 0 1em}
+body.book #header .details{border:0!important;display:block;padding:0!important}
+body.book #header .details span:first-child{margin-left:0!important}
+body.book #header .details br{display:block}
+body.book #header .details br+span::before{content:none!important}
+body.book #toc{border:0!important;text-align:left!important;padding:0!important;margin:0!important}
+body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-break-before:always}
+.listingblock code[data-lang]::before{display:block}
+#footer{padding:0 .9375em}
+.hide-on-print{display:none!important}
+.print-only{display:block!important}
+.hide-for-print{display:none!important}
+.show-for-print{display:inherit!important}}
+@media amzn-kf8,print{#header>h1:first-child{margin-top:1.25rem}
+.sect1{padding:0!important}
+.sect1+.sect1{border:0}
+#footer{background:none}
+#footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
+@media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
-<script type="text/javascript">
-function addBlockSwitches() {
-	$('.primary').each(function() {
-		primary = $(this);
-		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
-		primary.children('.title').remove();
-	});
-	$('.secondary').each(function(idx, node) {
-		secondary = $(node);
-		primary = findPrimary(secondary);
-		switchItem = createSwitchItem(secondary, primary.children('.switch'));
-		switchItem.content.addClass('hidden');
-		findPrimary(secondary).append(switchItem.content);
-		secondary.remove();
-	});
-}
-
-function createBlockSwitch(primary) {
-	blockSwitch = $('<div class="switch"></div>');
-	primary.prepend(blockSwitch);
-	return blockSwitch;
-}
-
-function findPrimary(secondary) {
-	candidate = secondary.prev();
-	while (!candidate.is('.primary')) {
-		candidate = candidate.prev();
-	}
-	return candidate;
-}
-
-function createSwitchItem(block, blockSwitch) {
-	blockName = block.children('.title').text();
-	content = block.children('.content').first().append(block.next('.colist'));
-	item = $('<div class="switch--item">' + blockName + '</div>');
-	item.on('click', '', content, function(e) {
-		$(this).addClass('selected');
-		$(this).siblings().removeClass('selected');
-		e.data.siblings('.content').addClass('hidden');
-		e.data.removeClass('hidden');
-	});
-	blockSwitch.append(item);
-	return {'item': item, 'content': content};
-}
-
-$(addBlockSwitches);
-</script>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
 </head>
-<body id="spring-cloud-alibaba-reference" class="book toc2 toc-left">
+<body id="spring-cloud-alibaba-reference" class="book">
 <div id="header">
 <h1>Spring Cloud Alibaba Reference Documentation</h1>
 <div class="details">
 <span id="author" class="author">Jim Fang, Jing Xiao, Mercy Ma, Xiaolong Zuo, Bingting Peng, Yuxin Wang</span><br>
 </div>
-<div id="toc" class="toc2">
+<div id="toc" class="toc">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_introduction">1. Introduction</a></li>
@@ -114,7 +462,12 @@ $(addBlockSwitches);
 </ul>
 </li>
 <li><a href="#_nacos_discovery_endpoint">3.4. Nacos Discovery Endpoint</a></li>
-<li><a href="#_more_information_about_nacos_discovery_starter_configurations">3.5. More Information about Nacos Discovery Starter Configurations</a></li>
+<li><a href="#_weight_route">3.5. Weight Route</a>
+<ul class="sectlevel3">
+<li><a href="#_ribbon">3.5.1. Ribbon</a></li>
+</ul>
+</li>
+<li><a href="#_more_information_about_nacos_discovery_starter_configurations">3.6. More Information about Nacos Discovery Starter Configurations</a></li>
 </ul>
 </li>
 <li><a href="#_spring_cloud_alibaba_nacos_config">4. Spring Cloud Alibaba Nacos Config</a>
@@ -172,102 +525,133 @@ $(addBlockSwitches);
 <li><a href="#_configuration">5.10. Configuration</a></li>
 </ul>
 </li>
-<li><a href="#_spring_cloud_alibaba_dubbo">6. Spring Cloud Alibaba Dubbo</a>
+<li><a href="#_spring_cloud_alibaba_rocketmq_binder">6. Spring Cloud Alibaba RocketMQ Binder</a>
 <ul class="sectlevel2">
-<li><a href="#_introduction_2">6.1. Introduction</a></li>
-<li><a href="#_features">6.2. Features</a></li>
-<li><a href="#_reference">6.3. Reference</a></li>
-</ul>
-</li>
-<li><a href="#_spring_cloud_alibaba_rocketmq_binder">7. Spring Cloud Alibaba RocketMQ Binder</a>
-<ul class="sectlevel2">
-<li><a href="#_introduction_of_rocketmq">7.1. Introduction of RocketMQ</a></li>
-<li><a href="#_rocketmq_usages">7.2. RocketMQ Usages</a></li>
-<li><a href="#_introduction_of_spring_cloud_stream">7.3. Introduction of Spring Cloud Stream</a></li>
-<li><a href="#_how_to_use_spring_cloud_alibaba_rocketmq_binder">7.4. How to use Spring Cloud Alibaba RocketMQ Binder</a></li>
-<li><a href="#_how_spring_cloud_alibaba_rocketmq_binder_works">7.5. How Spring Cloud Alibaba RocketMQ Binder Works</a></li>
-<li><a href="#_support_messagesource">7.6. Support MessageSource</a></li>
-<li><a href="#_configuration_options">7.7. Configuration Options</a>
+<li><a href="#_introduction_of_rocketmq">6.1. Introduction of RocketMQ</a></li>
+<li><a href="#_rocketmq_usages">6.2. RocketMQ Usages</a></li>
+<li><a href="#_introduction_of_spring_cloud_stream">6.3. Introduction of Spring Cloud Stream</a></li>
+<li><a href="#_how_to_use_spring_cloud_alibaba_rocketmq_binder">6.4. How to use Spring Cloud Alibaba RocketMQ Binder</a></li>
+<li><a href="#_how_spring_cloud_alibaba_rocketmq_binder_works">6.5. How Spring Cloud Alibaba RocketMQ Binder Works</a></li>
+<li><a href="#_support_messagesource">6.6. Support MessageSource</a></li>
+<li><a href="#_configuration_options">6.7. Configuration Options</a>
 <ul class="sectlevel3">
-<li><a href="#_rocketmq_binder_properties">7.7.1. RocketMQ Binder Properties</a></li>
-<li><a href="#_rocketmq_consumer_properties">7.7.2. RocketMQ Consumer Properties</a></li>
-<li><a href="#_rocketmq_provider_properties">7.7.3. RocketMQ Provider Properties</a></li>
+<li><a href="#_rocketmq_binder_properties">6.7.1. RocketMQ Binder Properties</a></li>
+<li><a href="#_rocketmq_consumer_properties">6.7.2. RocketMQ Consumer Properties</a></li>
+<li><a href="#_rocketmq_provider_properties">6.7.3. RocketMQ Provider Properties</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_spring_cloud_alibaba_cloud_ans">8. Spring Cloud Alibaba Cloud ANS</a>
+<li><a href="#_spring_cloud_alibaba_cloud_ans">7. Spring Cloud Alibaba Cloud ANS</a>
 <ul class="sectlevel2">
-<li><a href="#_how_to_introduce_spring_cloud_alibaba_cloud_ans">8.1. How to Introduce Spring Cloud Alibaba Cloud ANS</a></li>
-<li><a href="#_use_ans_to_register_service">8.2. Use ANS to Register Service</a></li>
-<li><a href="#_start_registration_center">8.3. Start Registration Center</a>
+<li><a href="#_how_to_introduce_spring_cloud_alibaba_cloud_ans">7.1. How to Introduce Spring Cloud Alibaba Cloud ANS</a></li>
+<li><a href="#_use_ans_to_register_service">7.2. Use ANS to Register Service</a></li>
+<li><a href="#_start_registration_center">7.3. Start Registration Center</a>
 <ul class="sectlevel3">
-<li><a href="#_start_lightweight_configuration_center">8.3.1. Start Lightweight Configuration Center</a></li>
-<li><a href="#_user_registration_center_on_the_cloud">8.3.2. User Registration Center on the Cloud</a></li>
+<li><a href="#_start_lightweight_configuration_center">7.3.1. Start Lightweight Configuration Center</a></li>
+<li><a href="#_user_registration_center_on_the_cloud">7.3.2. User Registration Center on the Cloud</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_spring_cloud_alibaba_cloud_acm">9. Spring Cloud Alibaba Cloud ACM</a>
+<li><a href="#_spring_cloud_alibaba_cloud_acm">8. Spring Cloud Alibaba Cloud ACM</a>
 <ul class="sectlevel2">
-<li><a href="#_how_to_introduce_spring_cloud_alibaba_cloud_acm">9.1. How to Introduce Spring Cloud Alibaba Cloud ACM</a></li>
-<li><a href="#_use_acm_to_manage_configurations">9.2. Use ACM to Manage Configurations</a>
+<li><a href="#_how_to_introduce_spring_cloud_alibaba_cloud_acm">8.1. How to Introduce Spring Cloud Alibaba Cloud ACM</a></li>
+<li><a href="#_use_acm_to_manage_configurations">8.2. Use ACM to Manage Configurations</a>
 <ul class="sectlevel3">
-<li><a href="#_start_configuration_center">9.2.1. Start Configuration Center</a>
+<li><a href="#_start_configuration_center">8.2.1. Start Configuration Center</a>
 <ul class="sectlevel4">
 <li><a href="#_use_lightweight_configuration_center">Use Lightweight Configuration Center</a></li>
 <li><a href="#_use_acm_on_the_alibaba_cloud">Use ACM on the Alibaba Cloud</a></li>
 </ul>
 </li>
-<li><a href="#_add_configuration_in_the_configuration_center">9.2.2. Add Configuration in the Configuration Center</a></li>
-<li><a href="#_start_application_verification">9.2.3. Start Application Verification</a></li>
+<li><a href="#_add_configuration_in_the_configuration_center">8.2.2. Add Configuration in the Configuration Center</a></li>
+<li><a href="#_start_application_verification">8.2.3. Start Application Verification</a></li>
 </ul>
 </li>
-<li><a href="#_modify_configuration_file_extension">9.3. Modify Configuration File Extension</a></li>
-<li><a href="#_dynamic_configuration_refresh">9.4. Dynamic Configuration Refresh</a></li>
-<li><a href="#_configure_profile_granularity">9.5. Configure Profile Granularity</a></li>
-<li><a href="#_support_custom_acm_timeout">9.6. Support Custom ACM Timeout</a></li>
-<li><a href="#_support_custom_group_configurations">9.7. Support Custom Group Configurations</a>
+<li><a href="#_modify_configuration_file_extension">8.3. Modify Configuration File Extension</a></li>
+<li><a href="#_dynamic_configuration_refresh">8.4. Dynamic Configuration Refresh</a></li>
+<li><a href="#_configure_profile_granularity">8.5. Configure Profile Granularity</a></li>
+<li><a href="#_support_custom_acm_timeout">8.6. Support Custom ACM Timeout</a></li>
+<li><a href="#_support_custom_group_configurations">8.7. Support Custom Group Configurations</a>
 <ul class="sectlevel3">
-<li><a href="#_support_shared_configurations">9.7.1. Support Shared Configurations</a></li>
+<li><a href="#_support_shared_configurations">8.7.1. Support Shared Configurations</a></li>
 </ul>
 </li>
-<li><a href="#_actuator_endpoint">9.8. Actuator Endpoint</a></li>
+<li><a href="#_actuator_endpoint">8.8. Actuator Endpoint</a></li>
 </ul>
 </li>
-<li><a href="#_spring_cloud_alibaba_cloud_oss">10. Spring Cloud Alibaba Cloud OSS</a>
+<li><a href="#_spring_cloud_alibaba_cloud_oss">9. Spring Cloud Alibaba Cloud OSS</a>
 <ul class="sectlevel2">
-<li><a href="#_how_to_introduce_spring_cloud_alibaba_cloud_oss">10.1. How to Introduce Spring Cloud Alibaba Cloud OSS</a></li>
-<li><a href="#_how_to_use_oss_api">10.2. How to Use OSS API</a>
+<li><a href="#_how_to_introduce_spring_cloud_alibaba_cloud_oss">9.1. How to Introduce Spring Cloud Alibaba Cloud OSS</a></li>
+<li><a href="#_how_to_use_oss_api">9.2. How to Use OSS API</a>
 <ul class="sectlevel3">
-<li><a href="#_configure_oss">10.2.1. Configure OSS</a></li>
-<li><a href="#_introduce_oss_api">10.2.2. Introduce OSS API</a></li>
+<li><a href="#_configure_oss">9.2.1. Configure OSS</a></li>
+<li><a href="#_introduce_oss_api">9.2.2. Introduce OSS API</a></li>
 </ul>
 </li>
-<li><a href="#_integrate_with_the_resource_specifications_of_spring">10.3. Integrate with the Resource Specifications of Spring</a></li>
-<li><a href="#_use_sts_authentication">10.4. Use STS Authentication</a></li>
-<li><a href="#_more_configurations_for_the_client">10.5. More Configurations for the Client</a></li>
+<li><a href="#_integrate_with_the_resource_specifications_of_spring">9.3. Integrate with the Resource Specifications of Spring</a></li>
+<li><a href="#_use_sts_authentication">9.4. Use STS Authentication</a></li>
+<li><a href="#_more_configurations_for_the_client">9.5. More Configurations for the Client</a></li>
 </ul>
 </li>
-<li><a href="#_spring_cloud_alibaba_cloud_schedulerx">11. Spring Cloud Alibaba Cloud SchedulerX</a>
+<li><a href="#_spring_cloud_alibaba_cloud_schedulerx">10. Spring Cloud Alibaba Cloud SchedulerX</a>
 <ul class="sectlevel2">
-<li><a href="#_how_to_introduce_spring_cloud_alibaba_cloud_schedulerx">11.1. How to Introduce Spring Cloud Alibaba Cloud SchedulerX</a></li>
-<li><a href="#_start_schedulerx">11.2. Start SchedulerX</a></li>
-<li><a href="#_compile_a_simple_job">11.3. Compile a simple job</a></li>
-<li><a href="#_job_scheduling">11.4. Job Scheduling</a></li>
-<li><a href="#_usage_in_production_environment">11.5. Usage in Production Environment</a></li>
+<li><a href="#_how_to_introduce_spring_cloud_alibaba_cloud_schedulerx">10.1. How to Introduce Spring Cloud Alibaba Cloud SchedulerX</a></li>
+<li><a href="#_start_schedulerx">10.2. Start SchedulerX</a></li>
+<li><a href="#_compile_a_simple_job">10.3. Compile a simple job</a></li>
+<li><a href="#_job_scheduling">10.4. Job Scheduling</a></li>
+<li><a href="#_usage_in_production_environment">10.5. Usage in Production Environment</a></li>
 </ul>
 </li>
-<li><a href="#_spring_cloud_alibaba_cloud_sms">12. Spring Cloud Alibaba Cloud SMS</a>
+<li><a href="#_spring_cloud_alibaba_cloud_sms">11. Spring Cloud Alibaba Cloud SMS</a>
 <ul class="sectlevel2">
-<li><a href="#_how_to_introduce_spring_cloud_alibaba_cloud_sms">12.1. How to Introduce Spring Cloud Alibaba Cloud SMS</a></li>
-<li><a href="#_how_to_use_sms_api">12.2. How to use SMS API</a>
+<li><a href="#_how_to_introduce_spring_cloud_alibaba_cloud_sms">11.1. How to Introduce Spring Cloud Alibaba Cloud SMS</a></li>
+<li><a href="#_how_to_use_sms_api">11.2. How to use SMS API</a>
 <ul class="sectlevel3">
-<li><a href="#_configure_sms">12.2.1. Configure SMS</a></li>
-<li><a href="#_introduce_sms_api">12.2.2. Introduce SMS API</a></li>
+<li><a href="#_configure_sms">11.2.1. Configure SMS</a></li>
+<li><a href="#_introduce_sms_api">11.2.2. Introduce SMS API</a></li>
 </ul>
 </li>
-<li><a href="#_the_advanced_features_of_sms_api">12.3. The Advanced Features of SMS Api</a></li>
+<li><a href="#_the_advanced_features_of_sms_api">11.3. The Advanced Features of SMS Api</a></li>
+</ul>
+</li>
+<li><a href="#_spring_cloud_alibaba_appactive">12. Spring Cloud Alibaba AppActive</a>
+<ul class="sectlevel2">
+<li><a href="#_introduction_2">12.1. Introduction</a>
+<ul class="sectlevel3">
+<li><a href="#_unit_diversion">12.1.1. Unit diversion</a>
+<ul class="sectlevel4">
+<li><a href="#_unified_traffic_access">Unified traffic access</a></li>
+<li><a href="#_shunt_mode">Shunt mode</a></li>
+<li><a href="#_shunt_granularity">Shunt granularity</a></li>
+<li><a href="#_traffic_protocol">Traffic Protocol</a></li>
+<li><a href="#_route_transparent_transmission">Route transparent transmission</a></li>
+</ul>
+</li>
+<li><a href="#_unit_collaboration">12.1.2. Unit collaboration</a>
+<ul class="sectlevel4">
+<li><a href="#_center_call">Center call</a></li>
+</ul>
+</li>
+<li><a href="#_unit_protection">12.1.3. Unit protection</a>
+<ul class="sectlevel4">
+<li><a href="#_access_layer_error_correction">Access layer error correction</a></li>
+<li><a href="#_rpc_error_correction">RPC error correction</a></li>
+</ul>
+</li>
+<li><a href="#_unit_extension">12.1.4. Unit extension</a>
+<ul class="sectlevel4">
+<li><a href="#_horizontal_extension">Horizontal extension</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_how_to_use">12.2. How to use</a>
+<ul class="sectlevel3">
+<li><a href="#_data_plane">12.2.1. Data Plane</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -275,10 +659,10 @@ $(addBlockSwitches);
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_introduction"><a class="link" href="#_introduction">1. Introduction</a></h2>
+<h2 id="_introduction">1. Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Spring Cloud Alibaba aims to provide a one-stop solution for microservices development. This prjoect includes the required components for developing distributed applications and services, so that developers can develop distributed applications easily with the Spring Cloud programming models.</p>
+<p>Spring Cloud Alibaba aims to provide a one-stop solution for microservices development. This project includes the required components for developing distributed applications and services, so that developers can develop distributed applications easily with the Spring Cloud programming models.</p>
 </div>
 <div class="paragraph">
 <p>With Spring Cloud Alibaba, you only need to add a few annotations and configurations, and you will be able to use the distributed solutions of Alibaba for your applications, and build a distributed system of your own with Alibaba middleware.</p>
@@ -323,19 +707,19 @@ $(addBlockSwitches);
 </div>
 </div>
 <div class="sect1">
-<h2 id="_dependency_management"><a class="link" href="#_dependency_management">2. Dependency Management</a></h2>
+<h2 id="_dependency_management">2. Dependency Management</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>If you’re a Maven Central user, add our BOM to your pom.xml &lt;dependencyManagement&gt; section. This will allow you to omit versions for any of the Maven dependencies and instead delegate versioning to the BOM.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependencyManagement&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;dependencyManagement&gt;
     &lt;dependencies&gt;
         &lt;dependency&gt;
             &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
             &lt;artifactId&gt;spring-cloud-alibaba-dependencies&lt;/artifactId&gt;
-            &lt;version&gt;2.2.7.RELEASE&lt;/version&gt;
+            &lt;version&gt;2.2.9.RELEASE&lt;/version&gt;
             &lt;type&gt;pom&lt;/type&gt;
             &lt;scope&gt;import&lt;/scope&gt;
         &lt;/dependency&gt;
@@ -349,7 +733,7 @@ $(addBlockSwitches);
 </div>
 </div>
 <div class="sect1">
-<h2 id="_spring_cloud_alibaba_nacos_discovery"><a class="link" href="#_spring_cloud_alibaba_nacos_discovery">3. Spring Cloud Alibaba Nacos Discovery</a></h2>
+<h2 id="_spring_cloud_alibaba_nacos_discovery">3. Spring Cloud Alibaba Nacos Discovery</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Nacos is an easy-to-use dynamic service discovery, configuration and service management platform for building cloud native applications.</p>
@@ -358,7 +742,7 @@ $(addBlockSwitches);
 <p>With Spring Cloud Alibaba Nacos Discovery, you can quickly access the Nacos service registration feature based on Spring Cloud&#8217;s programming model.</p>
 </div>
 <div class="sect2">
-<h3 id="_service_registrationdiscovery_nacos_discovery"><a class="link" href="#_service_registrationdiscovery_nacos_discovery">3.1. Service Registration/Discovery: Nacos Discovery</a></h3>
+<h3 id="_service_registrationdiscovery_nacos_discovery">3.1. Service Registration/Discovery: Nacos Discovery</h3>
 <div class="paragraph">
 <p>Service discovery is one of the key components in the microservices architecture. In such a architecture, configuring a service list for every client manually could be a daunting task, and makes dynamic scaling extremely difficult.
  Nacos Discovery helps you to register your service to the Nacos server automatically, and the Nacos server keeps track of the services and refreshes the service list dynamically. In addition, Nacos
@@ -366,13 +750,13 @@ Discovery registers some of the metadata of the service instance, such as host, 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_how_to_introduce_nacos_discovery_for_service_registrationdiscovery"><a class="link" href="#_how_to_introduce_nacos_discovery_for_service_registrationdiscovery">3.2. How to Introduce Nacos Discovery for service registration/discovery</a></h3>
+<h3 id="_how_to_introduce_nacos_discovery_for_service_registrationdiscovery">3.2. How to Introduce Nacos Discovery for service registration/discovery</h3>
 <div class="paragraph">
 <p>please use the starter with the group ID as <code>com.alibaba.cloud</code> and the artifact ID as <code>spring-cloud-starter-alibaba-nacos-discovery</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
     &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-discovery&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
@@ -380,12 +764,12 @@ Discovery registers some of the metadata of the service instance, such as host, 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_an_example_of_using_nacos_discovery_for_service_registrationdiscovery_and_call"><a class="link" href="#_an_example_of_using_nacos_discovery_for_service_registrationdiscovery_and_call">3.3. An example of using Nacos Discovery for service registration/discovery and call</a></h3>
+<h3 id="_an_example_of_using_nacos_discovery_for_service_registrationdiscovery_and_call">3.3. An example of using Nacos Discovery for service registration/discovery and call</h3>
 <div class="paragraph">
 <p>Nacos Discovery integrate with the Netflix Ribbon, RestTemplate or OpenFeign can be used for service-to-service calls.</p>
 </div>
 <div class="sect3">
-<h4 id="_nacos_server_startup"><a class="link" href="#_nacos_server_startup">3.3.1. Nacos Server Startup</a></h4>
+<h4 id="_nacos_server_startup">3.3.1. Nacos Server Startup</h4>
 <div class="paragraph">
 <p>For details about how to download and start Nacos, refer to the <a href="https://nacos.io/zh-cn/docs/quick-start.html">Nacos Website</a>.</p>
 </div>
@@ -403,7 +787,7 @@ Discovery registers some of the metadata of the service instance, such as host, 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_start_a_provider_application"><a class="link" href="#_start_a_provider_application">3.3.2. Start a Provider Application</a></h4>
+<h4 id="_start_a_provider_application">3.3.2. Start a Provider Application</h4>
 <div class="paragraph">
 <p>The following sample illustrates how to register a service to Nacos.</p>
 </div>
@@ -417,7 +801,7 @@ Discovery registers some of the metadata of the service instance, such as host, 
 <div class="listingblock">
 <div class="title">pom.xml</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
     &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
@@ -497,7 +881,7 @@ Discovery registers some of the metadata of the service instance, such as host, 
 <div class="listingblock">
 <div class="title">application.properties</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">server.port=8081
+<pre class="prettyprint highlight"><code data-lang="properties">server.port=8081
 spring.application.name=nacos-provider
 spring.cloud.nacos.discovery.server-addr=127.0.0.1:8848
 management.endpoints.web.exposure.include=*</code></pre>
@@ -507,7 +891,7 @@ management.endpoints.web.exposure.include=*</code></pre>
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 If you do not want to use Nacos for service registration and discovery, you can set <code>spring.cloud.nacos.discovery</code> to <code>false</code>.
@@ -524,7 +908,7 @@ If you do not want to use Nacos for service registration and discovery, you can 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+<pre class="prettyprint highlight"><code data-lang="java">@SpringBootApplication
 @EnableDiscoveryClient
 public class NacosProviderDemoApplication {
 
@@ -549,7 +933,7 @@ public class NacosProviderDemoApplication {
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 Before you start the provider application, please start Nacos first. Refer to <a href="https://nacos.io/zh-cn/docs/quick-start.html">Naco Website</a> for more details.
@@ -559,17 +943,17 @@ Before you start the provider application, please start Nacos first. Refer to <a
 </div>
 </div>
 <div class="sect3">
-<h4 id="_start_a_consumer_application"><a class="link" href="#_start_a_consumer_application">3.3.3. Start a Consumer Application</a></h4>
+<h4 id="_start_a_consumer_application">3.3.3. Start a Consumer Application</h4>
 <div class="paragraph">
 <p>It might not be as easy as starting a provider application, because the consumer needs to call the RESTful service of the provider. In this example, we will use the most primitive way, that is,
-combining the LoadBalanceClient and RestTemolate explicitly to access the RESTful service.
+combining the LoadBalanceClient and RestTemplate explicitly to access the RESTful service.
 You can refer to section 1.2 for pom.xml and application.properties configurations. The following is the sample code for starting a consumer application.</p>
 </div>
 <div class="admonitionblock note">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 You can also access the service by using RestTemplate and FeignClient with load balancing.
@@ -579,7 +963,7 @@ You can also access the service by using RestTemplate and FeignClient with load 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+<pre class="prettyprint highlight"><code data-lang="java">@SpringBootApplication
 @EnableDiscoveryClient
 public class NacosConsumerApp {
 
@@ -627,7 +1011,7 @@ so that the current application name can be displayed when calling the service o
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 Please start Nacos before you start the consumer application. For details, please refer to <a href="https://nacos.io/zh-cn/docs/quick-start.html">Nacos Website</a>.
@@ -647,7 +1031,7 @@ Access result： Hello Nacos Discovery nacos-consumer</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_nacos_discovery_endpoint"><a class="link" href="#_nacos_discovery_endpoint">3.4. Nacos Discovery Endpoint</a></h3>
+<h3 id="_nacos_discovery_endpoint">3.4. Nacos Discovery Endpoint</h3>
 <div class="paragraph">
 <p>Nacos Discovery provides an Endpoint internally with a corresponding endpoint id of <code>nacos-discovery</code>.</p>
 </div>
@@ -669,7 +1053,7 @@ Access result： Hello Nacos Discovery nacos-consumer</pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+<pre class="prettyprint highlight"><code data-lang="json">{
   "subscribe": [
     {
       "jsonFromServer": "",
@@ -734,7 +1118,19 @@ Access result： Hello Nacos Discovery nacos-consumer</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_more_information_about_nacos_discovery_starter_configurations"><a class="link" href="#_more_information_about_nacos_discovery_starter_configurations">3.5. More Information about Nacos Discovery Starter Configurations</a></h3>
+<h3 id="_weight_route">3.5. Weight Route</h3>
+<div class="sect3">
+<h4 id="_ribbon">3.5.1. Ribbon</h4>
+<div class="listingblock">
+<div class="title">application.properties</div>
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="properties">[service_name].ribbon.NFLoadBalancerRuleClassName=com.alibaba.cloud.nacos.ribbon.NacosRule</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_more_information_about_nacos_discovery_starter_configurations">3.6. More Information about Nacos Discovery Starter Configurations</h3>
 <div class="paragraph">
 <p>The following shows the other configurations of the starter of Nacos Discovery:</p>
 </div>
@@ -781,6 +1177,12 @@ Access result： Hello Nacos Discovery nacos-consumer</pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.discovery.ip</code></p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Highest priority</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Registered IP address Type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spring.cloud.nacos.discovery.ip-type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>IPv4</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IPv4 and IPv6 can be configured, If there are multiple IP addresses of the same type of network card, and you want to specify a specific network segment address, you can use <code>spring.cloud.inetutils.preferred-networks</code> to configure the filter address</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Registered port</p></td>
@@ -848,7 +1250,7 @@ Access result： Hello Nacos Discovery nacos-consumer</pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_spring_cloud_alibaba_nacos_config"><a class="link" href="#_spring_cloud_alibaba_nacos_config">4. Spring Cloud Alibaba Nacos Config</a></h2>
+<h2 id="_spring_cloud_alibaba_nacos_config">4. Spring Cloud Alibaba Nacos Config</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Nacos is an easy-to-use dynamic service discovery, configuration and service management platform for building cloud native applications.</p>
@@ -857,13 +1259,13 @@ Access result： Hello Nacos Discovery nacos-consumer</pre>
 <p>Use Spring Cloud Alibaba Nacos Config to quickly access Nacos configuration management capabilities based on Spring Cloud&#8217;s programming model.</p>
 </div>
 <div class="sect2">
-<h3 id="_how_to_introduce_nacos_config_for_configuration"><a class="link" href="#_how_to_introduce_nacos_config_for_configuration">4.1. How to Introduce Nacos Config for configuration</a></h3>
+<h3 id="_how_to_introduce_nacos_config_for_configuration">4.1. How to Introduce Nacos Config for configuration</h3>
 <div class="paragraph">
 <p>please use the starter with the group ID as <code>com.alibaba.cloud</code> and the artifact ID as <code>spring-cloud-starter-alibaba-nacos-config</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
     &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-config&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
@@ -871,7 +1273,7 @@ Access result： Hello Nacos Discovery nacos-consumer</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_quickstart"><a class="link" href="#_quickstart">4.2. Quickstart</a></h3>
+<h3 id="_quickstart">4.2. Quickstart</h3>
 <div class="paragraph">
 <p>Nacos Config uses DataId and GROUP to determine a configuration.</p>
 </div>
@@ -885,7 +1287,7 @@ Access result： Hello Nacos Discovery nacos-consumer</pre>
 <div class="title">Figure 2. Nacos Config Item</div>
 </div>
 <div class="sect3">
-<h4 id="_initialize_nacos_server"><a class="link" href="#_initialize_nacos_server">4.2.1. Initialize Nacos Server</a></h4>
+<h4 id="_initialize_nacos_server">4.2.1. Initialize Nacos Server</h4>
 <div class="paragraph">
 <p>For specific startup methods, refer to the "Nacos Server Startup" section of the Spring Cloud Alibaba Nacos Discovery section.</p>
 </div>
@@ -894,7 +1296,7 @@ Access result： Hello Nacos Discovery nacos-consumer</pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code>Data ID:    nacos-config.properties
+<pre class="prettyprint highlight"><code>Data ID:    nacos-config.properties
 
 Group  :    DEFAULT_GROUP
 
@@ -908,7 +1310,7 @@ Configuration content:   user.name=nacos-config-properties
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 The default file extension of DataId is properties.
@@ -917,13 +1319,13 @@ The default file extension of DataId is properties.
 </table>
 </div>
 <div class="sect4">
-<h5 id="_usage_on_the_client"><a class="link" href="#_usage_on_the_client">Usage on the Client</a></h5>
+<h5 id="_usage_on_the_client">Usage on the Client</h5>
 <div class="paragraph">
 <p>If you want to use Nacos to manage externalized configurations for your applications, please use the starter with the group ID as <code>com.alibaba.cloud</code> and the artifact ID as <code>spring-cloud-starter-alibaba-nacos-config</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
     &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-config&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
@@ -934,7 +1336,7 @@ The default file extension of DataId is properties.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+<pre class="prettyprint highlight"><code data-lang="java">@SpringBootApplication
 public class NacosConfigApplication {
 
     public static void main(String[] args) {
@@ -952,7 +1354,7 @@ public class NacosConfigApplication {
 <div class="listingblock">
 <div class="title">bootstrap.properties</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"># DataId By default, the `spring.application.name` configuration is combined with the file extension (the configuration format uses properties by default), and the GROUP is not configured to use DEFAULT_GROUP by default. Therefore, the Nacos Config configuration corresponding to the configuration file has a DataId of nacos-config.properties and a GROUP of DEFAULT_GROUP
+<pre class="prettyprint highlight"><code data-lang="properties"># DataId By default, the `spring.application.name` configuration is combined with the file extension (the configuration format uses properties by default), and the GROUP is not configured to use DEFAULT_GROUP by default. Therefore, the Nacos Config configuration corresponding to the configuration file has a DataId of nacos-config.properties and a GROUP of DEFAULT_GROUP
 spring.application.name=nacos-config
 spring.cloud.nacos.config.server-addr=127.0.0.1:8848</code></pre>
 </div>
@@ -961,7 +1363,7 @@ spring.cloud.nacos.config.server-addr=127.0.0.1:8848</code></pre>
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 If you use domain name to access Nacos, the format of <code>spring.cloud.nacos.config.server-addr</code> should be <code>Domain name:port</code>.
@@ -976,7 +1378,7 @@ Port 80 cannot be omitted.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code>2018-11-02 14:24:51.638  INFO 32700 --- [main] c.a.demo.provider.NacosConfigApplication    : Started NacosConfigApplication in 14.645 seconds (JVM running for 15.139)
+<pre class="prettyprint highlight"><code>2018-11-02 14:24:51.638  INFO 32700 --- [main] c.a.demo.provider.NacosConfigApplication    : Started NacosConfigApplication in 14.645 seconds (JVM running for 15.139)
 user name :nacos-config-properties; age: 90
 2018-11-02 14:24:51.688  INFO 32700 --- [-127.0.0.1:8848] s.c.a.AnnotationConfigApplicationContext : Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@a8c5e74: startup date [Fri Nov 02 14:24:51 CST 2018]; root of context hierarchy</code></pre>
 </div>
@@ -985,7 +1387,7 @@ user name :nacos-config-properties; age: 90
 </div>
 </div>
 <div class="sect2">
-<h3 id="_add_configurations_with_dataid_in_yaml_format"><a class="link" href="#_add_configurations_with_dataid_in_yaml_format">4.3. Add Configurations with DataId in YAML Format</a></h3>
+<h3 id="_add_configurations_with_dataid_in_yaml_format">4.3. Add Configurations with DataId in YAML Format</h3>
 <div class="paragraph">
 <p>Nacos Config supports yaml format as well. You only need to complete the following 2 steps.</p>
 </div>
@@ -995,7 +1397,7 @@ user name :nacos-config-properties; age: 90
 <div class="listingblock">
 <div class="title">bootstrap.properties</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring.cloud.nacos.config.file-extension=yaml</code></pre>
+<pre class="prettyprint highlight"><code data-lang="yaml">spring.cloud.nacos.config.file-extension=yaml</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1003,7 +1405,7 @@ user name :nacos-config-properties; age: 90
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code>Data ID:        nacos-config.yaml
+<pre class="prettyprint highlight"><code>Data ID:        nacos-config.yaml
 
 Group  :        DEFAULT_GROUP
 
@@ -1018,20 +1420,20 @@ Configuration content:        user.name: nacos-config-yaml
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code>2018-11-02 14:59:00.484  INFO 32928 --- [main] c.a.demo.provider.NacosConfigApplication:Started NacosConfigApplication in 14.183 seconds (JVM running for 14.671)
+<pre class="prettyprint highlight"><code>2018-11-02 14:59:00.484  INFO 32928 --- [main] c.a.demo.provider.NacosConfigApplication:Started NacosConfigApplication in 14.183 seconds (JVM running for 14.671)
 user name :nacos-config-yaml; age: 68
 2018-11-02 14:59:00.529  INFO 32928 --- [-127.0.0.1:8848] s.c.a.AnnotationConfigApplicationContext : Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@265a478e: startup date [Fri Nov 02 14:59:00 CST 2018]; root of context hierarchy</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_support_dynamic_configuration_udpates"><a class="link" href="#_support_dynamic_configuration_udpates">4.4. Support Dynamic Configuration Udpates</a></h3>
+<h3 id="_support_dynamic_configuration_udpates">4.4. Support Dynamic Configuration Udpates</h3>
 <div class="paragraph">
 <p>Nacos Config also supports dynamic configuration updates. The code for starting Spring Boot application testing is as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+<pre class="prettyprint highlight"><code data-lang="java">@SpringBootApplication
 public class NacosConfigApplication {
 
     public static void main(String[] args) {
@@ -1052,7 +1454,7 @@ public class NacosConfigApplication {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code>user name :nacos-config-yaml; age: 68
+<pre class="prettyprint highlight"><code>user name :nacos-config-yaml; age: 68
 user name :nacos-config-yaml; age: 68
 user name :nacos-config-yaml; age: 68
 2018-11-02 15:04:25.069  INFO 32957 --- [-127.0.0.1:8848] o.s.boot.SpringApplication               : Started application in 0.144 seconds (JVM running for 71.752)
@@ -1067,7 +1469,7 @@ user name :nacos-config-yaml-update; age: 68</code></pre>
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 You can disable automatic refresh with this setting`spring.cloud.nacos.config.refresh.enabled=false`.
@@ -1077,20 +1479,20 @@ You can disable automatic refresh with this setting`spring.cloud.nacos.config.re
 </div>
 </div>
 <div class="sect2">
-<h3 id="_support_configurations_at_the_profile_level"><a class="link" href="#_support_configurations_at_the_profile_level">4.5. Support configurations at the profile level</a></h3>
+<h3 id="_support_configurations_at_the_profile_level">4.5. Support configurations at the profile level</h3>
 <div class="paragraph">
 <p>When configurations are loaded by Nacos Config, basic configurations with  DataId of <code>${spring.application.name}. ${file-extension:properties}</code> , and DataId of <code>${spring.application.name}-${profile}. ${file-extension:properties}</code> are also loaded. If you need to use different configurations from different environments, you can use the <code>${spring.profiles.active}</code> configuration provided by Spring.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.profiles.active=develop</code></pre>
+<pre class="prettyprint highlight"><code data-lang="properties">spring.profiles.active=develop</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 When specified in configuration files, ${spring.profiles.active} must be placed in bootstrap.properties.
@@ -1103,7 +1505,7 @@ When specified in configuration files, ${spring.profiles.active} must be placed 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code>Data ID:        nacos-config-develop.yaml
+<pre class="prettyprint highlight"><code>Data ID:        nacos-config-develop.yaml
 
 Group  :        DEFAULT_GROUP
 
@@ -1117,7 +1519,7 @@ Configuration content:        current.env: develop-env</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+<pre class="prettyprint highlight"><code data-lang="java">@SpringBootApplication
 public class NacosConfigApplication {
 
     public static void main(String[] args) {
@@ -1139,7 +1541,7 @@ public class NacosConfigApplication {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code>in develop-env enviroment; user name :nacos-config-yaml-update; age: 68
+<pre class="prettyprint highlight"><code>in develop-env enviroment; user name :nacos-config-yaml-update; age: 68
 2018-11-02 15:34:25.013  INFO 33014 --- [ Thread-11] ConfigServletWebServerApplicationContext : Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@6f1c29b7: startup date [Fri Nov 02 15:33:57 CST 2018]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@63355449</code></pre>
 </div>
 </div>
@@ -1148,7 +1550,7 @@ public class NacosConfigApplication {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.profiles.active=product</code></pre>
+<pre class="prettyprint highlight"><code data-lang="properties">spring.profiles.active=product</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1156,7 +1558,7 @@ public class NacosConfigApplication {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code>Data ID:        nacos-config-product.yaml
+<pre class="prettyprint highlight"><code>Data ID:        nacos-config-product.yaml
 
 Group  :        DEFAULT_GROUP
 
@@ -1170,7 +1572,7 @@ Configuration content:        current.env: product-env</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code>in product-env enviroment; user name :nacos-config-yaml-update; age: 68
+<pre class="prettyprint highlight"><code>in product-env enviroment; user name :nacos-config-yaml-update; age: 68
 2018-11-02 15:42:14.628  INFO 33024 --- [Thread-11] ConfigServletWebServerApplicationContext : Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@6aa8e115: startup date [Fri Nov 02 15:42:03 CST 2018]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@19bb07ed</code></pre>
 </div>
 </div>
@@ -1178,7 +1580,7 @@ Configuration content:        current.env: product-env</code></pre>
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 In this example, we coded the configuration in the configuration file by using the <code>spring.profiles.active=&lt;profilename&gt;</code> method. In real scenarios, this variable needs to be different in different environment. You can use the <code>-Dspring.profiles.active=&lt;profile&gt;</code> parameter to specify the configuration so that you can switch between different environments easily.
@@ -1188,7 +1590,7 @@ In this example, we coded the configuration in the configuration file by using t
 </div>
 </div>
 <div class="sect2">
-<h3 id="_support_custom_namespaces"><a class="link" href="#_support_custom_namespaces">4.6. Support Custom Namespaces</a></h3>
+<h3 id="_support_custom_namespaces">4.6. Support Custom Namespaces</h3>
 <div class="paragraph">
 <p>For details about namespaces in Nacos, refer to <a href="https://nacos.io/zh-cn/docs/concepts.html">Nacos Concepts</a></p>
 </div>
@@ -1202,14 +1604,14 @@ Namespaces are used to isolate configurations for different tenants. Groups and 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.cloud.nacos.config.namespace=b3404bc0-d7dc-4855-b519-570ed34b62d7</code></pre>
+<pre class="prettyprint highlight"><code data-lang="properties">spring.cloud.nacos.config.namespace=b3404bc0-d7dc-4855-b519-570ed34b62d7</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 This configuration must be in the bootstrap.properties file. The value of <code>spring.cloud.nacos.config.namespace</code> is the id of the namespace, and the value of id can be retrieved from the Nacos console. Do not select other namespaces when adding configurations. Otherwise configurations cannot be retrieved properly.
@@ -1219,20 +1621,20 @@ This configuration must be in the bootstrap.properties file. The value of <code>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_support_custom_groups"><a class="link" href="#_support_custom_groups">4.7. Support Custom Groups</a></h3>
+<h3 id="_support_custom_groups">4.7. Support Custom Groups</h3>
 <div class="paragraph">
 <p>DEFAULT_GROUP is used by default when no <code>{spring.cloud.nacos.config.group}</code> configuration is defined. If you need to define your own group, you can define it in the following property:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.cloud.nacos.config.group=DEVELOP_GROUP</code></pre>
+<pre class="prettyprint highlight"><code data-lang="properties">spring.cloud.nacos.config.group=DEVELOP_GROUP</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 This configuration must be in the bootstrap.properties file, and the value of Group must be the same with the value of <code>spring.cloud.nacos.config.group</code>.
@@ -1242,14 +1644,14 @@ This configuration must be in the bootstrap.properties file, and the value of Gr
 </div>
 </div>
 <div class="sect2">
-<h3 id="_support_custom_data_id"><a class="link" href="#_support_custom_data_id">4.8. Support Custom Data Id</a></h3>
+<h3 id="_support_custom_data_id">4.8. Support Custom Data Id</h3>
 <div class="paragraph">
-<p>As of Spring Cloud Alibaba Nacos Config, data id can be self-defined. For detailed design of this part, refer to <a href="https://github.com/spring-cloud-incubator/spring-cloud-alibaba/issues/141">Github issue</a>.
+<p>As of Spring Cloud Alibaba Nacos Config, data id can be self-defined. For detailed design of this part, refer to <a href="https://github.com/alibaba/spring-cloud-alibaba/issues/141">Github issue</a>.
 The following is a complete sample:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.application.name=opensource-service-provider
+<pre class="prettyprint highlight"><code data-lang="properties">spring.application.name=opensource-service-provider
 spring.cloud.nacos.config.server-addr=127.0.0.1:8848
 
 # config external configuration
@@ -1287,7 +1689,7 @@ It’s not supported by default.</p>
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 When multiple Data Ids are configured at the same time, the priority is defined by the value of “n” in <code>spring.cloud.nacos.config.ext-config[n].data-id</code>. The bigger the value, the higher the priority.
@@ -1299,7 +1701,7 @@ When multiple Data Ids are configured at the same time, the priority is defined 
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 The value of <code>spring.cloud.nacos.config.ext-config[n].data-id</code> must have a file extension, and it could be properties or yaml/yml.
@@ -1316,7 +1718,7 @@ The setting in <code>spring.cloud.nacos.config.file-extension</code> does not ha
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.cloud.nacos.config.shared-dataids=bootstrap-common.properties,all-common.properties
+<pre class="prettyprint highlight"><code data-lang="properties">spring.cloud.nacos.config.shared-dataids=bootstrap-common.properties,all-common.properties
 spring.cloud.nacos.config.refreshable-dataids=bootstrap-common.properties</code></pre>
 </div>
 </div>
@@ -1338,7 +1740,7 @@ If not specified, all shared data ids will not be dynamically refreshed.</p>
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 When using <code>spring.cloud.nacos.config.shared-dataids</code> to configure multiple shared data ids,
@@ -1351,7 +1753,7 @@ we agree on the following priority between the shared configurations: Priorities
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 When using <code>spring.cloud.nacos.config.shared-dataids</code>, the data Id must have a file extension, and it could be properties or yaml/yml.
@@ -1364,7 +1766,7 @@ And the configuration in <code>spring.cloud.nacos.config.file-extension</code> d
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 When <code>spring.cloud.nacos.config.refreshable-dataids</code> specifies the data ids that support dynamic refresh, the corresponding values of the data ids should also specify file extensions.
@@ -1374,7 +1776,7 @@ When <code>spring.cloud.nacos.config.refreshable-dataids</code> specifies the da
 </div>
 </div>
 <div class="sect2">
-<h3 id="_nacos_config_endpoint"><a class="link" href="#_nacos_config_endpoint">4.9. Nacos Config Endpoint</a></h3>
+<h3 id="_nacos_config_endpoint">4.9. Nacos Config Endpoint</h3>
 <div class="paragraph">
 <p>Nacos Config provides an Endpoint internally with a corresponding endpoint id of <code>nacos-config</code>.</p>
 </div>
@@ -1399,7 +1801,7 @@ When <code>spring.cloud.nacos.config.refreshable-dataids</code> specifies the da
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+<pre class="prettyprint highlight"><code data-lang="json">{
 	"NacosConfigProperties": {
 		"serverAddr": "127.0.0.1:8848",
 		"encode": null,
@@ -1438,13 +1840,13 @@ When <code>spring.cloud.nacos.config.refreshable-dataids</code> specifies the da
 </div>
 </div>
 <div class="sect2">
-<h3 id="_disable_nacos_config_autoconfiguration"><a class="link" href="#_disable_nacos_config_autoconfiguration">4.10. Disable Nacos Config AutoConfiguration</a></h3>
+<h3 id="_disable_nacos_config_autoconfiguration">4.10. Disable Nacos Config AutoConfiguration</h3>
 <div class="paragraph">
 <p>set spring.cloud.nacos.config.enabled = false to disable Spring Cloud Nacos Config AutoConfiguration.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_more_information_about_nacos_config_starter_configurations"><a class="link" href="#_more_information_about_nacos_config_starter_configurations">4.11. More Information about Nacos Config Starter Configurations</a></h3>
+<h3 id="_more_information_about_nacos_config_starter_configurations">4.11. More Information about Nacos Config Starter Configurations</h3>
 <div class="paragraph">
 <p>The following shows the other configurations of the starter of Nacos Config:</p>
 </div>
@@ -1564,10 +1966,10 @@ When <code>spring.cloud.nacos.config.refreshable-dataids</code> specifies the da
 </div>
 </div>
 <div class="sect1">
-<h2 id="_spring_cloud_alibaba_sentinel"><a class="link" href="#_spring_cloud_alibaba_sentinel">5. Spring Cloud Alibaba Sentinel</a></h2>
+<h2 id="_spring_cloud_alibaba_sentinel">5. Spring Cloud Alibaba Sentinel</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_introduction_of_sentinel"><a class="link" href="#_introduction_of_sentinel">5.1. Introduction of Sentinel</a></h3>
+<h3 id="_introduction_of_sentinel">5.1. Introduction of Sentinel</h3>
 <div class="paragraph">
 <p>As microservices become popular, the stability of service calls is becoming increasingly important. <a href="https://github.com/alibaba/Sentinel">Sentinel</a> takes "flow" as the breakthrough point, and works on multiple fields including flow control, circuit breaking and load protection to protect service reliability.</p>
 </div>
@@ -1592,13 +1994,13 @@ When <code>spring.cloud.nacos.config.refreshable-dataids</code> specifies the da
 </div>
 </div>
 <div class="sect2">
-<h3 id="_how_to_use_sentinel"><a class="link" href="#_how_to_use_sentinel">5.2. How to Use Sentinel</a></h3>
+<h3 id="_how_to_use_sentinel">5.2. How to Use Sentinel</h3>
 <div class="paragraph">
 <p>If you want to use Sentinel in your project, please use the starter with the group ID as <code>com.alibaba.cloud</code> and the artifact ID as <code>spring-cloud-starter-alibaba-sentinel</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
     &lt;artifactId&gt;spring-cloud-starter-alibaba-sentinel&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
@@ -1609,7 +2011,7 @@ When <code>spring.cloud.nacos.config.refreshable-dataids</code> specifies the da
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+<pre class="prettyprint highlight"><code data-lang="java">@SpringBootApplication
 public class Application {
 
     public static void main(String[] args) {
@@ -1641,7 +2043,7 @@ public class TestController {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+<pre class="prettyprint highlight"><code data-lang="java">@SpringBootApplication
 public class Application {
 
     public static void main(String[] args) {
@@ -1664,7 +2066,7 @@ public class TestController {
 </div>
 </div>
 <div class="sect4">
-<h5 id="_sentinel_dashboard"><a class="link" href="#_sentinel_dashboard">Sentinel Dashboard</a></h5>
+<h5 id="_sentinel_dashboard">Sentinel Dashboard</h5>
 <div class="paragraph">
 <p>Sentinel dashboard is a lightweight console that provides functions such as machine discovery, single-server resource monitoring, overview of cluster resource data, as well as rule management. To use these features, you only need to complete a few steps.</p>
 </div>
@@ -1681,7 +2083,7 @@ public class TestController {
 <p>To use the Sentinel dashboard, simply complete the following 3 steps.</p>
 </div>
 <div class="sect5">
-<h6 id="_get_the_dashboard"><a class="link" href="#_get_the_dashboard">Get the Dashboard</a></h6>
+<h6 id="_get_the_dashboard">Get the Dashboard</h6>
 <div class="paragraph">
 <p>You can download the latest dashboard JAR file from the <a href="https://github.com/alibaba/Sentinel/releases">Release Page</a>.</p>
 </div>
@@ -1700,13 +2102,13 @@ public class TestController {
 </div>
 </div>
 <div class="sect5">
-<h6 id="_start_the_dashboard"><a class="link" href="#_start_the_dashboard">Start the Dashboard</a></h6>
+<h6 id="_start_the_dashboard">Start the Dashboard</h6>
 <div class="paragraph">
 <p>Sentinel dashboard is a standard SpringBoot application, and you can run the JAR file in the Spring Boot mode.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">java -Dserver.port=8080 -Dcsp.sentinel.dashboard.server=localhost:8080 -Dproject.name=sentinel-dashboard -jar sentinel-dashboard.jar</code></pre>
+<pre class="prettyprint highlight"><code data-lang="shell">java -Dserver.port=8080 -Dcsp.sentinel.dashboard.server=localhost:8080 -Dproject.name=sentinel-dashboard -jar sentinel-dashboard.jar</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1715,11 +2117,11 @@ public class TestController {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_configure_the_dashboard"><a class="link" href="#_configure_the_dashboard">5.2.2. Configure the Dashboard</a></h4>
+<h4 id="_configure_the_dashboard">5.2.2. Configure the Dashboard</h4>
 <div class="listingblock">
 <div class="title">application.yml</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring:
+<pre class="prettyprint highlight"><code data-lang="yaml">spring:
   cloud:
     sentinel:
       transport:
@@ -1736,7 +2138,7 @@ public class TestController {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_openfeign_support"><a class="link" href="#_openfeign_support">5.3. OpenFeign Support</a></h3>
+<h3 id="_openfeign_support">5.3. OpenFeign Support</h3>
 <div class="paragraph">
 <p>Sentinel is compatible with the <a href="https://github.com/OpenFeign/feign">OpenFeign</a> component. To use it, in addition to introducing the <code>sentinel-starter</code> dependency, complete the following 2 steps:</p>
 </div>
@@ -1752,7 +2154,7 @@ public class TestController {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
     &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
@@ -1763,7 +2165,7 @@ public class TestController {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@FeignClient(name = "service-provider", fallback = EchoServiceFallback.class, configuration = FeignConfiguration.class)
+<pre class="prettyprint highlight"><code data-lang="java">@FeignClient(name = "service-provider", fallback = EchoServiceFallback.class, configuration = FeignConfiguration.class)
 public interface EchoService {
     @GetMapping(value = "/echo/{str}")
     String echo(@PathVariable("str") String str);
@@ -1788,7 +2190,7 @@ class EchoServiceFallback implements EchoService {
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 The resource name policy in the corresponding interface of Feign is：httpmethod:protocol://requesturl. All the attributes in the <code>@FeignClient</code> annotation is supported by Sentinel.
@@ -1801,13 +2203,13 @@ The resource name policy in the corresponding interface of Feign is：httpmethod
 </div>
 </div>
 <div class="sect2">
-<h3 id="_resttemplate_support"><a class="link" href="#_resttemplate_support">5.4. RestTemplate Support</a></h3>
+<h3 id="_resttemplate_support">5.4. RestTemplate Support</h3>
 <div class="paragraph">
 <p>Spring Cloud Alibaba Sentinel supports the protection of <code>RestTemplate</code> service calls using Sentinel. To do this, you need to add the <code>@SentinelRestTemplate</code> annotation when constructing the <code>RestTemplate</code> bean.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+<pre class="prettyprint highlight"><code data-lang="java">@Bean
 @SentinelRestTemplate(blockHandler = "handleException", blockHandlerClass = ExceptionUtil.class)
 public RestTemplate restTemplate() {
     return new RestTemplate();
@@ -1831,7 +2233,7 @@ public RestTemplate restTemplate() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class ExceptionUtil {
+<pre class="prettyprint highlight"><code data-lang="java">public class ExceptionUtil {
     public static ClientHttpResponse handleException(HttpRequest request, byte[] body, ClientHttpRequestExecution execution, BlockException exception) {
         ...
     }
@@ -1842,7 +2244,7 @@ public RestTemplate restTemplate() {
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 When the application starts, it will check if the <code>@SentinelRestTemplate</code> annotation corresponding to the flow control or circuit breaking method exists, if it does not exist, it will throw an exception.
@@ -1873,7 +2275,7 @@ When the application starts, it will check if the <code>@SentinelRestTemplate</c
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 Take Http GET <code><a href="https://www.taobao.com/test" class="bare">https://www.taobao.com/test</a></code> as an example. The corresponding resource names have two levels of granularities, <code>GET:https://www.taobao.com</code> and <code>GET:https://www.taobao.com/test</code>.
@@ -1883,7 +2285,7 @@ Take Http GET <code><a href="https://www.taobao.com/test" class="bare">https://w
 </div>
 </div>
 <div class="sect2">
-<h3 id="_dynamic_data_source_support"><a class="link" href="#_dynamic_data_source_support">5.5. Dynamic Data Source Support</a></h3>
+<h3 id="_dynamic_data_source_support">5.5. Dynamic Data Source Support</h3>
 <div class="paragraph">
 <p><code>SentinelProperties</code> provide <code>datasource</code> attribute to configure datasource.</p>
 </div>
@@ -1892,7 +2294,7 @@ Take Http GET <code><a href="https://www.taobao.com/test" class="bare">https://w
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.cloud.sentinel.datasource.ds1.file.file=classpath: degraderule.json
+<pre class="prettyprint highlight"><code data-lang="properties">spring.cloud.sentinel.datasource.ds1.file.file=classpath: degraderule.json
 spring.cloud.sentinel.datasource.ds1.file.rule-type=flow
 
 #spring.cloud.sentinel.datasource.ds1.file.file=classpath: flowrule.json
@@ -1923,7 +2325,7 @@ spring.cloud.sentinel.datasource.ds4.apollo.rule-type=param-flow</code></pre>
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 d1, ds2, ds3, ds4 are the names of <code>ReadableDataSource</code>, and can be coded as you like. The <code>file</code>, <code>zk</code>, <code>nacos</code> , <code>apollo</code> refer to the specific data sources. The configurations following them are the specific configurations of these data sources respecitively.
@@ -1944,7 +2346,7 @@ d1, ds2, ds3, ds4 are the names of <code>ReadableDataSource</code>, and can be c
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 XML format is not supported by default. To make it effective, you need to add the  <code>jackson-dataformat-xml</code> dependency.
@@ -1957,7 +2359,7 @@ XML format is not supported by default. To make it effective, you need to add th
 </div>
 </div>
 <div class="sect2">
-<h3 id="_support_zuul"><a class="link" href="#_support_zuul">5.6. Support Zuul</a></h3>
+<h3 id="_support_zuul">5.6. Support Zuul</h3>
 <div class="paragraph">
 <p>Refer <a href="https://github.com/alibaba/Sentinel/wiki/API-Gateway-Flow-Control">API Gateway Flow Control</a></p>
 </div>
@@ -1966,7 +2368,7 @@ XML format is not supported by default. To make it effective, you need to add th
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
     &lt;artifactId&gt;spring-cloud-starter-alibaba-sentinel&lt;/artifactId&gt;
 &lt;/dependency&gt;
@@ -1984,7 +2386,7 @@ XML format is not supported by default. To make it effective, you need to add th
 </div>
 </div>
 <div class="sect2">
-<h3 id="_support_spring_cloud_gateway"><a class="link" href="#_support_spring_cloud_gateway">5.7. Support Spring Cloud Gateway</a></h3>
+<h3 id="_support_spring_cloud_gateway">5.7. Support Spring Cloud Gateway</h3>
 <div class="paragraph">
 <p>Refer <a href="https://github.com/alibaba/Sentinel/wiki/API-Gateway-Flow-Control">API Gateway Flow Control</a></p>
 </div>
@@ -1993,7 +2395,7 @@ XML format is not supported by default. To make it effective, you need to add th
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
     &lt;artifactId&gt;spring-cloud-starter-alibaba-sentinel&lt;/artifactId&gt;
 &lt;/dependency&gt;
@@ -2011,9 +2413,9 @@ XML format is not supported by default. To make it effective, you need to add th
 </div>
 </div>
 <div class="sect2">
-<h3 id="_circuit_breaker_spring_cloud_circuit_breaker_with_sentinel_configuring_sentinel_circuit_breakers"><a class="link" href="#_circuit_breaker_spring_cloud_circuit_breaker_with_sentinel_configuring_sentinel_circuit_breakers">5.8. Circuit Breaker: Spring Cloud Circuit Breaker With Sentinel &amp; Configuring Sentinel Circuit Breakers</a></h3>
+<h3 id="_circuit_breaker_spring_cloud_circuit_breaker_with_sentinel_configuring_sentinel_circuit_breakers">5.8. Circuit Breaker: Spring Cloud Circuit Breaker With Sentinel &amp; Configuring Sentinel Circuit Breakers</h3>
 <div class="sect3">
-<h4 id="_default_configuration"><a class="link" href="#_default_configuration">5.8.1. Default Configuration</a></h4>
+<h4 id="_default_configuration">5.8.1. Default Configuration</h4>
 <div class="paragraph">
 <p>To provide a default configuration for all of your circuit breakers create a <code>Customizer</code> bean that is passed a
 <code>SentinelCircuitBreakerFactory</code> or <code>ReactiveSentinelCircuitBreakerFactory</code>.
@@ -2023,7 +2425,7 @@ The <code>configureDefault</code> method can be used to provide a default config
 <div class="content">
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+<pre class="prettyprint highlight"><code data-lang="java">@Bean
 public Customizer&lt;SentinelCircuitBreakerFactory&gt; defaultCustomizer() {
 	return factory -&gt; factory.configureDefault(id -&gt; new SentinelConfigBuilder(id)
 			.build());
@@ -2038,12 +2440,12 @@ You can also choose to load circuit breaking rules later elsewhere using
 <code>DegradeRuleManager.loadRules(rules)</code> API of Sentinel, or via Sentinel dashboard.</p>
 </div>
 <div class="sect4">
-<h5 id="_reactive_example"><a class="link" href="#_reactive_example">Reactive Example</a></h5>
+<h5 id="_reactive_example">Reactive Example</h5>
 <div class="exampleblock">
 <div class="content">
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+<pre class="prettyprint highlight"><code data-lang="java">@Bean
 public Customizer&lt;ReactiveSentinelCircuitBreakerFactory&gt; defaultCustomizer() {
 	return factory -&gt; factory.configureDefault(id -&gt; new SentinelConfigBuilder(id)
 			.build());
@@ -2055,7 +2457,7 @@ public Customizer&lt;ReactiveSentinelCircuitBreakerFactory&gt; defaultCustomizer
 </div>
 </div>
 <div class="sect3">
-<h4 id="_specific_circuit_breaker_configuration"><a class="link" href="#_specific_circuit_breaker_configuration">5.8.2. Specific Circuit Breaker Configuration</a></h4>
+<h4 id="_specific_circuit_breaker_configuration">5.8.2. Specific Circuit Breaker Configuration</h4>
 <div class="paragraph">
 <p>Similarly to providing a default configuration, you can create a <code>Customizer</code> bean this is passed a
 <code>SentinelCircuitBreakerFactory</code>.</p>
@@ -2064,7 +2466,7 @@ public Customizer&lt;ReactiveSentinelCircuitBreakerFactory&gt; defaultCustomizer
 <div class="content">
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+<pre class="prettyprint highlight"><code data-lang="java">@Bean
 public Customizer&lt;SentinelCircuitBreakerFactory&gt; slowCustomizer() {
 	String slowId = "slow";
 	List&lt;DegradeRule&gt; rules = Collections.singletonList(
@@ -2079,12 +2481,12 @@ public Customizer&lt;SentinelCircuitBreakerFactory&gt; slowCustomizer() {
 </div>
 </div>
 <div class="sect4">
-<h5 id="_reactive_example_2"><a class="link" href="#_reactive_example_2">Reactive Example</a></h5>
+<h5 id="_reactive_example_2">Reactive Example</h5>
 <div class="exampleblock">
 <div class="content">
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+<pre class="prettyprint highlight"><code data-lang="java">@Bean
 public Customizer&lt;ReactiveSentinelCircuitBreakerFactory&gt; customizer() {
 	List&lt;DegradeRule&gt; rules = Collections.singletonList(
 		new DegradeRule().setGrade(RuleConstant.DEGRADE_GRADE_RT)
@@ -2101,7 +2503,7 @@ public Customizer&lt;ReactiveSentinelCircuitBreakerFactory&gt; customizer() {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_sentinel_endpoint"><a class="link" href="#_sentinel_endpoint">5.9. Sentinel Endpoint</a></h3>
+<h3 id="_sentinel_endpoint">5.9. Sentinel Endpoint</h3>
 <div class="paragraph">
 <p>Sentinel provides an Endpoint internally with a corresponding endpoint id of <code>sentinel</code>.</p>
 </div>
@@ -2162,7 +2564,7 @@ public Customizer&lt;ReactiveSentinelCircuitBreakerFactory&gt; customizer() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+<pre class="prettyprint highlight"><code data-lang="json">{
 	"blockPage": null,
 	"appName": "sentinel-example",
 	"consoleServer": "localhost:8080",
@@ -2241,7 +2643,7 @@ public Customizer&lt;ReactiveSentinelCircuitBreakerFactory&gt; customizer() {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_configuration"><a class="link" href="#_configuration">5.10. Configuration</a></h3>
+<h3 id="_configuration">5.10. Configuration</h3>
 <div class="paragraph">
 <p>The following table shows that when there are corresponding bean types in <code>ApplicationContext</code>, some actions will be taken:</p>
 </div>
@@ -2420,7 +2822,7 @@ public Customizer&lt;ReactiveSentinelCircuitBreakerFactory&gt; customizer() {
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 These configurations will only take effect in servlet environment. RestTemplate and Feign will not take effect for these configurations.
@@ -2432,109 +2834,10 @@ These configurations will only take effect in servlet environment. RestTemplate 
 </div>
 </div>
 <div class="sect1">
-<h2 id="_spring_cloud_alibaba_dubbo"><a class="link" href="#_spring_cloud_alibaba_dubbo">6. Spring Cloud Alibaba Dubbo</a></h2>
+<h2 id="_spring_cloud_alibaba_rocketmq_binder">6. Spring Cloud Alibaba RocketMQ Binder</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_introduction_2"><a class="link" href="#_introduction_2">6.1. Introduction</a></h3>
-<div class="paragraph">
-<p>Dubbo Spring Cloud is based on Dubbo Spring Boot 2.7.3[1] and Spring Cloud 2.x development, whether the developer is a Dubbo user or a Spring Cloud user.
-Easily navigate and move apps up at a cost close to “zero” costs. Dubbo Spring Cloud is designed to simplify Cloud Native development costs, improve R&amp;D performance, and improve application performance.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_features"><a class="link" href="#_features">6.2. Features</a></h3>
-<div class="paragraph">
-<p>Since Dubbo Spring Cloud is built on top of the native Spring Cloud, its service governance capabilities are considered Spring Cloud Plus.
-Not only does it fully cover the Spring Cloud native features [5], but it also provides a more stable and mature implementation, as shown in the following table:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Feature</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Cloud</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Dubbo Spring Cloud</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Distributed configuration</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Git、Zookeeper、Consul、JDBC</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Cloud Distributed Configuration + Dubbo Configuration Center[6]</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Service registration and discovery</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Eureka、Zookeeper、Consul</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Cloud Native Registration Center[7] + Dubbo Native Registration Center[8]</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Load balancing</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ribbon（Random, RoundRobin）</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Dubbo built-in implementation (random, polling, etc. + weights, etc.)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Circuit Breakers</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Cloud Hystrix</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Cloud Hystrix + Alibaba Sentinel[9] etc.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Service-to-service calls</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Open Feign、<code>RestTemplate</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Cloud service call + Dubbo <code>@Reference</code>.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Tracing</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Cloud Sleuth[10] + Zipkin[11]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Zipkin、opentracing, etc.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_reference"><a class="link" href="#_reference">6.3. Reference</a></h3>
-<div class="paragraph">
-<p>[1]: Starting with 2.7.0, Dubbo Spring Boot and Dubbo are consistent in version</p>
-</div>
-<div class="paragraph">
-<p>[2]: Preview releases of Spring Cloud Alibaba are available: 0.9.0, 0.2.2, and 0.1.2 - <a href="https://spring.io/blog/2011/04/11/preview-releases-of-spring-cloud-alibaba-are-available-0-9-0-0-2-2-and-0-1-2" class="bare">https://spring.io/blog/2011/04/11/preview-releases-of-spring-cloud-alibaba-are-available-0-9-0-0-2-2-and-0-1-2</a></p>
-</div>
-<div class="paragraph">
-<p>[3]: The current version of the Spring Cloud "F" is: <code>Finchley.SR2</code> - <a href="https://cloud.spring.io/spring-cloud-static/Finchley.SR2/single/spring-cloud.html" class="bare">https://cloud.spring.io/spring-cloud-static/Finchley.SR2/single/spring-cloud.html</a></p>
-</div>
-<div class="paragraph">
-<p>[4]: The current Spring Cloud "G" version is <code>Greenwich.RELEASE</code></p>
-</div>
-<div class="paragraph">
-<p>[5]:  Spring Cloud feature list - <a href="https://cloud.spring.io/spring-cloud-static/Greenwich.RELEASE/single/spring-cloud.html#_features" class="bare">https://cloud.spring.io/spring-cloud-static/Greenwich.RELEASE/single/spring-cloud.html#_features</a></p>
-</div>
-<div class="paragraph">
-<p>[6]:  Dubbo 2.7 starts supporting the configuration center and can be customized - <a href="http://dubbo.apache.org/en-us/docs/user/configuration/config-center.html" class="bare">http://dubbo.apache.org/en-us/docs/user/configuration/config-center.html</a></p>
-</div>
-<div class="paragraph">
-<p>[7]: Spring Cloud native registry, in addition to Eureka, Zookeeper, and Consul, includes Nacos in Spring Cloud Alibaba</p>
-</div>
-<div class="paragraph">
-<p>[8]: Dubbo Native Registration Center - <a href="http://dubbo.apache.org/en-us/docs/user/references/registry/introduction.html" class="bare">http://dubbo.apache.org/en-us/docs/user/references/registry/introduction.html</a></p>
-</div>
-<div class="paragraph">
-<p>[9]: Alibaba Sentinel: Sentinel uses traffic as an entry point to protect service stability from multiple dimensions such as flow control, blowdown, and system load protection - <a href="https://github.com/alibaba/Sentinel/wiki/%E4%BB%8B" class="bare">https://github.com/alibaba/Sentinel/wiki/%E4%BB%8B</a> %E7%BB%8D, currently Sentinel has been accepted as a candidate for Circuit Breaker by the Spring Cloud project - <a href="https://spring.io/blog/2011/04/8/introducing-spring-cloud-circuit-breaker" class="bare">https://spring.io/blog/2011/04/8/introducing-spring-cloud-circuit-breaker</a></p>
-</div>
-<div class="paragraph">
-<p>[10]:Spring Cloud Sleuth - <a href="https://spring.io/projects/spring-cloud-sleuth" class="bare">https://spring.io/projects/spring-cloud-sleuth</a></p>
-</div>
-<div class="paragraph">
-<p>[11]: Zipkin - <a href="https://github.com/apache/incubator-zipkin" class="bare">https://github.com/apache/incubator-zipkin</a></p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_spring_cloud_alibaba_rocketmq_binder"><a class="link" href="#_spring_cloud_alibaba_rocketmq_binder">7. Spring Cloud Alibaba RocketMQ Binder</a></h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_introduction_of_rocketmq"><a class="link" href="#_introduction_of_rocketmq">7.1. Introduction of RocketMQ</a></h3>
+<h3 id="_introduction_of_rocketmq">6.1. Introduction of RocketMQ</h3>
 <div class="paragraph">
 <p><a href="https://rocketmq.apache.org">RocketMQ</a> is an open-source distributed message system. It is based on highly available distributed cluster technologies and provides message publishing and subscription service with low latency and high stability. RocketMQ is widely used in a variety of industries, such as decoupling of asynchronous communication, enterprise sulotions, financial settlements, telecommunication, e-commerce, logistics, marketing, social media, instant messaging, mobile applications, mobile games, vedios, IoT, and Internet of Vehicles.</p>
 </div>
@@ -2562,7 +2865,7 @@ Not only does it fully cover the Spring Cloud native features [5], but it also p
 </div>
 </div>
 <div class="sect2">
-<h3 id="_rocketmq_usages"><a class="link" href="#_rocketmq_usages">7.2. RocketMQ Usages</a></h3>
+<h3 id="_rocketmq_usages">6.2. RocketMQ Usages</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -2578,7 +2881,7 @@ Not only does it fully cover the Spring Cloud native features [5], but it also p
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code>apache-rocketmq
+<pre class="prettyprint highlight"><code>apache-rocketmq
 ├── LICENSE
 ├── NOTICE
 ├── README.md
@@ -2597,7 +2900,7 @@ Not only does it fully cover the Spring Cloud native features [5], but it also p
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">nohup sh bin/mqnamesrv &amp;
+<pre class="prettyprint highlight"><code data-lang="bash">nohup sh bin/mqnamesrv &amp;
 tail -f ~/logs/rocketmqlogs/namesrv.log</code></pre>
 </div>
 </div>
@@ -2610,7 +2913,7 @@ tail -f ~/logs/rocketmqlogs/namesrv.log</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">nohup sh bin/mqbroker -n localhost:9876 &amp;
+<pre class="prettyprint highlight"><code data-lang="bash">nohup sh bin/mqbroker -n localhost:9876 &amp;
 tail -f ~/logs/rocketmqlogs/broker.log</code></pre>
 </div>
 </div>
@@ -2626,18 +2929,18 @@ tail -f ~/logs/rocketmqlogs/broker.log</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Producer</code></pre>
+<pre class="prettyprint highlight"><code data-lang="bash">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Producer</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Output when the message is successfuly sent: <code>SendResult [sendStatus=SEND_OK, msgId= &#8230;&#8203;</code></p>
+<p>Output when the message is successfully sent: <code>SendResult [sendStatus=SEND_OK, msgId= &#8230;&#8203;</code></p>
 </div>
 <div class="paragraph">
 <p>Receive messages:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Consumer</code></pre>
+<pre class="prettyprint highlight"><code data-lang="bash">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Consumer</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2652,13 +2955,13 @@ tail -f ~/logs/rocketmqlogs/broker.log</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sh bin/mqshutdown broker
+<pre class="prettyprint highlight"><code data-lang="bash">sh bin/mqshutdown broker
 sh bin/mqshutdown namesrv</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_introduction_of_spring_cloud_stream"><a class="link" href="#_introduction_of_spring_cloud_stream">7.3. Introduction of Spring Cloud Stream</a></h3>
+<h3 id="_introduction_of_spring_cloud_stream">6.3. Introduction of Spring Cloud Stream</h3>
 <div class="paragraph">
 <p>Spring Cloud Stream is a microservice framework used to build architectures based on messages. It helps you to create production-ready single-server Spring applications based on SpringBoot, and connects with Broker using <code>Spring Integration</code>.</p>
 </div>
@@ -2699,7 +3002,7 @@ sh bin/mqshutdown namesrv</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">MessageChannel messageChannel = new DirectChannel();
+<pre class="prettyprint highlight"><code data-lang="java">MessageChannel messageChannel = new DirectChannel();
 
 // Message subscription
 ((SubscribableChannel) messageChannel).subscribe(new MessageHandler() {
@@ -2721,13 +3024,13 @@ messageChannel.send(MessageBuilder.withPayload("simple msg").build());</code></p
 </div>
 </div>
 <div class="sect2">
-<h3 id="_how_to_use_spring_cloud_alibaba_rocketmq_binder"><a class="link" href="#_how_to_use_spring_cloud_alibaba_rocketmq_binder">7.4. How to use Spring Cloud Alibaba RocketMQ Binder</a></h3>
+<h3 id="_how_to_use_spring_cloud_alibaba_rocketmq_binder">6.4. How to use Spring Cloud Alibaba RocketMQ Binder</h3>
 <div class="paragraph">
 <p>For using the Spring Cloud Alibaba RocketMQ Binder, you just need to add it to your Spring Cloud Stream application, using the following Maven coordinates:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;dependency&gt;
   &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
   &lt;artifactId&gt;spring-cloud-stream-binder-rocketmq&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
@@ -2738,7 +3041,7 @@ messageChannel.send(MessageBuilder.withPayload("simple msg").build());</code></p
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
     &lt;artifactId&gt;spring-cloud-starter-stream-rocketmq&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
@@ -2746,7 +3049,7 @@ messageChannel.send(MessageBuilder.withPayload("simple msg").build());</code></p
 </div>
 </div>
 <div class="sect2">
-<h3 id="_how_spring_cloud_alibaba_rocketmq_binder_works"><a class="link" href="#_how_spring_cloud_alibaba_rocketmq_binder_works">7.5. How Spring Cloud Alibaba RocketMQ Binder Works</a></h3>
+<h3 id="_how_spring_cloud_alibaba_rocketmq_binder_works">6.5. How Spring Cloud Alibaba RocketMQ Binder Works</h3>
 <div class="paragraph">
 <p>This is the implementation architecture of Spring Cloud Stream RocketMQ Binder:</p>
 </div>
@@ -2788,7 +3091,7 @@ messageChannel.send(MessageBuilder.withPayload("simple msg").build());</code></p
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 RocketMQ Binder Application can also be used to configure rocketmq.** to trigger RocketMQ Spring related AutoConfiguration
@@ -2804,7 +3107,7 @@ RocketMQ Binder Application can also be used to configure rocketmq.** to trigger
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">MessageBuilder builder = MessageBuilder.withPayload(msg)
+<pre class="prettyprint highlight"><code data-lang="java">MessageBuilder builder = MessageBuilder.withPayload(msg)
     .setHeader(RocketMQHeaders.TAGS, "binder")
     .setHeader(RocketMQHeaders.KEYS, "my-key")
     .setHeader(MessageConst.PROPERTY_DELAY_TIME_LEVEL, "1");
@@ -2814,13 +3117,13 @@ output().send(message);</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_support_messagesource"><a class="link" href="#_support_messagesource">7.6. Support MessageSource</a></h3>
+<h3 id="_support_messagesource">6.6. Support MessageSource</h3>
 <div class="paragraph">
 <p>SCS RocketMQ Binder support <code>MessageSource</code>，which can receive messages by pull mode：</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+<pre class="prettyprint highlight"><code data-lang="java">@SpringBootApplication
 @EnableBinding(MQApplication.PolledProcessor.class)
 public class MQApplication {
 
@@ -2869,9 +3172,9 @@ public class MQApplication {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_configuration_options"><a class="link" href="#_configuration_options">7.7. Configuration Options</a></h3>
+<h3 id="_configuration_options">6.7. Configuration Options</h3>
 <div class="sect3">
-<h4 id="_rocketmq_binder_properties"><a class="link" href="#_rocketmq_binder_properties">7.7.1. RocketMQ Binder Properties</a></h4>
+<h4 id="_rocketmq_binder_properties">6.7.1. RocketMQ Binder Properties</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">spring.cloud.stream.rocketmq.binder.name-server</dt>
@@ -2909,11 +3212,18 @@ public class MQApplication {
 <p>Default: <code>RMQ_SYS_TRACE_TOPIC</code>.</p>
 </div>
 </dd>
+<dt class="hdlist1">spring.cloud.stream.rocketmq.binder.access-channel</dt>
+<dd>
+<p>The commercial version of rocketmq message trajectory topic is adaptive,the value is CLOUD</p>
+<div class="paragraph">
+<p>Default: null.</p>
+</div>
+</dd>
 </dl>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_rocketmq_consumer_properties"><a class="link" href="#_rocketmq_consumer_properties">7.7.2. RocketMQ Consumer Properties</a></h4>
+<h4 id="_rocketmq_consumer_properties">6.7.2. RocketMQ Consumer Properties</h4>
 <div class="paragraph">
 <p>The following properties are available for RocketMQ producers only and must be prefixed with <code>spring.cloud.stream.rocketmq.bindings.&lt;channelName&gt;.consumer.</code>.</p>
 </div>
@@ -2985,7 +3295,7 @@ public class MQApplication {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_rocketmq_provider_properties"><a class="link" href="#_rocketmq_provider_properties">7.7.3. RocketMQ Provider Properties</a></h4>
+<h4 id="_rocketmq_provider_properties">6.7.3. RocketMQ Provider Properties</h4>
 <div class="paragraph">
 <p>The following properties are available for RocketMQ producers only and must be prefixed with <code>spring.cloud.stream.rocketmq.bindings.&lt;channelName&gt;.producer.</code>.</p>
 </div>
@@ -3075,7 +3385,7 @@ public class MQApplication {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_spring_cloud_alibaba_cloud_ans"><a class="link" href="#_spring_cloud_alibaba_cloud_ans">8. Spring Cloud Alibaba Cloud ANS</a></h2>
+<h2 id="_spring_cloud_alibaba_cloud_ans">7. Spring Cloud Alibaba Cloud ANS</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>ANS(Application Naming Service) is a component of EDAS.  Spring Cloud Alibaba Cloud ANS provides the commercial version of service registration and discovery in conformity with the Spring Cloud specifications, so that you can develop your applications locally and run them on the cloud.</p>
@@ -3084,7 +3394,7 @@ public class MQApplication {
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 EDAS currently supports direct deployment of Nacos Discovery applications
@@ -3093,13 +3403,13 @@ EDAS currently supports direct deployment of Nacos Discovery applications
 </table>
 </div>
 <div class="sect2">
-<h3 id="_how_to_introduce_spring_cloud_alibaba_cloud_ans"><a class="link" href="#_how_to_introduce_spring_cloud_alibaba_cloud_ans">8.1. How to Introduce Spring Cloud Alibaba Cloud ANS</a></h3>
+<h3 id="_how_to_introduce_spring_cloud_alibaba_cloud_ans">7.1. How to Introduce Spring Cloud Alibaba Cloud ANS</h3>
 <div class="paragraph">
 <p>If you want to use ANS in your project, please use the starter with the group ID as <code>com.alibaba.cloud</code> and the artifact ID as <code>spring-cloud-starter-alicloud-ans</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
     &lt;artifactId&gt;spring-cloud-starter-alicloud-ans&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
@@ -3107,7 +3417,7 @@ EDAS currently supports direct deployment of Nacos Discovery applications
 </div>
 </div>
 <div class="sect2">
-<h3 id="_use_ans_to_register_service"><a class="link" href="#_use_ans_to_register_service">8.2. Use ANS to Register Service</a></h3>
+<h3 id="_use_ans_to_register_service">7.2. Use ANS to Register Service</h3>
 <div class="paragraph">
 <p>When Spring Cloud AliCloud ANS Starter is introduced on the client, the metadata of the service such as IP, port number and weright will be registered to the registration center automatically. The client will maintain heartbeat with the server to prove that it is capable of providing service properly.</p>
 </div>
@@ -3116,7 +3426,7 @@ EDAS currently supports direct deployment of Nacos Discovery applications
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+<pre class="prettyprint highlight"><code data-lang="java">@SpringBootApplication
 @EnableDiscoveryClient
 @RestController
 public class ProviderApplication {
@@ -3138,7 +3448,7 @@ public class ProviderApplication {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"># The application name will be used as the service name, therefore it is mandatory.
+<pre class="prettyprint highlight"><code data-lang="properties"># The application name will be used as the service name, therefore it is mandatory.
 spring.application.name=ans-provider
 server.port=18081
 # The following is the IP and port number of the registration center.
@@ -3150,7 +3460,7 @@ spring.cloud.alicloud.ans.server-port=8080</code></pre>
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 By now the registration center is not started yet, so you will get an error message if your application is started. Therefore, start the registration center before you start your application.
@@ -3160,12 +3470,12 @@ By now the registration center is not started yet, so you will get an error mess
 </div>
 </div>
 <div class="sect2">
-<h3 id="_start_registration_center"><a class="link" href="#_start_registration_center">8.3. Start Registration Center</a></h3>
+<h3 id="_start_registration_center">7.3. Start Registration Center</h3>
 <div class="paragraph">
 <p>ANS uses two types of registration centers. One is the free lightweight configuration center and the other is the registration center on cloud, which is provided through EDAS. Generally, you can use the lightweight version for application development and local testing, and use EDAS for canary deployment or production.</p>
 </div>
 <div class="sect3">
-<h4 id="_start_lightweight_configuration_center"><a class="link" href="#_start_lightweight_configuration_center">8.3.1. Start Lightweight Configuration Center</a></h4>
+<h4 id="_start_lightweight_configuration_center">7.3.1. Start Lightweight Configuration Center</h4>
 <div class="paragraph">
 <p>Refer to the <a href="https://help.aliyun.com/document_detail/44163.html">Configure Lightweight Configuration Center</a> for details about how to download and install lightweight configuration center.</p>
 </div>
@@ -3173,7 +3483,7 @@ By now the registration center is not started yet, so you will get an error mess
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 You only need to perform step 1(Download lightweight configuration center) and step 2(Start lightweight configuration center). Step 3(Configure hosts) is not required if you use ANS at the same time.
@@ -3186,7 +3496,7 @@ You only need to perform step 1(Download lightweight configuration center) and s
 </div>
 </div>
 <div class="sect3">
-<h4 id="_user_registration_center_on_the_cloud"><a class="link" href="#_user_registration_center_on_the_cloud">8.3.2. User Registration Center on the Cloud</a></h4>
+<h4 id="_user_registration_center_on_the_cloud">7.3.2. User Registration Center on the Cloud</h4>
 <div class="paragraph">
 <p>Using the registration center on the cloud saves you from the tedious work of server maintenance while at the same time provides a better stability. There is no difference at the code level between using the registration center on cloud and lightweight configuration center, but there are some differences in configurations.</p>
 </div>
@@ -3195,7 +3505,7 @@ You only need to perform step 1(Download lightweight configuration center) and s
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"># The application name will be used the service name, and is therefore mandatory.
+<pre class="prettyprint highlight"><code data-lang="properties"># The application name will be used the service name, and is therefore mandatory.
 spring.application.name=ans-provider
 # Configure your own port number
 server.port=18081
@@ -3219,7 +3529,7 @@ spring.cloud.alicloud.edas.namespace=cn-xxxxx</code></pre>
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 EDAS provides application hosting service and will fill in all configurations automatically for the hosted applications.
@@ -3232,7 +3542,7 @@ EDAS provides application hosting service and will fill in all configurations au
 </div>
 </div>
 <div class="sect1">
-<h2 id="_spring_cloud_alibaba_cloud_acm"><a class="link" href="#_spring_cloud_alibaba_cloud_acm">9. Spring Cloud Alibaba Cloud ACM</a></h2>
+<h2 id="_spring_cloud_alibaba_cloud_acm">8. Spring Cloud Alibaba Cloud ACM</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Spring Cloud AliCloud ACM is an implementation of the commercial product Application Configuration Management(ACM) in the client side of Spring Cloud, and is free of charge.</p>
@@ -3244,7 +3554,7 @@ EDAS provides application hosting service and will fill in all configurations au
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 Currently EDAS already supports direct deployment of the Nacos Config app.
@@ -3253,13 +3563,13 @@ Currently EDAS already supports direct deployment of the Nacos Config app.
 </table>
 </div>
 <div class="sect2">
-<h3 id="_how_to_introduce_spring_cloud_alibaba_cloud_acm"><a class="link" href="#_how_to_introduce_spring_cloud_alibaba_cloud_acm">9.1. How to Introduce Spring Cloud Alibaba Cloud ACM</a></h3>
+<h3 id="_how_to_introduce_spring_cloud_alibaba_cloud_acm">8.1. How to Introduce Spring Cloud Alibaba Cloud ACM</h3>
 <div class="paragraph">
 <p>If you want to use ACM in your project, please use the starter with the group ID as <code>com.alibaba.cloud</code> and the artifact ID as <code>spring-cloud-starter-alicloud-acm</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
     &lt;artifactId&gt;spring-cloud-starter-alicloud-acm&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
@@ -3267,7 +3577,7 @@ Currently EDAS already supports direct deployment of the Nacos Config app.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_use_acm_to_manage_configurations"><a class="link" href="#_use_acm_to_manage_configurations">9.2. Use ACM to Manage Configurations</a></h3>
+<h3 id="_use_acm_to_manage_configurations">8.2. Use ACM to Manage Configurations</h3>
 <div class="paragraph">
 <p>When Spring Cloud Alibaba Cloud ACM Starter is introduced into the client, the application will automatically get configuration information from the configuration management server when it starts, and inject the configuration into Spring Environment.</p>
 </div>
@@ -3276,7 +3586,7 @@ Currently EDAS already supports direct deployment of the Nacos Config app.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+<pre class="prettyprint highlight"><code data-lang="java">@SpringBootApplication
 public class ProviderApplication {
 
     public static void main(String[] args) {
@@ -3293,7 +3603,7 @@ public class ProviderApplication {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"># Required. The application name will be used as part of the keyword to get the configuration key from the server.
+<pre class="prettyprint highlight"><code data-lang="properties"># Required. The application name will be used as part of the keyword to get the configuration key from the server.
 spring.application.name=acm-config
 server.port=18081
 # The following is the IP and port number of the configuration server.
@@ -3305,7 +3615,7 @@ spring.cloud.alicloud.acm.server-port=8080</code></pre>
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 By now the configuration center is not started yet, so you will get an error message if your application is started. Therefore, start the configuration center before you start your application.
@@ -3314,12 +3624,12 @@ By now the configuration center is not started yet, so you will get an error mes
 </table>
 </div>
 <div class="sect3">
-<h4 id="_start_configuration_center"><a class="link" href="#_start_configuration_center">9.2.1. Start Configuration Center</a></h4>
+<h4 id="_start_configuration_center">8.2.1. Start Configuration Center</h4>
 <div class="paragraph">
 <p>ACM uses two types of configuration centers. One is lightweight configuration center, the other is ACM which is used on Alibaba Cloud. Generally, you can use the lightweight version for application development and local testing, and use ACM for canary deployment or production.</p>
 </div>
 <div class="sect4">
-<h5 id="_use_lightweight_configuration_center"><a class="link" href="#_use_lightweight_configuration_center">Use Lightweight Configuration Center</a></h5>
+<h5 id="_use_lightweight_configuration_center">Use Lightweight Configuration Center</h5>
 <div class="paragraph">
 <p>Refer to the <a href="https://help.aliyun.com/document_detail/44163.html">Configure Lightweight Configuration Center</a> for details about how to download and install lightweight configuration center.</p>
 </div>
@@ -3327,7 +3637,7 @@ By now the configuration center is not started yet, so you will get an error mes
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 You only need to perform step 1(Download lightweight configuration center) and step 2(Start lightweight configuration center).
@@ -3337,7 +3647,7 @@ You only need to perform step 1(Download lightweight configuration center) and s
 </div>
 </div>
 <div class="sect4">
-<h5 id="_use_acm_on_the_alibaba_cloud"><a class="link" href="#_use_acm_on_the_alibaba_cloud">Use ACM on the Alibaba Cloud</a></h5>
+<h5 id="_use_acm_on_the_alibaba_cloud">Use ACM on the Alibaba Cloud</h5>
 <div class="paragraph">
 <p>Using ACM on the cloud saves you from the tedious work of server maintenance while at the same time provides a better stability. There is no difference at the code level between using ACM on cloud and lightweight configuration center, but there are some differences in configurations.</p>
 </div>
@@ -3346,7 +3656,7 @@ You only need to perform step 1(Download lightweight configuration center) and s
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"># The application name will be used as part of the keyword to obtain configuration key from the server, and is mandatory.
+<pre class="prettyprint highlight"><code data-lang="properties"># The application name will be used as part of the keyword to obtain configuration key from the server, and is mandatory.
 spring.application.name=acm-config
 # Configure your own port number
 server.port=18081
@@ -3362,7 +3672,7 @@ spring.cloud.alicloud.acm.namespace=Your ACM namespace(You can find the namespac
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 EDAS provides application hosting service and will fill in all configurations about ACM automatically for the hosted applications.
@@ -3373,7 +3683,7 @@ EDAS provides application hosting service and will fill in all configurations ab
 </div>
 </div>
 <div class="sect3">
-<h4 id="_add_configuration_in_the_configuration_center"><a class="link" href="#_add_configuration_in_the_configuration_center">9.2.2. Add Configuration in the Configuration Center</a></h4>
+<h4 id="_add_configuration_in_the_configuration_center">8.2.2. Add Configuration in the Configuration Center</h4>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -3383,7 +3693,7 @@ EDAS provides application hosting service and will fill in all configurations ab
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code>Group:      DEFAULT_GROOUP
+<pre class="prettyprint highlight"><code>Group:      DEFAULT_GROOUP
 
 DataId:     acm-config.properties
 
@@ -3395,7 +3705,7 @@ Content:    user.name=james
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 The format of dataId is <code>{prefix}. {file-extension}</code>. “prefix” is obtained from spring.application.name by default, and the value of “file-extension” is "properties” by default.
@@ -3405,19 +3715,19 @@ The format of dataId is <code>{prefix}. {file-extension}</code>. “prefix” is
 </div>
 </div>
 <div class="sect3">
-<h4 id="_start_application_verification"><a class="link" href="#_start_application_verification">9.2.3. Start Application Verification</a></h4>
+<h4 id="_start_application_verification">8.2.3. Start Application Verification</h4>
 <div class="paragraph">
 <p>Start the following example and you can see that the value printed on the console is the value we configured in the lightweight configuration center.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code>user name :james; age: 18</code></pre>
+<pre class="prettyprint highlight"><code>user name :james; age: 18</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_modify_configuration_file_extension"><a class="link" href="#_modify_configuration_file_extension">9.3. Modify Configuration File Extension</a></h3>
+<h3 id="_modify_configuration_file_extension">8.3. Modify Configuration File Extension</h3>
 <div class="paragraph">
 <p>The default file extension of dataId in spring-cloud-starter-alicloud-acm is properties. In addition to properties,  yaml is also supported.
 You can set the file extension using spring.cloud.alicloud.acm.file-extension. Just set it to <code>yaml</code> or `yml`for yaml format.</p>
@@ -3426,7 +3736,7 @@ You can set the file extension using spring.cloud.alicloud.acm.file-extension. J
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 After you change the file extension, you need to make corresponding format changes in the DataID and content of the configuration center.
@@ -3436,7 +3746,7 @@ After you change the file extension, you need to make corresponding format chang
 </div>
 </div>
 <div class="sect2">
-<h3 id="_dynamic_configuration_refresh"><a class="link" href="#_dynamic_configuration_refresh">9.4. Dynamic Configuration Refresh</a></h3>
+<h3 id="_dynamic_configuration_refresh">8.4. Dynamic Configuration Refresh</h3>
 <div class="paragraph">
 <p>spring-cloud-starter-alicloud-acm supports dynamic configuration updates. RefreshEvent in Spring is published when you update configuration in the configuration center.
 All classes with @RefreshScope and @ConfigurationProperties annotations will be refreshed automatically.</p>
@@ -3445,7 +3755,7 @@ All classes with @RefreshScope and @ConfigurationProperties annotations will be 
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 You can disable automatic refresh by this setting: spring.cloud.alicloud.acm.refresh.enabled=false
@@ -3455,7 +3765,7 @@ You can disable automatic refresh by this setting: spring.cloud.alicloud.acm.ref
 </div>
 </div>
 <div class="sect2">
-<h3 id="_configure_profile_granularity"><a class="link" href="#_configure_profile_granularity">9.5. Configure Profile Granularity</a></h3>
+<h3 id="_configure_profile_granularity">8.5. Configure Profile Granularity</h3>
 <div class="paragraph">
 <p>When configuration is loaded by spring-cloud-starter-alicloud-acm, configuration with DataId {spring.application.name}. {file-extension} will be loaded first. If there is content in spring.profiles.active, the content of spring.profile, and configuration with the dataid format of{spring.application.name}-{profile}. {file-extension} will also be loaded in turn, and the latter has higher priority.</p>
 </div>
@@ -3472,26 +3782,26 @@ You can disable automatic refresh by this setting: spring.cloud.alicloud.acm.ref
 </div>
 </div>
 <div class="sect2">
-<h3 id="_support_custom_acm_timeout"><a class="link" href="#_support_custom_acm_timeout">9.6. Support Custom ACM Timeout</a></h3>
+<h3 id="_support_custom_acm_timeout">8.6. Support Custom ACM Timeout</h3>
 <div class="paragraph">
 <p>the default timeout of ACM client get config from sever is 3000 ms . If you need to define a timeout, set configuration <code>spring.cloud.alicloud.acm.timeout</code>,the unit is millisecond.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_support_custom_group_configurations"><a class="link" href="#_support_custom_group_configurations">9.7. Support Custom Group Configurations</a></h3>
+<h3 id="_support_custom_group_configurations">8.7. Support Custom Group Configurations</h3>
 <div class="paragraph">
 <p>DEFAULT_GROUP is used by default when no <code>{spring.cloud.alicloud.acm.group}</code> configuration is defined. If you need to define your own group, you can use the following method:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.cloud.alicloud.acm.group=DEVELOP_GROUP</code></pre>
+<pre class="prettyprint highlight"><code data-lang="properties">spring.cloud.alicloud.acm.group=DEVELOP_GROUP</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 This configuration must be placed in the bootstrap.properties file, and the value of Group must be the same with the value of <code>spring.cloud.alicloud.acm.group</code>.
@@ -3500,13 +3810,13 @@ This configuration must be placed in the bootstrap.properties file, and the valu
 </table>
 </div>
 <div class="sect3">
-<h4 id="_support_shared_configurations"><a class="link" href="#_support_shared_configurations">9.7.1. Support Shared Configurations</a></h4>
+<h4 id="_support_shared_configurations">8.7.1. Support Shared Configurations</h4>
 <div class="paragraph">
 <p>ACM provides a solution to share the same configuration across multiple applications. You can do this by adding the <code>spring.application.group</code> configuration in Bootstrap.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.application.group=company.department.team</code></pre>
+<pre class="prettyprint highlight"><code data-lang="properties">spring.application.group=company.department.team</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -3518,7 +3828,7 @@ The later in order, the higer the priority, and the unique configuration of the 
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 The default suffix of DataId is properties, and you can change it using spring.cloud.alicloud.acm.file-extension. <code>{spring.application.group}: {spring.application.name}. {file-extension}</code> .
@@ -3530,7 +3840,7 @@ The default suffix of DataId is properties, and you can change it using spring.c
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 If you configured <code>spring.profiles.active</code> , then the DataId format of <code>{spring.application.group}: {spring.application.name}-{spring.profiles.active}. {file-extension}</code> is also supported, and has higher priority than <code>{spring.application.group}: {spring.application.name}. {file-extension}</code>
@@ -3541,7 +3851,7 @@ If you configured <code>spring.profiles.active</code> , then the DataId format o
 </div>
 </div>
 <div class="sect2">
-<h3 id="_actuator_endpoint"><a class="link" href="#_actuator_endpoint">9.8. Actuator Endpoint</a></h3>
+<h3 id="_actuator_endpoint">8.8. Actuator Endpoint</h3>
 <div class="paragraph">
 <p>the Actuator endpoint of ACM is <code>/acm</code>, <code>config</code> represents the ACM metadata configuration information, <code>runtime.sources</code> corresponds to the configuration information obtained from the ACM server and the last refresh time, <code>runtime.refreshHistory</code> corresponds to the dynamic refresh history.</p>
 </div>
@@ -3549,19 +3859,19 @@ If you configured <code>spring.profiles.active</code> , then the DataId format o
 </div>
 </div>
 <div class="sect1">
-<h2 id="_spring_cloud_alibaba_cloud_oss"><a class="link" href="#_spring_cloud_alibaba_cloud_oss">10. Spring Cloud Alibaba Cloud OSS</a></h2>
+<h2 id="_spring_cloud_alibaba_cloud_oss">9. Spring Cloud Alibaba Cloud OSS</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>OSS（Object Storage Service）is a storage product on Alibaba Cloud. Spring Cloud Alibaba Cloud OSS provides the commercialized storage service in conformity with Spring Cloud specifications. We provide easy-to-use APIs and supports the integration of Resource in the Spring framework.</p>
 </div>
 <div class="sect2">
-<h3 id="_how_to_introduce_spring_cloud_alibaba_cloud_oss"><a class="link" href="#_how_to_introduce_spring_cloud_alibaba_cloud_oss">10.1. How to Introduce Spring Cloud Alibaba Cloud OSS</a></h3>
+<h3 id="_how_to_introduce_spring_cloud_alibaba_cloud_oss">9.1. How to Introduce Spring Cloud Alibaba Cloud OSS</h3>
 <div class="paragraph">
 <p>We’ve released Spring Cloud Alibaba version 0.2.1. You will need to add dependency management POM first.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependencyManagement&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;dependencyManagement&gt;
     &lt;dependencies&gt;
         &lt;dependency&gt;
             &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
@@ -3579,7 +3889,7 @@ If you configured <code>spring.profiles.active</code> , then the DataId format o
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
     &lt;artifactId&gt;spring-cloud-starter-alicloud-oss&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
@@ -3587,15 +3897,15 @@ If you configured <code>spring.profiles.active</code> , then the DataId format o
 </div>
 </div>
 <div class="sect2">
-<h3 id="_how_to_use_oss_api"><a class="link" href="#_how_to_use_oss_api">10.2. How to Use OSS API</a></h3>
+<h3 id="_how_to_use_oss_api">9.2. How to Use OSS API</h3>
 <div class="sect3">
-<h4 id="_configure_oss"><a class="link" href="#_configure_oss">10.2.1. Configure OSS</a></h4>
+<h4 id="_configure_oss">9.2.1. Configure OSS</h4>
 <div class="paragraph">
 <p>Before you start to use Spring Cloud Alibaba Cloud OSS, please add the following configurations in application.properties.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.cloud.alicloud.access-key=Your Alibaba Cloud AK
+<pre class="prettyprint highlight"><code data-lang="properties">spring.cloud.alicloud.access-key=Your Alibaba Cloud AK
 spring.cloud.alicloud.secret-key=Your Alibaba Cloud SK
 spring.cloud.alicloud.oss.endpoint=***.aliyuncs.com</code></pre>
 </div>
@@ -3608,7 +3918,7 @@ spring.cloud.alicloud.oss.endpoint=***.aliyuncs.com</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_introduce_oss_api"><a class="link" href="#_introduce_oss_api">10.2.2. Introduce OSS API</a></h4>
+<h4 id="_introduce_oss_api">9.2.2. Introduce OSS API</h4>
 <div class="paragraph">
 <p>The OSS API of Spring Cloud Alibaba Cloud OSS is based on the official OSS SDK, and includes APIs for uploading, downloading, viewing files.</p>
 </div>
@@ -3617,7 +3927,7 @@ spring.cloud.alicloud.oss.endpoint=***.aliyuncs.com</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+<pre class="prettyprint highlight"><code data-lang="java">@SpringBootApplication
 public class OssApplication {
 
     @Autowired
@@ -3648,7 +3958,7 @@ public class OssApplication {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_integrate_with_the_resource_specifications_of_spring"><a class="link" href="#_integrate_with_the_resource_specifications_of_spring">10.3. Integrate with the Resource Specifications of Spring</a></h3>
+<h3 id="_integrate_with_the_resource_specifications_of_spring">9.3. Integrate with the Resource Specifications of Spring</h3>
 <div class="paragraph">
 <p>Spring Cloud Alibaba Cloud OSS integrates the Resource of the Spring framework, which allows you to use the OSS resources easily.</p>
 </div>
@@ -3657,7 +3967,7 @@ public class OssApplication {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+<pre class="prettyprint highlight"><code data-lang="java">@SpringBootApplication
 public class OssApplication {
 
     @Value("oss://bucketName/fileName")
@@ -3684,7 +3994,7 @@ public class OssApplication {
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 A prerequisite for the above sample is that you need to have a bucket named “bucketName” on OSS, and you have a file named “fileName” in this bucket.
@@ -3694,7 +4004,7 @@ A prerequisite for the above sample is that you need to have a bucket named “b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_use_sts_authentication"><a class="link" href="#_use_sts_authentication">10.4. Use STS Authentication</a></h3>
+<h3 id="_use_sts_authentication">9.4. Use STS Authentication</h3>
 <div class="paragraph">
 <p>In addition to AccessKeys, Spring Cloud Alibaba Cloud OSS also supports STS authentication. STS is an authentication method with temporary security tokens, and is usually used for a third party to access its resources temporarily.</p>
 </div>
@@ -3703,7 +4013,7 @@ A prerequisite for the above sample is that you need to have a bucket named “b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.cloud.alicloud.oss.authorization-mode=STS
+<pre class="prettyprint highlight"><code data-lang="properties">spring.cloud.alicloud.oss.authorization-mode=STS
 spring.cloud.alicloud.oss.endpoint=***.aliyuncs.com
 spring.cloud.alicloud.oss.sts.access-key=Your authenticated AK
 spring.cloud.alicloud.oss.sts.secret-key=Your authenticated SK
@@ -3718,7 +4028,7 @@ spring.cloud.alicloud.oss.sts.security-token=Your authenticated ST</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_more_configurations_for_the_client"><a class="link" href="#_more_configurations_for_the_client">10.5. More Configurations for the Client</a></h3>
+<h3 id="_more_configurations_for_the_client">9.5. More Configurations for the Client</h3>
 <div class="paragraph">
 <p>In addition to basic configurations, Spring Cloud Alibaba Cloud OSS also supports many other configurations, which are also included in the application.properties file.</p>
 </div>
@@ -3727,7 +4037,7 @@ spring.cloud.alicloud.oss.sts.security-token=Your authenticated ST</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.cloud.alicloud.oss.authorization-mode=STS
+<pre class="prettyprint highlight"><code data-lang="properties">spring.cloud.alicloud.oss.authorization-mode=STS
 spring.cloud.alicloud.oss.endpoint=***.aliyuncs.com
 spring.cloud.alicloud.oss.sts.access-key=Your authenticated AK
 spring.cloud.alicloud.oss.sts.secret-key=Your authenticated SK
@@ -3744,7 +4054,7 @@ spring.cloud.alicloud.oss.config.max-connections=1000</code></pre>
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 In most cases, you need to connect the parameter names with “-” for the parameters in the table of <a href="https://help.aliyun.com/document_detail/32010.html">OSSClient Configurations</a> with “-”, and all letters should be in lowercase. For example, ConnectionTimeout should be changed to connection-timeout.
@@ -3756,19 +4066,19 @@ In most cases, you need to connect the parameter names with “-” for the para
 </div>
 </div>
 <div class="sect1">
-<h2 id="_spring_cloud_alibaba_cloud_schedulerx"><a class="link" href="#_spring_cloud_alibaba_cloud_schedulerx">11. Spring Cloud Alibaba Cloud SchedulerX</a></h2>
+<h2 id="_spring_cloud_alibaba_cloud_schedulerx">10. Spring Cloud Alibaba Cloud SchedulerX</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>SchedulerX（Distributed job scheduling） is a component of EDAS, an Alibaba Cloud product. Spring Cloud Alibaba Cloud SchedulerX provides distributed job scheduling in conformity with the Spring Cloud specifications. SchedulerX provides timed job scheduling service with high accuracy with seconds, high stability and high availabiliy, and supports multiple job types, such as simple single-server jobs, simple multi-host jobs, script jobs, and grid jobs.</p>
 </div>
 <div class="sect2">
-<h3 id="_how_to_introduce_spring_cloud_alibaba_cloud_schedulerx"><a class="link" href="#_how_to_introduce_spring_cloud_alibaba_cloud_schedulerx">11.1. How to Introduce Spring Cloud Alibaba Cloud SchedulerX</a></h3>
+<h3 id="_how_to_introduce_spring_cloud_alibaba_cloud_schedulerx">10.1. How to Introduce Spring Cloud Alibaba Cloud SchedulerX</h3>
 <div class="paragraph">
 <p>If you want to use SchedulerX in your project, please use the starter with the group ID as <code>com.alibaba.cloud</code> and the artifact ID as <code>spring-cloud-starter-alicloud-schedulerX</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
     &lt;artifactId&gt;spring-cloud-starter-alicloud-schedulerX&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
@@ -3776,7 +4086,7 @@ In most cases, you need to connect the parameter names with “-” for the para
 </div>
 </div>
 <div class="sect2">
-<h3 id="_start_schedulerx"><a class="link" href="#_start_schedulerx">11.2. Start SchedulerX</a></h3>
+<h3 id="_start_schedulerx">10.2. Start SchedulerX</h3>
 <div class="paragraph">
 <p>After Spring Cloud Alibaba Cloud SchedulerX Starter is introduced into the client, you only need to complete a few simple configurations and you will be able to initialize the SchedulerX service automatically.</p>
 </div>
@@ -3785,7 +4095,7 @@ In most cases, you need to connect the parameter names with “-” for the para
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+<pre class="prettyprint highlight"><code data-lang="java">@SpringBootApplication
 public class ScxApplication {
 
     public static void main(String[] args) {
@@ -3800,7 +4110,7 @@ public class ScxApplication {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">server.port=18033
+<pre class="prettyprint highlight"><code data-lang="properties">server.port=18033
 # cn-test is the test region of SchedulerX
 spring.cloud.alicloud.scx.group-id=***
 spring.cloud.alicloud.edas.namespace=cn-test</code></pre>
@@ -3816,7 +4126,7 @@ spring.cloud.alicloud.edas.namespace=cn-test</code></pre>
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 When you create a group, please select the “test” region.
@@ -3826,7 +4136,7 @@ When you create a group, please select the “test” region.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_compile_a_simple_job"><a class="link" href="#_compile_a_simple_job">11.3. Compile a simple job</a></h3>
+<h3 id="_compile_a_simple_job">10.3. Compile a simple job</h3>
 <div class="paragraph">
 <p>Simple job is the most commonly used job type. You only need to implement the ScxSimpleJobProcessor interface.</p>
 </div>
@@ -3835,7 +4145,7 @@ When you create a group, please select the “test” region.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class SimpleTask implements ScxSimpleJobProcessor {
+<pre class="prettyprint highlight"><code data-lang="java">public class SimpleTask implements ScxSimpleJobProcessor {
 
 	@Override
 	public ProcessResult process(ScxSimpleJobContext context) {
@@ -3849,13 +4159,13 @@ When you create a group, please select the “test” region.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_job_scheduling"><a class="link" href="#_job_scheduling">11.4. Job Scheduling</a></h3>
+<h3 id="_job_scheduling">10.4. Job Scheduling</h3>
 <div class="paragraph">
 <p>Go to the <a href="https://edas.console.aliyun.com/#/edasSchedulerXJob?regionNo=cn-test">SchedulerX Jobs</a> page, select the “Test” region, and click “Create Job” on the upper-right corner to create a job, as shown below.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">Job Group： Test——***-*-*-****
+<pre class="prettyprint highlight"><code data-lang="text">Job Group： Test——***-*-*-****
 Job process interface：SimpleTask
 Type： Simple Single-Server Job
 Quartz Cron Expression： Default Option——0 * * * * ?
@@ -3864,14 +4174,14 @@ Custom Parameters： Empty</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The job above is a “Simple Single-Server Job”, and speficied a Cron expression of "0 * * * * ?" . This means that the job will be executed once and once only in every minute.</p>
+<p>The job above is a “Simple Single-Server Job”, and specified a Cron expression of "0 * * * * ?" . This means that the job will be executed once and once only in every minute.</p>
 </div>
 <div class="paragraph">
 <p>For more job types, refer to <a href="https://help.aliyun.com/document_detail/43136.html">SchedulerX Documentation</a>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_usage_in_production_environment"><a class="link" href="#_usage_in_production_environment">11.5. Usage in Production Environment</a></h3>
+<h3 id="_usage_in_production_environment">10.5. Usage in Production Environment</h3>
 <div class="paragraph">
 <p>The previous examples shows how to use SchedulerX in the “Test” region, which is mainly used for local testing.</p>
 </div>
@@ -3880,7 +4190,7 @@ Custom Parameters： Empty</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">server.port=18033
+<pre class="prettyprint highlight"><code data-lang="properties">server.port=18033
 # cn-test is the test region of SchedulerX
 spring.cloud.alicloud.scx.group-id=***
 spring.cloud.alicloud.edas.namespace=***
@@ -3898,7 +4208,7 @@ spring.cloud.alicloud.scx.domain-name=***</code></pre>
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 Group-id must be created within a namespace.
@@ -3916,7 +4226,7 @@ Group-id must be created within a namespace.
 </div>
 </div>
 <div class="sect1">
-<h2 id="_spring_cloud_alibaba_cloud_sms"><a class="link" href="#_spring_cloud_alibaba_cloud_sms">12. Spring Cloud Alibaba Cloud SMS</a></h2>
+<h2 id="_spring_cloud_alibaba_cloud_sms">11. Spring Cloud Alibaba Cloud SMS</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>SMS（Short Message Service）is a messaging service that covers the globe, Alibaba SMS provides convenient, efficient, and intelligent communication capabilities that help businesses quickly contact their customers.</p>
@@ -3925,13 +4235,13 @@ Group-id must be created within a namespace.
 <p>Spring Cloud Alibaba Cloud SMS provide an easier-to-use API for quick access to Alibaba Cloud&#8217;s SMS service based on Spring Cloud Alibaba SMS.</p>
 </div>
 <div class="sect2">
-<h3 id="_how_to_introduce_spring_cloud_alibaba_cloud_sms"><a class="link" href="#_how_to_introduce_spring_cloud_alibaba_cloud_sms">12.1. How to Introduce Spring Cloud Alibaba Cloud SMS</a></h3>
+<h3 id="_how_to_introduce_spring_cloud_alibaba_cloud_sms">11.1. How to Introduce Spring Cloud Alibaba Cloud SMS</h3>
 <div class="paragraph">
 <p>If you want to use SMS in your project, please use the starter with the group ID as <code>com.alibaba.cloud</code> and the artifact ID as <code>spring-cloud-starter-alicloud-sms</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
     &lt;artifactId&gt;spring-cloud-starter-alicloud-sms&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
@@ -3939,15 +4249,15 @@ Group-id must be created within a namespace.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_how_to_use_sms_api"><a class="link" href="#_how_to_use_sms_api">12.2. How to use SMS API</a></h3>
+<h3 id="_how_to_use_sms_api">11.2. How to use SMS API</h3>
 <div class="sect3">
-<h4 id="_configure_sms"><a class="link" href="#_configure_sms">12.2.1. Configure SMS</a></h4>
+<h4 id="_configure_sms">11.2.1. Configure SMS</h4>
 <div class="paragraph">
 <p>Before you start to use Spring Cloud Alibaba Cloud SMS, please add the following configurations in application.properties.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.cloud.alicloud.access-key=AK
+<pre class="prettyprint highlight"><code data-lang="properties">spring.cloud.alicloud.access-key=AK
 spring.cloud.alicloud.secret-key=SK</code></pre>
 </div>
 </div>
@@ -3956,7 +4266,7 @@ spring.cloud.alicloud.secret-key=SK</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_introduce_sms_api"><a class="link" href="#_introduce_sms_api">12.2.2. Introduce SMS API</a></h4>
+<h4 id="_introduce_sms_api">11.2.2. Introduce SMS API</h4>
 <div class="paragraph">
 <p>The SMS API in Spring Cloud Alicloud SMS is based on Alibaba Cloud SMS SDK. It has a single SMS sending, multiple SMS bulk sending, SMS query, SMS message (SMS receipt message and Upstream SMS message) class operation API.</p>
 </div>
@@ -3965,7 +4275,7 @@ spring.cloud.alicloud.secret-key=SK</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+<pre class="prettyprint highlight"><code data-lang="java">@SpringBootApplication
 public class SmsApplication {
 
     @Autowired
@@ -4012,7 +4322,7 @@ public class SmsApplication {
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 Due to an issue with the earlier SMS sdk version, if the text message fails to be sent, please delete the line of code that contains the explicit MethodType as POST. If you still have problems, please contact us as soon as possible.
@@ -4023,7 +4333,7 @@ Due to an issue with the earlier SMS sdk version, if the text message fails to b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_the_advanced_features_of_sms_api"><a class="link" href="#_the_advanced_features_of_sms_api">12.3. The Advanced Features of SMS Api</a></h3>
+<h3 id="_the_advanced_features_of_sms_api">11.3. The Advanced Features of SMS Api</h3>
 <div class="paragraph">
 <p>In order to reduce the cost of learning, the API interface of the Spring Cloud Alicloud SMS package is kept as consistent as the API and Example provided by the official website.</p>
 </div>
@@ -4039,7 +4349,7 @@ Due to an issue with the earlier SMS sdk version, if the text message fails to b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@RequestMapping("/batch-sms-send.do")
+<pre class="prettyprint highlight"><code data-lang="java">@RequestMapping("/batch-sms-send.do")
 public SendBatchSmsResponse batchsendCheckCode(
         @RequestParam(name = "code") String code) {
     SendBatchSmsRequest request = new SendBatchSmsRequest();
@@ -4067,7 +4377,7 @@ public SendBatchSmsResponse batchsendCheckCode(
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<div class="title">Note</div>
 </td>
 <td class="content">
 The MethodType of the request is set to GET, which is somewhat different from the example given by the official website. This is because the inconsistent version of the dependent Alibaba Cloud POP API version causes incompatibility issues, set to GET.
@@ -4090,7 +4400,7 @@ The MethodType of the request is set to GET, which is somewhat different from th
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@RequestMapping("/query.do")
+<pre class="prettyprint highlight"><code data-lang="java">@RequestMapping("/query.do")
 public QuerySendDetailsResponse querySendDetailsResponse(
         @RequestParam(name = "tel") String telephone) {
     QuerySendDetailsRequest request = new QuerySendDetailsRequest();
@@ -4137,7 +4447,7 @@ public QuerySendDetailsResponse querySendDetailsResponse(
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Component
+<pre class="prettyprint highlight"><code data-lang="java">@Component
 public class SmsReportMessageListener
 		implements SmsReportMessageListener {
 
@@ -4169,7 +4479,7 @@ public class SmsReportMessageListener
 <div class="listingblock">
 <div class="title">application.properties</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.cloud.alicloud.sms.up-queue-name=Alicom-Queue-********-SmsUp</code></pre>
+<pre class="prettyprint highlight"><code data-lang="properties">spring.cloud.alicloud.sms.up-queue-name=Alicom-Queue-********-SmsUp</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -4177,7 +4487,7 @@ public class SmsReportMessageListener
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Component
+<pre class="prettyprint highlight"><code data-lang="java">@Component
 public class SmsUpMessageListener
 		implements org.springframework.cloud.alicloud.sms.SmsUpMessageListener {
 
@@ -4196,11 +4506,496 @@ public class SmsUpMessageListener
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_spring_cloud_alibaba_appactive">12. Spring Cloud Alibaba AppActive</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_introduction_2">12.1. Introduction</h3>
+<div class="paragraph">
+<p>AppActive is an open source middleware that builds a cloud-native, high-availability and multi-active disaster tolerance
+architecture for business applications. It provides standards, implementations, and demos for applying the multi-active
+disaster recovery architecture, which is suitable for rich business scenarios (single AZ, single region, single cloud,
+multi AZ, multi region, multi-cloud, self-built IDC&#8230;&#8203;).</p>
 </div>
-<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
-<script type="text/javascript" src="js/toc.js"></script>
-<link rel="stylesheet" href="js/highlight/styles/atom-one-dark-reasonable.min.css">
-<script src="js/highlight/highlight.min.js"></script>
-<script>hljs.initHighlighting()</script>
+<div class="paragraph">
+<p>AppActive is an internal open source project of AHAS-MSHA. It is based on Alibaba&#8217;s nearly 9-year production disaster
+recovery practice, and combines the best practices of many external customers and communities from Alibaba Cloud&#8217;s
+commercial services, and has the characteristics of high reliability and scalability.</p>
+</div>
+<div class="paragraph">
+<p>AppActive has the following features:</p>
+</div>
+<div class="sect3">
+<h4 id="_unit_diversion">12.1.1. Unit diversion</h4>
+<div class="sect4">
+<h5 id="_unified_traffic_access">Unified traffic access</h5>
+<div class="paragraph">
+<p>The ability to control traffic comes from the unified access of traffic. We call this layer the access layer. The access layer is the entrance of all traffic of the unit. It can parse the request protocol and correctly guide the request traffic to the corresponding application service SLB of the correct unit according to the set split mode and split granularity. If there are no special instructions below, the request protocol defaults to HTTP. The figure below is a schematic diagram of the access layer.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_shunt_mode">Shunt mode</h5>
+<div class="paragraph">
+<p>In the multi-active scenario, the traffic will be sliced ​​according to a certain latitude and distributed to different units. Multi-active supports multiple diversion modes, such as proportional diversion and diversion according to business attributes. The specific diversion mode to choose depends on the needs of the business scenario. The shunt mode is finally reflected in the routing rules. The routing rule is a configuration that defines which unit a certain flow should belong to.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Diversion proportionally.In some business scenarios, you need to split traffic according to users or device numbers. Users, devices, etc. can all be abstracted into one ID, and then the ID can be divided into multiple sections, and each section belongs to a certain unit. In this shunt mode, the traffic ratio of each unit can be estimated through the ID interval. By setting the ratio of the ID interval to the unit capacity to be consistent, global load balancing can be achieved.</p>
+</li>
+<li>
+<p>Diversion according to business attributes.In some business scenarios, it is necessary to split traffic according to traffic attributes, such as introducing crawler traffic to a specific unit, or splitting traffic by province. Crawlers, provinces, etc. can all be abstracted into one label, and then different label value traffic can be introduced into different units. This offloading mode can support physical isolation of traffic with different business attributes.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_shunt_granularity">Shunt granularity</h5>
+<div class="paragraph">
+<p>With the servicing of applications, today&#8217;s applications are no longer a monolithic architecture, and there may be hundreds of applications that provide user access. The access layer introduces user traffic to the correct application, and supports two granularities of domain name and URI prefix.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Diversion by domain name.Different applications are distinguished according to different domain names. For example, the domain name of application app1 is app1.example.com, and the domain name of app2 is app2.example.com.</p>
+</li>
+<li>
+<p>Diversion by URI prefix.Different applications are distinguished according to different URI prefixes. For example, the domain names of apps app1 and app2 are both app.example.com, but the traffic with the prefix /app1 in the URI is introduced into app1, and the traffic with the prefix /app2 is introduced into app2.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_traffic_protocol">Traffic Protocol</h5>
+<div class="paragraph">
+<p>The access layer supports four-layer and seven-layer rich traffic request protocols to meet the needs of users in diverse scenarios such as the Internet and the Internet of Things.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>HTTP protocol support.The access layer supports the HTTP protocol by default, and the domain name and URI are parsed from the HTTP protocol for forwarding and routing.</p>
+</li>
+<li>
+<p>HTTPS protocol support.The access layer supports the HTTPS protocol, provides centralized domain name certificate management, and meets the user&#8217;s requirements for reliable and secure transmission. If the user configures the domain name certificate at the access layer, the application of SLB does not need to configure the certificate.</p>
+</li>
+<li>
+<p>Other protocol support.In addition to supporting HTTP and HTTPS protocols, the access layer also supports other HTTP-based protocols, such as SOAP. The access layer has great scalability in terms of protocols, and can quickly support special protocols in the form of plug-ins, such as MQTT and COAP in the Internet of Things scenario.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_route_transparent_transmission">Route transparent transmission</h5>
+<div class="paragraph">
+<p>In order to ensure that the flow can be closed in the cell, each layer of the access layer, application layer, and data layer will perform routing error correction or cell protection. In order to identify the traffic, it is necessary to clarify the unitized type and branch id of the traffic, which we call routing parameters, so that the correct unit of the traffic can be calculated through routing rules. Therefore, the routing parameters need to be transmitted along the request path, which we call routing Penetrate.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Access layer routing transparent transmission.When a browser initiates a service request, it needs to carry routing parameters in the request. Routing parameters can be in cookie, head or body, cookie is recommended. The access layer can parse the HTTP request, get the routing parameters and route to the correct application SLB, while the application server can still get the native routing parameters from the request.</p>
+</li>
+<li>
+<p>Application layer routing transparent transmission.When the traffic arrives at the application server, MultiLive provides a plug-in to extract routing parameters from the HTTP request and save them in the context. The next application may initiate RPC calls or asynchronous messages. Therefore, routing parameters need to be transparently transmitted at the RPC and message levels.</p>
+</li>
+<li>
+<p>RPC routing transparent transmission.When an application initiates an RPC call, the RPC client can retrieve routing parameters from the context and follow the RPC request to the remote service provider Provider. The Provider client recognizes the routing parameters in the Request and saves them in the calling context. The process of routing parameters in RPC is transparent to users.</p>
+</li>
+<li>
+<p>Message routing transparent transmission.When the MQ client sends a message, it will obtain routing parameters from the current context and add it to the message properties. When the MQ client consumes a message, it can retrieve routing parameters from the message attributes and save them in the calling context. The process of routing parameters in MQ is transparent to users.</p>
+</li>
+<li>
+<p>Data layer routing transparent transmission.Dirty writing of data can cause serious consequences, so it is necessary to ensure that the data is stored in the correct unit of DB. Duohuo provides the DRIVER plug-in, and rejects requests from non-this unit.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_unit_collaboration">12.1.2. Unit collaboration</h4>
+<div class="paragraph">
+<p>In the disaster recovery scenario, each unit in the ideal scenario is independent, but in fact there will be some business scenarios that cross-unit scenarios. In order to meet these scenarios, the product needs to provide unit collaboration capabilities.</p>
+</div>
+<div class="sect4">
+<h5 id="_center_call">Center call</h5>
+<div class="paragraph">
+<p>In some specific business scenarios, in order to ensure strong data consistency, specific services can only be provided in specific central units, and all calls to central services will be directly routed to the central unit for completion. Remote multi-active products use CSB components and RPC multi-active plug-ins to complete coordinated calls between service units to meet business integrity.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_unit_protection">12.1.3. Unit protection</h4>
+<div class="paragraph">
+<p>The product guarantees the global correctness of the business logic, and will not cause inconsistencies in the unit business logic due to cut-flow operations. Each layer of the system from top to bottom has error correction protection capabilities for error traffic to ensure that services are flowed correctly according to the unitized rules.</p>
+</div>
+<div class="sect4">
+<h5 id="_access_layer_error_correction">Access layer error correction</h5>
+<div class="paragraph">
+<p>The traffic enters the access layer, and the access layer determines the unit of the traffic by requesting additional routing parameters, and the non-unit traffic will be proxied to the correct target unit, ensuring the correctness of the access layer ingress traffic.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_rpc_error_correction">RPC error correction</h5>
+<div class="paragraph">
+<p>When the RPC service is called, the RPC Multi-Live Plugin will perform the correct routing of the service call based on the requested unit information on the Consumer side, and call the wrong traffic service. The RPC Multi-Live Plugin will calculate the correct target unit and call across units. Target unit services to ensure the consistency of service circulation logic. At the same time, the RPC Multi-Live Plugin will perform a second check on the incoming request on the Provider side to ensure the correct service call. Through the double check mechanism, RPC Multi-Live Plugin realizes the error correction of RPC calls to ensure the correctness of service calls.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_unit_extension">12.1.4. Unit extension</h4>
+<div class="sect4">
+<h5 id="_horizontal_extension">Horizontal extension</h5>
+<div class="paragraph">
+<p>When the business carrying capacity of the existing unit has reached the upper limit and cannot be expanded, the product provides simple and fast unit horizontal expansion capabilities:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Expansion of new units nationwide without geographic restrictions</p>
+</li>
+<li>
+<p>The number of new units to be expanded is not limited, and the stability and performance of the unit are not affected by the number of units</p>
+</li>
+<li>
+<p>Two types of unit expansion are provided: remote unit with independent DB and same-city unit with shared DB</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_to_use">12.2. How to use</h3>
+<div class="sect3">
+<h4 id="_data_plane">12.2.1. Data Plane</h4>
+<div class="paragraph">
+<p><strong>Precondition</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Require your application service to be implemented in Java and implement service invocation with Spring Cloud</p>
+</li>
+<li>
+<p>Load balancing supports Ribbon, but SpringCloudBalancer is not currently supported</p>
+</li>
+<li>
+<p>Support declarative Http clients: OpenFeign and RestTemplate, not support original Http clients such as OkHttp and HttpClient</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Quick Start</strong>
+Before starting the example for demonstration, let&#8217;s take a look at how Spring Cloud applications use the remote multi-active capabilities provided by AppActive.
+<strong>Note, this chapter is only for your understanding of the access method. The access work has been completed in this examples, and you do not need to modify it.</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>First, modify the pom.xml file to add the following maven dependencies based on the latest <code>spring-cloud-alibaba-dependencies</code> added to the provider and consumer.</p>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;dependency&gt;
+     &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+     &lt;artifactId&gt;spring-cloud-starter-alibaba-appactive&lt;/artifactId&gt;
+&lt;/dependency&gt;</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Configure offload policies for specific interfaces in the <code>application.properties</code> configuration file of the Provider application. The suffix <code>core-path</code> is used to configure core services, <code>global-path</code> is used to configure global services, and <code>general-path</code> is used to configure general services. For example, the product application distribution strategy in the demo is configured as follows：</p>
+<div class="literalblock">
+<div class="content">
+<pre>spring.cloud.appactive.filter.core-path=/detailHidden/*,/detail/*
+spring.cloud.appactive.filter.global-path=/buy/*
+spring.cloud.appactive.filter.general-path=/*</pre>
+</div>
+</div>
+</li>
+<li>
+<p>In the <code>application.properties</code> of the Consumer application, configure the client load balancing as the load balancing algorithm provided by AppActive. The configuration method is as follows. Note that <code>[service-name]</code> needs to be replaced with the specific service name to be consumed.</p>
+<div class="literalblock">
+<div class="content">
+<pre>[service-name].ribbon.NFLoadBalancerRuleClassName =com.alibaba.cloud.appactive.consumer.AppactiveRule</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Presentation preparation</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Start Nacos, MySQL, and push multi-active rules to Nacos:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>In the <code>appactive-example</code> directory, execute: <code>docker-compose -f component-quickstart.yml up -d</code> to start Nacos, MySQL.</p>
+</li>
+<li>
+<p>Execute the following command: <code>curl -X POST 'http://127.0.0.1:8848/nacos/v1/console/namespaces' -d 'customNamespaceId=appactiveDemoNamespaceId&amp;namespaceName=appactiveDemoNamespaceName&amp;namespaceDesc=appactiveDemoNamespaceDesc'</code> Create a demo named in Nacos configuration center Space appactiveDemoNamespaceId.</p>
+</li>
+<li>
+<p>Execute the following command: <code>sh baseline.sh 2 NACOS appactiveDemoNamespaceId</code> to push the multi-active rule to the namespace. The multi-live rules are described as follows:</p>
+</li>
+<li>
+<p><code>appactive.dataId.idSourceRulePath</code>: Describes how to extract routing tokens from http traffic</p>
+</li>
+<li>
+<p><code>appactive.dataId.transformerRulePath</code>: Describes how to parse routing tokens</p>
+</li>
+<li>
+<p><code>appactive.dataId.trafficRouteRulePath</code>: Describes the mapping between routing labels and units</p>
+</li>
+<li>
+<p><code>appactive.dataId.dataScopeRuleDirectoryPath_mysql-product</code>: Properties that describe the database</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Start five sets of applications, the startup parameters are:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>frontend</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code>-Dappactive.channelTypeEnum=NACOS
+-Dappactive.namespaceId=appactiveDemoNamespaceId
+-Dappactive.unit=unit
+-Dappactive.app=frontend
+-Dio.appactive.demo.unitlist=center,unit
+-Dio.appactive.demo.applist=frontend,product,storage
+-Dserver.port=8875</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>product</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code>-Dappactive.channelTypeEnum=NACOS
+-Dappactive.namespaceId=appactiveDemoNamespaceId
+-Dappactive.unit=center
+-Dappactive.app=product
+-Dspring.datasource.url=jdbc:mysql://127.0.0.1:3306/product?characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=GMT&amp;activeInstanceId=mysql&amp;activeDbName=product
+-Dserver.port=8883</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code>-Dappactive.channelTypeEnum=NACOS
+-Dappactive.namespaceId=appactiveDemoNamespaceId
+-Dappactive.unit=unit
+-Dappactive.app=product
+-Dspring.datasource.url=jdbc:mysql://127.0.0.1:3306/product?characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=GMT&amp;activeInstanceId=mysql&amp;activeDbName=product
+-Dserver.port=8873</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>storage</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code>-Dappactive.channelTypeEnum=NACOS
+-Dappactive.namespaceId=appactiveDemoNamespaceId
+-Dappactive.unit=center
+-Dappactive.app=storage
+-Dspring.datasource.url=jdbc:mysql://127.0.0.1:3306/product?characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=GMT
+-Dserver.port=8881</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code>-Dappactive.channelTypeEnum=NACOS
+-Dappactive.namespaceId=appactiveDemoNamespaceId
+-Dappactive.unit=unit
+-Dappactive.app=storage
+-Dspring.datasource.url=jdbc:mysql://127.0.0.1:3306/product?characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=GMT
+-Dserver.port=8871</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Demonstration process</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Demonstration of general service calls belonging to the normal unit. Typing: <code><a href="http://127.0.0.1:8079/listProduct" class="bare">http://127.0.0.1:8079/listProduct</a></code> address in the browser, it can be seen that the request is sent to the product through the frontend application.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="pic/image-2022-09-15-16-16-25-989.png" alt="image 2022 09 15 16 16 25 989">
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Since `/listProduct` in the above path matches the `/*` path rule in the product application, which corresponds to the normal unit, frontend does not have a tendency in the product address list obtained from the registry, and will randomly select an address for request sending. So requesting the above path multiple times will see the request switch back and forth between the normal and center units of the product.</pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Demonstration of core service calls belonging to the different unit by request information. Typing: <code><a href="http://127.0.0.1:8079/detailProduct" class="bare">http://127.0.0.1:8079/detailProduct</a></code> in the browser, because the <code>/detailProduct</code> in the above path matches the <code>/detail/*</code> path rule in the product application, corresponding to the normal(unit) unit, it will be based on the request The specific value of the variable in the Header, Cookie or request parameter is used to determine the downstream unit type of the request, because the following flow switching rules are configured in advance (for details, see the content of the idUnitMapping.json file in the rule directory):</p>
+<div class="literalblock">
+<div class="content">
+<pre>{
+  "itemType": "UnitRuleItem",
+  "items": [
+    {
+      "name": "unit",
+      "conditions": [
+        {
+          "@userIdBetween": [
+            "0~1999"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "center",
+      "conditions": [
+        {
+          "@userIdBetween": [
+            "2000~9999"
+          ]
+        }
+      ]
+    }
+  ]
+}</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>The above rules mean that requests with user IDs of 0 ~ 1999 will be sent to the noraml(unit) in the downstream provider, and requests with user IDs of 2000 ~ 9999 will be sent to the center unit of the downstream provider.
+As shown in the figure below, a request with a user ID of 1999 is simulated. It can be seen that the request is sent to the normal unit of product in the downstream through the frontend.</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="pic/image-2022-09-15-16-15-39-851.png" alt="image 2022 09 15 16 15 39 851">
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>As shown in the figure below, a request with a user ID of 2000 is simulated. It can be seen that the request is sent to the center unit node of the product in the downstream through the frontend.</pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="pic/image-2022-09-15-16-14-50-461.png" alt="image 2022 09 15 16 14 50 461">
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Demonstration of global service invocation belonging to the center unit. Typing: <code><a href="http://127.0.0.1:8079/buyProduct" class="bare">http://127.0.0.1:8079/buyProduct</a></code> path in the browser, because the <code>/buyProduct</code> in the above path matches the <code>/buy/*</code> path rule in the product and storage applications, corresponding to the center unit, it will directly send the request to the downstream center unit node.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="pic/image-2022-09-15-16-14-02-388.png" alt="image 2022 09 15 16 14 02 388">
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Cut flow demo. The main things to do when cutting flow are as follows:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Build new mapping relationship rules and write prohibition rules (manually).</p>
+</li>
+<li>
+<p>Push the write prohibition rules to the application.</p>
+</li>
+<li>
+<p>Push the new mapping relationship rules to the application after waiting for the data to equalize.
+The streaming rule demonstrated next will send requests with user IDs 0 ~ 2999 to the normal(called unit) unit in the downstream provider, and requests with user IDs 3000 ~ 9999 will be sent to the center(called center) unit in the downstream provider. For specific rules, see idUnitMappingNext.json:</p>
+<div class="literalblock">
+<div class="content">
+<pre>{
+  "itemType": "UnitRuleItem",
+  "items": [
+    {
+      "name": "unit",
+      "conditions": [
+        {
+          "@userIdBetween": [
+            "0~2999"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "center",
+      "conditions": [
+        {
+          "@userIdBetween": [
+            "3000~9999"
+          ]
+        }
+      ]
+    }
+  ]
+}</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>As shown in the figure below, a request with a user ID of 2999 is simulated. It can be seen that the request is sent to the unit node of the product in the downstream through the frontend, and the flow switching rule takes effect.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="pic/image-2022-09-15-16-12-58-177.png" alt="image 2022 09 15 16 12 58 177">
+</div>
+</div>
+<div class="paragraph">
+<p>As shown in the figure below, a request with a user ID of 3000 is simulated. It can be seen that the request is sent to the center unit node of the product in the downstream through the frontend, and the cut flow rule takes effect.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="pic/image-2022-09-15-16-12-26-461.png" alt="image 2022 09 15 16 12 26 461">
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2022-09-15 17:56:45 +0800
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
 </body>
 </html>
