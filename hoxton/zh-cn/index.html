@@ -509,7 +509,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_关于_sentinel_starter_更多的配置项信息">5.9. 关于 Sentinel Starter 更多的配置项信息</a></li>
 </ul>
 </li>
-<li><a href="#_spring_cloud_alibaba_rocketmq_binder_new">6. Spring Cloud Alibaba RocketMQ Binder (NEW)</a>
+<li><a href="#_spring_cloud_alibaba_rocketmq_binder">6. Spring Cloud Alibaba RocketMQ Binder</a>
 <ul class="sectlevel2">
 <li><a href="#_rocketmq_介绍">6.1. RocketMQ 介绍</a></li>
 <li><a href="#_rocketmq_基本使用">6.2. RocketMQ 基本使用</a></li>
@@ -527,116 +527,98 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_阿里云_mq_服务">6.8. 阿里云 MQ 服务</a></li>
 </ul>
 </li>
-<li><a href="#_spring_cloud_alibaba_rocketmq_binder">7. Spring Cloud Alibaba RocketMQ Binder</a>
+<li><a href="#_spring_cloud_alicloud_ans">7. Spring Cloud AliCloud ANS</a>
 <ul class="sectlevel2">
-<li><a href="#_rocketmq_介绍_2">7.1. RocketMQ 介绍</a></li>
-<li><a href="#_rocketmq_基本使用_2">7.2. RocketMQ 基本使用</a></li>
-<li><a href="#_spring_cloud_stream_介绍_2">7.3. Spring Cloud Stream 介绍</a></li>
-<li><a href="#_如何使用_spring_cloud_alibaba_rocketmq_binder_2">7.4. 如何使用 Spring Cloud Alibaba RocketMQ Binder</a></li>
-<li><a href="#_spring_cloud_alibaba_rocketmq_binder_实现_2">7.5. Spring Cloud Alibaba RocketMQ Binder 实现</a></li>
-<li><a href="#_messagesource_支持_2">7.6. MessageSource 支持</a></li>
-<li><a href="#_配置选项_2">7.7. 配置选项</a>
+<li><a href="#_如何引入_spring_cloud_alicloud_ans">7.1. 如何引入 Spring Cloud AliCloud ANS</a></li>
+<li><a href="#_使用ans进行服务注册">7.2. 使用ANS进行服务注册</a></li>
+<li><a href="#_启动注册中心">7.3. 启动注册中心</a>
 <ul class="sectlevel3">
-<li><a href="#_rocketmq_binder_properties_2">7.7.1. RocketMQ Binder Properties</a></li>
-<li><a href="#_rocketmq_consumer_properties_2">7.7.2. RocketMQ Consumer Properties</a></li>
-<li><a href="#_rocketmq_provider_properties_2">7.7.3. RocketMQ Provider Properties</a></li>
+<li><a href="#_启动轻量版配置中心">7.3.1. 启动轻量版配置中心</a></li>
+<li><a href="#_使用云上注册中心">7.3.2. 使用云上注册中心</a></li>
 </ul>
 </li>
-<li><a href="#_阿里云_mq_服务_2">7.8. 阿里云 MQ 服务</a></li>
 </ul>
 </li>
-<li><a href="#_spring_cloud_alicloud_ans">8. Spring Cloud AliCloud ANS</a>
+<li><a href="#_spring_cloud_alicloud_acm">8. Spring Cloud AliCloud ACM</a>
 <ul class="sectlevel2">
-<li><a href="#_如何引入_spring_cloud_alicloud_ans">8.1. 如何引入 Spring Cloud AliCloud ANS</a></li>
-<li><a href="#_使用ans进行服务注册">8.2. 使用ANS进行服务注册</a></li>
-<li><a href="#_启动注册中心">8.3. 启动注册中心</a>
+<li><a href="#_如何引入_spring_cloud_alicloud_acm">8.1. 如何引入 Spring Cloud AliCloud ACM</a></li>
+<li><a href="#_使用_acm_进行配置管理">8.2. 使用 ACM 进行配置管理</a>
 <ul class="sectlevel3">
-<li><a href="#_启动轻量版配置中心">8.3.1. 启动轻量版配置中心</a></li>
-<li><a href="#_使用云上注册中心">8.3.2. 使用云上注册中心</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#_spring_cloud_alicloud_acm">9. Spring Cloud AliCloud ACM</a>
-<ul class="sectlevel2">
-<li><a href="#_如何引入_spring_cloud_alicloud_acm">9.1. 如何引入 Spring Cloud AliCloud ACM</a></li>
-<li><a href="#_使用_acm_进行配置管理">9.2. 使用 ACM 进行配置管理</a>
-<ul class="sectlevel3">
-<li><a href="#_启动配置中心">9.2.1. 启动配置中心</a>
+<li><a href="#_启动配置中心">8.2.1. 启动配置中心</a>
 <ul class="sectlevel4">
 <li><a href="#_使用轻量版配置中心">使用轻量版配置中心</a></li>
 <li><a href="#_使用阿里云配置中心">使用阿里云配置中心</a></li>
 </ul>
 </li>
-<li><a href="#_在配置中心添加配置">9.2.2. 在配置中心添加配置</a></li>
-<li><a href="#_启动应用验证">9.2.3. 启动应用验证</a></li>
+<li><a href="#_在配置中心添加配置">8.2.2. 在配置中心添加配置</a></li>
+<li><a href="#_启动应用验证">8.2.3. 启动应用验证</a></li>
 </ul>
 </li>
-<li><a href="#_更改配置文件扩展名">9.3. 更改配置文件扩展名</a></li>
-<li><a href="#_动态更新">9.4. 动态更新</a></li>
-<li><a href="#_profile_粒度的配置">9.5. Profile 粒度的配置</a></li>
-<li><a href="#_自定义配置中心超时时间">9.6. 自定义配置中心超时时间</a></li>
-<li><a href="#_自定义_group_的配置">9.7. 自定义 Group 的配置</a></li>
-<li><a href="#_共享配置">9.8. 共享配置</a></li>
-<li><a href="#_actuator_监控">9.9. Actuator 监控</a></li>
+<li><a href="#_更改配置文件扩展名">8.3. 更改配置文件扩展名</a></li>
+<li><a href="#_动态更新">8.4. 动态更新</a></li>
+<li><a href="#_profile_粒度的配置">8.5. Profile 粒度的配置</a></li>
+<li><a href="#_自定义配置中心超时时间">8.6. 自定义配置中心超时时间</a></li>
+<li><a href="#_自定义_group_的配置">8.7. 自定义 Group 的配置</a></li>
+<li><a href="#_共享配置">8.8. 共享配置</a></li>
+<li><a href="#_actuator_监控">8.9. Actuator 监控</a></li>
 </ul>
 </li>
-<li><a href="#_spring_cloud_alicloud_oss">10. Spring Cloud AliCloud OSS</a>
+<li><a href="#_spring_cloud_alicloud_oss">9. Spring Cloud AliCloud OSS</a>
 <ul class="sectlevel2">
-<li><a href="#_如何引入_spring_cloud_alicloud_oss">10.1. 如何引入 Spring Cloud AliCloud OSS</a></li>
-<li><a href="#_如何使用_oss_api">10.2. 如何使用 OSS API</a>
+<li><a href="#_如何引入_spring_cloud_alicloud_oss">9.1. 如何引入 Spring Cloud AliCloud OSS</a></li>
+<li><a href="#_如何使用_oss_api">9.2. 如何使用 OSS API</a>
 <ul class="sectlevel3">
-<li><a href="#_配置_oss">10.2.1. 配置 OSS</a></li>
-<li><a href="#_引入_oss_api">10.2.2. 引入 OSS API</a></li>
+<li><a href="#_配置_oss">9.2.1. 配置 OSS</a></li>
+<li><a href="#_引入_oss_api">9.2.2. 引入 OSS API</a></li>
 </ul>
 </li>
-<li><a href="#_与_spring_框架的_resource_结合">10.3. 与 Spring 框架的 Resource 结合</a></li>
-<li><a href="#_采用_sts_授权">10.4. 采用 STS 授权</a></li>
-<li><a href="#_更多客户端配置">10.5. 更多客户端配置</a></li>
+<li><a href="#_与_spring_框架的_resource_结合">9.3. 与 Spring 框架的 Resource 结合</a></li>
+<li><a href="#_采用_sts_授权">9.4. 采用 STS 授权</a></li>
+<li><a href="#_更多客户端配置">9.5. 更多客户端配置</a></li>
 </ul>
 </li>
-<li><a href="#_spring_cloud_alicloud_schedulerx">11. Spring Cloud AliCloud SchedulerX</a>
+<li><a href="#_spring_cloud_alicloud_schedulerx">10. Spring Cloud AliCloud SchedulerX</a>
 <ul class="sectlevel2">
-<li><a href="#_如何引入_spring_cloud_alicloud_schedulerx">11.1. 如何引入 Spring Cloud AliCloud SchedulerX</a></li>
-<li><a href="#_启动schedulerx任务调度">11.2. 启动SchedulerX任务调度</a></li>
-<li><a href="#_编写一个简单任务">11.3. 编写一个简单任务</a></li>
-<li><a href="#_对任务进行调度">11.4. 对任务进行调度</a></li>
-<li><a href="#_生产环境使用">11.5. 生产环境使用</a></li>
+<li><a href="#_如何引入_spring_cloud_alicloud_schedulerx">10.1. 如何引入 Spring Cloud AliCloud SchedulerX</a></li>
+<li><a href="#_启动schedulerx任务调度">10.2. 启动SchedulerX任务调度</a></li>
+<li><a href="#_编写一个简单任务">10.3. 编写一个简单任务</a></li>
+<li><a href="#_对任务进行调度">10.4. 对任务进行调度</a></li>
+<li><a href="#_生产环境使用">10.5. 生产环境使用</a></li>
 </ul>
 </li>
-<li><a href="#_spring_cloud_alicloud_sms">12. Spring Cloud AliCloud SMS</a>
+<li><a href="#_spring_cloud_alicloud_sms">11. Spring Cloud AliCloud SMS</a>
 <ul class="sectlevel2">
-<li><a href="#_如何引入_spring_cloud_alicloud_sms">12.1. 如何引入 Spring Cloud AliCloud SMS</a></li>
-<li><a href="#_如何使用_sms_api">12.2. 如何使用 SMS API</a>
+<li><a href="#_如何引入_spring_cloud_alicloud_sms">11.1. 如何引入 Spring Cloud AliCloud SMS</a></li>
+<li><a href="#_如何使用_sms_api">11.2. 如何使用 SMS API</a>
 <ul class="sectlevel3">
-<li><a href="#_配置_sms">12.2.1. 配置 SMS</a></li>
-<li><a href="#_引入_sms_api">12.2.2. 引入 SMS API</a></li>
+<li><a href="#_配置_sms">11.2.1. 配置 SMS</a></li>
+<li><a href="#_引入_sms_api">11.2.2. 引入 SMS API</a></li>
 </ul>
 </li>
-<li><a href="#_sms_api_的高级功能">12.3. SMS Api 的高级功能</a></li>
+<li><a href="#_sms_api_的高级功能">11.3. SMS Api 的高级功能</a></li>
 </ul>
 </li>
-<li><a href="#_spring_cloud_alibaba_sidecar">13. Spring Cloud Alibaba Sidecar</a>
+<li><a href="#_spring_cloud_alibaba_sidecar">12. Spring Cloud Alibaba Sidecar</a>
 <ul class="sectlevel2">
-<li><a href="#_术语">13.1. 术语</a>
+<li><a href="#_术语">12.1. 术语</a>
 <ul class="sectlevel3">
-<li><a href="#_异构微服务">13.1.1. 异构微服务</a></li>
-<li><a href="#_完美整合的三层含义">13.1.2. "完美整合"的三层含义</a></li>
+<li><a href="#_异构微服务">12.1.1. 异构微服务</a></li>
+<li><a href="#_完美整合的三层含义">12.1.2. "完美整合"的三层含义</a></li>
 </ul>
 </li>
-<li><a href="#_why_or_why_not">13.2. Why or Why not?</a>
+<li><a href="#_why_or_why_not">12.2. Why or Why not?</a>
 <ul class="sectlevel3">
-<li><a href="#_为什么要编写alibaba_sidecar">13.2.1. 为什么要编写Alibaba Sidecar？</a></li>
-<li><a href="#_为什么不用service_mesh">13.2.2. 为什么不用Service Mesh？</a></li>
+<li><a href="#_为什么要编写alibaba_sidecar">12.2.1. 为什么要编写Alibaba Sidecar？</a></li>
+<li><a href="#_为什么不用service_mesh">12.2.2. 为什么不用Service Mesh？</a></li>
 </ul>
 </li>
-<li><a href="#_原理">13.3. 原理</a></li>
-<li><a href="#_要求">13.4. 要求</a></li>
-<li><a href="#_使用示例">13.5. 使用示例</a>
+<li><a href="#_原理">12.3. 原理</a></li>
+<li><a href="#_要求">12.4. 要求</a></li>
+<li><a href="#_使用示例">12.5. 使用示例</a>
 <ul class="sectlevel3">
-<li><a href="#_示例代码以nacos服务发现为例">13.5.1. 示例代码（以Nacos服务发现为例）</a></li>
-<li><a href="#_异构微服务_2">13.5.2. 异构微服务</a></li>
-<li><a href="#_测试">13.5.3. 测试</a>
+<li><a href="#_示例代码以nacos服务发现为例">12.5.1. 示例代码（以Nacos服务发现为例）</a></li>
+<li><a href="#_异构微服务_2">12.5.2. 异构微服务</a></li>
+<li><a href="#_测试">12.5.3. 测试</a>
 <ul class="sectlevel4">
 <li><a href="#_测试1spring_cloud微服务完美调用异构微服务">测试1：Spring Cloud微服务完美调用异构微服务</a></li>
 <li><a href="#_测试2异构微服务完美调用spring_cloud微服务">测试2：异构微服务完美调用Spring Cloud微服务</a></li>
@@ -644,14 +626,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 </ul>
 </li>
-<li><a href="#_alibaba_sidecar优缺点分析">13.6. Alibaba Sidecar优缺点分析</a></li>
+<li><a href="#_alibaba_sidecar优缺点分析">12.6. Alibaba Sidecar优缺点分析</a></li>
 </ul>
 </li>
-<li><a href="#_spring_cloud_alibaba_appactive">14. Spring Cloud Alibaba AppActive</a>
+<li><a href="#_spring_cloud_alibaba_appactive">13. Spring Cloud Alibaba AppActive</a>
 <ul class="sectlevel2">
-<li><a href="#_appactive介绍">14.1. AppActive介绍</a>
+<li><a href="#_appactive介绍">13.1. AppActive介绍</a>
 <ul class="sectlevel3">
-<li><a href="#_单元分流">14.1.1. 单元分流</a>
+<li><a href="#_单元分流">13.1.1. 单元分流</a>
 <ul class="sectlevel4">
 <li><a href="#_流量统一接入">流量统一接入</a></li>
 <li><a href="#_分流模式">分流模式</a></li>
@@ -660,27 +642,27 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_路由透传">路由透传</a></li>
 </ul>
 </li>
-<li><a href="#_单元协同">14.1.2. 单元协同</a>
+<li><a href="#_单元协同">13.1.2. 单元协同</a>
 <ul class="sectlevel4">
 <li><a href="#_中心调用">中心调用</a></li>
 </ul>
 </li>
-<li><a href="#_单元保护">14.1.3. 单元保护</a>
+<li><a href="#_单元保护">13.1.3. 单元保护</a>
 <ul class="sectlevel4">
 <li><a href="#_接入层纠错">接入层纠错</a></li>
 <li><a href="#_rpc纠错">RPC纠错</a></li>
 </ul>
 </li>
-<li><a href="#_单元扩展">14.1.4. 单元扩展</a>
+<li><a href="#_单元扩展">13.1.4. 单元扩展</a>
 <ul class="sectlevel4">
 <li><a href="#_水平扩展">水平扩展</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_如何使用appactive">14.2. 如何使用AppActive</a>
+<li><a href="#_如何使用appactive">13.2. 如何使用AppActive</a>
 <ul class="sectlevel3">
-<li><a href="#_数据面">14.2.1. 数据面</a></li>
+<li><a href="#_数据面">13.2.1. 数据面</a></li>
 </ul>
 </li>
 </ul>
@@ -2799,7 +2781,7 @@ d1, ds2, ds3, ds4 是 <code>ReadableDataSource</code> 的名字，可随意编�
 </div>
 </div>
 <div class="sect1">
-<h2 id="_spring_cloud_alibaba_rocketmq_binder_new">6. Spring Cloud Alibaba RocketMQ Binder (NEW)</h2>
+<h2 id="_spring_cloud_alibaba_rocketmq_binder">6. Spring Cloud Alibaba RocketMQ Binder</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_rocketmq_介绍">6.1. RocketMQ 介绍</h3>
@@ -3449,602 +3431,7 @@ topic 和 group 请以 实例id% 为前缀进行配置。比如 topic 为 "test"
 </div>
 </div>
 <div class="sect1">
-<h2 id="_spring_cloud_alibaba_rocketmq_binder">7. Spring Cloud Alibaba RocketMQ Binder</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_rocketmq_介绍_2">7.1. RocketMQ 介绍</h3>
-<div class="paragraph">
-<p><a href="https://rocketmq.apache.org">RocketMQ</a> 是一款开源的分布式消息系统，基于高可用分布式集群技术，提供低延时的、高可靠的消息发布与订阅服务。同时，广泛应用于多个领域，包括异步通信解耦、企业解决方案、金融支付、电信、电子商务、快递物流、广告营销、社交、即时通信、移动应用、手游、视频、物联网、车联网等。</p>
-</div>
-<div class="paragraph">
-<p>具有以下特点：</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>能够保证严格的消息顺序</p>
-</li>
-<li>
-<p>提供丰富的消息拉取模式</p>
-</li>
-<li>
-<p>高效的订阅者水平扩展能力</p>
-</li>
-<li>
-<p>实时的消息订阅机制</p>
-</li>
-<li>
-<p>亿级消息堆积能力</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_rocketmq_基本使用_2">7.2. RocketMQ 基本使用</h3>
-<div class="ulist">
-<ul>
-<li>
-<p>下载 RocketMQ</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>下载 <a href="https://www.apache.org/dyn/closer.cgi?path=rocketmq/4.3.2/rocketmq-all-4.3.2-bin-release.zip">RocketMQ最新的二进制文件</a>，并解压</p>
-</div>
-<div class="paragraph">
-<p>解压后的目录结构如下：</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code>apache-rocketmq
-├── LICENSE
-├── NOTICE
-├── README.md
-├── benchmark
-├── bin
-├── conf
-└── lib</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>启动 NameServer</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">nohup sh bin/mqnamesrv &amp;
-tail -f ~/logs/rocketmqlogs/namesrv.log</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>启动 Broker</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">nohup sh bin/mqbroker -n localhost:9876 &amp;
-tail -f ~/logs/rocketmqlogs/broker.log</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>发送、接收消息</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>发送消息：</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Producer</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>发送成功后显示：<code>SendResult [sendStatus=SEND_OK, msgId= &#8230;&#8203;</code></p>
-</div>
-<div class="paragraph">
-<p>接收消息：</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">sh bin/tools.sh org.apache.rocketmq.example.quickstart.Consumer</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>接收成功后显示：<code>ConsumeMessageThread_%d Receive New Messages: [MessageExt&#8230;&#8203;</code></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>关闭 Server</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="bash">sh bin/mqshutdown broker
-sh bin/mqshutdown namesrv</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_spring_cloud_stream_介绍_2">7.3. Spring Cloud Stream 介绍</h3>
-<div class="paragraph">
-<p>Spring Cloud Stream 是一个用于构建基于消息的微服务应用框架。它基于 SpringBoot 来创建具有生产级别的单机 Spring 应用，并且使用 <code>Spring Integration</code> 与 Broker 进行连接。</p>
-</div>
-<div class="paragraph">
-<p>Spring Cloud Stream 提供了消息中间件配置的统一抽象，推出了 publish-subscribe、consumer groups、partition 这些统一的概念。</p>
-</div>
-<div class="paragraph">
-<p>Spring Cloud Stream 内部有两个概念：Binder 和 Binding。</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Binder: 跟外部消息中间件集成的组件，用来创建 Binding，各消息中间件都有自己的 Binder 实现。</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>比如 <code>Kafka</code> 的实现 <code>KafkaMessageChannelBinder</code>，<code>RabbitMQ</code> 的实现 <code>RabbitMessageChannelBinder</code> 以及 <code>RocketMQ</code> 的实现 <code>RocketMQMessageChannelBinder</code>。</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Binding: 包括 Input Binding 和 Output Binding。</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Binding 在消息中间件与应用程序提供的 Provider 和 Consumer 之间提供了一个桥梁，实现了开发者只需使用应用程序的 Provider 或 Consumer 生产或消费数据即可，屏蔽了开发者与底层消息中间件的接触。</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="https://docs.spring.io/spring-cloud-stream/docs/current/reference/htmlsingle/images/SCSt-overview.png" alt="SCSt overview">
-</div>
-<div class="title">Figure 7. Spring Cloud Stream</div>
-</div>
-<div class="paragraph">
-<p>使用 Spring Cloud Stream 完成一段简单的消息发送和消息接收代码：</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">MessageChannel messageChannel = new DirectChannel();
-
-// 消息订阅
-((SubscribableChannel) messageChannel).subscribe(new MessageHandler() {
-    @Override
-    public void handleMessage(Message&lt;?&gt; message) throws MessagingException {
-        System.out.println("receive msg: " + message.getPayload());
-    }
-});
-
-// 消息发送
-messageChannel.send(MessageBuilder.withPayload("simple msg").build());</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>这段代码所有的消息类都是 <code>spring-messaging</code> 模块里提供的。屏蔽具体消息中间件的底层实现，如果想用更换消息中间件，在配置文件里配置相关消息中间件信息以及修改 binder 依赖即可。</p>
-</div>
-<div class="paragraph">
-<p><strong>Spring Cloud Stream 底层基于这段代码去做了各种抽象。</strong></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_如何使用_spring_cloud_alibaba_rocketmq_binder_2">7.4. 如何使用 Spring Cloud Alibaba RocketMQ Binder</h3>
-<div class="paragraph">
-<p>如果要在您的项目中引入 RocketMQ Binder，需要引入如下 maven 依赖：</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="xml">&lt;dependency&gt;
-  &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
-  &lt;artifactId&gt;spring-cloud-stream-binder-rocketmq&lt;/artifactId&gt;
-&lt;/dependency&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>或者可以使用 Spring Cloud Stream RocketMQ Starter：</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="xml">&lt;dependency&gt;
-    &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
-    &lt;artifactId&gt;spring-cloud-starter-stream-rocketmq&lt;/artifactId&gt;
-&lt;/dependency&gt;</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_spring_cloud_alibaba_rocketmq_binder_实现_2">7.5. Spring Cloud Alibaba RocketMQ Binder 实现</h3>
-<div class="paragraph">
-<p>这是 Spring Cloud Stream RocketMQ Binder 的实现架构:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="https://img.alicdn.com/tfs/TB1v8rcbUY1gK0jSZFCXXcwqXXa-1236-773.png" alt="TB1v8rcbUY1gK0jSZFCXXcwqXXa 1236 773">
-</div>
-<div class="title">Figure 8. SCS RocketMQ Binder</div>
-</div>
-<div class="paragraph">
-<p>RocketMQ Binder 的实现依赖于 <a href="https://github.com/apache/rocketmq-spring">RocketMQ-Spring</a> 框架。</p>
-</div>
-<div class="paragraph">
-<p>RocketMQ-Spring 框架是 RocketMQ 与 Spring Boot 的整合，RocketMQ Spring 主要提供了 3 个特性：</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>使用 <code>RocketMQTemplate</code> 用来统一发送消息，包括同步、异步发送消息和事务消息</p>
-</li>
-<li>
-<p><code>@RocketMQTransactionListener</code> 注解用来处理事务消息的监听和回查</p>
-</li>
-<li>
-<p><code>@RocketMQMessageListener</code> 注解用来消费消息</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>RocketMQ Binder 的核心类 RocketMQMessageChannelBinder 实现了 Spring Cloud Stream 规范，内部构建会 <code>RocketMQInboundChannelAdapter</code> 和 <code>RocketMQMessageHandler</code>。</p>
-</div>
-<div class="paragraph">
-<p><code>RocketMQMessageHandler</code> 会基于 Binding 配置构造 <code>RocketMQTemplate</code>，<code>RocketMQTemplate</code> 内部会把 <code>spring-messaging</code> 模块内 <code>org.springframework.messaging.Message</code> 消息类转换成 RocketMQ 的消息类 <code>org.apache.rocketmq.common.message.Message</code>，然后发送出去。</p>
-</div>
-<div class="paragraph">
-<p><code>RocketMQInboundChannelAdapter</code> 也会基于 Binding 配置构造 <code>RocketMQListenerBindingContainer</code>，<code>RocketMQListenerBindingContainer</code> 内部会启动 RocketMQ <code>Consumer</code> 接收消息。</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-在使用 RocketMQ Binder 的同时也可以配置 rocketmq.** 用于触发 RocketMQ Spring 相关的 AutoConfiguration
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>目前 Binder 支持在 <code>Header</code> 中设置相关的 key 来进行 RocketMQ Message 消息的特性设置。</p>
-</div>
-<div class="paragraph">
-<p>比如 <code>TAGS</code>、<code>DELAY</code>、<code>TRANSACTIONAL_ARG</code>、<code>KEYS</code>、<code>WAIT_STORE_MSG_OK</code>、<code>FLAG</code> 表示 RocketMQ 消息对应的标签，</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">MessageBuilder builder = MessageBuilder.withPayload(msg)
-    .setHeader(RocketMQHeaders.TAGS, "binder")
-    .setHeader(RocketMQHeaders.KEYS, "my-key")
-    .setHeader(MessageConst.PROPERTY_DELAY_TIME_LEVEL, "1");
-Message message = builder.build();
-output().send(message);</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_messagesource_支持_2">7.6. MessageSource 支持</h3>
-<div class="paragraph">
-<p>SCS RocketMQ Binder 支持 <code>MessageSource</code>，可以进行消息的拉取，例子如下：</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">@SpringBootApplication
-@EnableBinding(MQApplication.PolledProcessor.class)
-public class MQApplication {
-
-  private final Logger logger =
-  	  LoggerFactory.getLogger(MQApplication.class);
-
-  public static void main(String[] args) {
-    SpringApplication.run(MQApplication.class, args);
-  }
-
-  @Bean
-  public ApplicationRunner runner(PollableMessageSource source,
-  	    MessageChannel dest) {
-    return args -&gt; {
-      while (true) {
-        boolean result = source.poll(m -&gt; {
-          String payload = (String) m.getPayload();
-          logger.info("Received: " + payload);
-          dest.send(MessageBuilder.withPayload(payload.toUpperCase())
-              .copyHeaders(m.getHeaders())
-              .build());
-        }, new ParameterizedTypeReference&lt;String&gt;() { });
-        if (result) {
-          logger.info("Processed a message");
-        }
-        else {
-          logger.info("Nothing to do");
-        }
-        Thread.sleep(5_000);
-      }
-    };
-  }
-
-  public static interface PolledProcessor {
-
-    @Input
-    PollableMessageSource source();
-
-    @Output
-    MessageChannel dest();
-
-  }
-
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_配置选项_2">7.7. 配置选项</h3>
-<div class="sect3">
-<h4 id="_rocketmq_binder_properties_2">7.7.1. RocketMQ Binder Properties</h4>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">spring.cloud.stream.rocketmq.binder.name-server</dt>
-<dd>
-<p>RocketMQ NameServer 地址(老版本使用 namesrv-addr 配置项)。</p>
-<div class="paragraph">
-<p>Default: <code>127.0.0.1:9876</code>.</p>
-</div>
-</dd>
-<dt class="hdlist1">spring.cloud.stream.rocketmq.binder.access-key</dt>
-<dd>
-<p>阿里云账号 AccessKey。</p>
-<div class="paragraph">
-<p>Default: null.</p>
-</div>
-</dd>
-<dt class="hdlist1">spring.cloud.stream.rocketmq.binder.secret-key</dt>
-<dd>
-<p>阿里云账号 SecretKey。</p>
-<div class="paragraph">
-<p>Default: null.</p>
-</div>
-</dd>
-<dt class="hdlist1">spring.cloud.stream.rocketmq.binder.enable-msg-trace</dt>
-<dd>
-<p>是否为 Producer 和 Consumer 开启消息轨迹功能</p>
-<div class="paragraph">
-<p>Default: <code>true</code>.</p>
-</div>
-</dd>
-<dt class="hdlist1">spring.cloud.stream.rocketmq.binder.customized-trace-topic</dt>
-<dd>
-<p>消息轨迹开启后存储的 topic 名称。</p>
-<div class="paragraph">
-<p>Default: <code>RMQ_SYS_TRACE_TOPIC</code>.</p>
-</div>
-</dd>
-<dt class="hdlist1">spring.cloud.stream.rocketmq.binder.access-channel</dt>
-<dd>
-<p>商业版rocketmq消息轨迹topic自适应，值为CLOUD</p>
-<div class="paragraph">
-<p>Default: null.</p>
-</div>
-</dd>
-</dl>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_rocketmq_consumer_properties_2">7.7.2. RocketMQ Consumer Properties</h4>
-<div class="paragraph">
-<p>下面的这些配置是以 <code>spring.cloud.stream.rocketmq.bindings.&lt;channelName&gt;.consumer.</code> 为前缀的 RocketMQ Consumer 相关的配置。</p>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">enable</dt>
-<dd>
-<p>是否启用 Consumer。</p>
-<div class="paragraph">
-<p>默认值: <code>true</code>.</p>
-</div>
-</dd>
-<dt class="hdlist1">tags</dt>
-<dd>
-<p>Consumer 基于 TAGS 订阅，多个 tag 以 <code>||</code> 分割。</p>
-<div class="paragraph">
-<p>默认值: empty.</p>
-</div>
-</dd>
-<dt class="hdlist1">sql</dt>
-<dd>
-<p>Consumer 基于 SQL 订阅。</p>
-<div class="paragraph">
-<p>默认值: empty.</p>
-</div>
-</dd>
-<dt class="hdlist1">broadcasting</dt>
-<dd>
-<p>Consumer 是否是广播消费模式。如果想让所有的订阅者都能接收到消息，可以使用广播模式。</p>
-<div class="paragraph">
-<p>默认值: <code>false</code>.</p>
-</div>
-</dd>
-<dt class="hdlist1">orderly</dt>
-<dd>
-<p>Consumer 是否同步消费消息模式。</p>
-<div class="paragraph">
-<p>默认值: <code>false</code>.</p>
-</div>
-</dd>
-<dt class="hdlist1">delayLevelWhenNextConsume</dt>
-<dd>
-<p>异步消费消息模式下消费失败重试策略：</p>
-<div class="ulist">
-<ul>
-<li>
-<p>-1,不重复，直接放入死信队列</p>
-</li>
-<li>
-<p>0,broker 控制重试策略</p>
-</li>
-<li>
-<p>&gt;0,client 控制重试策略</p>
-<div class="paragraph">
-<p>默认值: <code>0</code>.</p>
-</div>
-</li>
-</ul>
-</div>
-</dd>
-<dt class="hdlist1">suspendCurrentQueueTimeMillis</dt>
-<dd>
-<p>同步消费消息模式下消费失败后再次消费的时间间隔。</p>
-<div class="paragraph">
-<p>默认值: <code>1000</code>.</p>
-</div>
-</dd>
-</dl>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_rocketmq_provider_properties_2">7.7.3. RocketMQ Provider Properties</h4>
-<div class="paragraph">
-<p>下面的这些配置是以 <code>spring.cloud.stream.rocketmq.bindings.&lt;channelName&gt;.producer.</code> 为前缀的 RocketMQ Producer 相关的配置。</p>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">enable</dt>
-<dd>
-<p>是否启用 Producer。</p>
-<div class="paragraph">
-<p>默认值: <code>true</code>.</p>
-</div>
-</dd>
-<dt class="hdlist1">group</dt>
-<dd>
-<p>Producer group name。</p>
-<div class="paragraph">
-<p>默认值: empty.</p>
-</div>
-</dd>
-<dt class="hdlist1">maxMessageSize</dt>
-<dd>
-<p>消息发送的最大字节数。</p>
-<div class="paragraph">
-<p>默认值: <code>8249344</code>.</p>
-</div>
-</dd>
-<dt class="hdlist1">transactional</dt>
-<dd>
-<p>是否发送事务消息。</p>
-<div class="paragraph">
-<p>默认值: <code>false</code>.</p>
-</div>
-</dd>
-<dt class="hdlist1">sync</dt>
-<dd>
-<p>是否使用同步得方式发送消息。</p>
-<div class="paragraph">
-<p>默认值: <code>false</code>.</p>
-</div>
-</dd>
-<dt class="hdlist1">vipChannelEnabled</dt>
-<dd>
-<p>是否在 Vip Channel 上发送消息。</p>
-<div class="paragraph">
-<p>默认值: <code>true</code>.</p>
-</div>
-</dd>
-<dt class="hdlist1">sendMessageTimeout</dt>
-<dd>
-<p>发送消息的超时时间(毫秒)。</p>
-<div class="paragraph">
-<p>默认值: <code>3000</code>.</p>
-</div>
-</dd>
-<dt class="hdlist1">compressMessageBodyThreshold</dt>
-<dd>
-<p>消息体压缩阀值(当消息体超过 4k 的时候会被压缩)。</p>
-<div class="paragraph">
-<p>默认值: <code>4096</code>.</p>
-</div>
-</dd>
-<dt class="hdlist1">retryTimesWhenSendFailed</dt>
-<dd>
-<p>在同步发送消息的模式下，消息发送失败的重试次数。</p>
-<div class="paragraph">
-<p>默认值: <code>2</code>.</p>
-</div>
-</dd>
-<dt class="hdlist1">retryTimesWhenSendAsyncFailed</dt>
-<dd>
-<p>在异步发送消息的模式下，消息发送失败的重试次数。</p>
-<div class="paragraph">
-<p>默认值: <code>2</code>.</p>
-</div>
-</dd>
-<dt class="hdlist1">retryNextServer</dt>
-<dd>
-<p>消息发送失败的情况下是否重试其它的 broker。</p>
-<div class="paragraph">
-<p>默认值: <code>false</code>.</p>
-</div>
-</dd>
-</dl>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_阿里云_mq_服务_2">7.8. 阿里云 MQ 服务</h3>
-<div class="paragraph">
-<p>使用阿里云 MQ 服务需要配置 AccessKey、SecretKey 以及云上的 NameServer 地址。</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-0.1.2 &amp; 0.2.2 &amp; 0.9.0 才支持该功能
-</td>
-</tr>
-</table>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code data-lang="properties">spring.cloud.stream.rocketmq.binder.access-key=YourAccessKey
-spring.cloud.stream.rocketmq.binder.secret-key=YourSecretKey
-spring.cloud.stream.rocketmq.binder.name-server=NameServerInMQ
-spring.cloud.stream.rocketmq.binder.access-channel=CLOUD</code></pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-topic 和 group 请以 实例id% 为前缀进行配置。比如 topic 为 "test"，需要配置成 "实例id%test"
-</td>
-</tr>
-</table>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="https://spring-cloud-alibaba.oss-cn-beijing.aliyuncs.com/MQ.png" alt="MQ">
-</div>
-<div class="title">Figure 9. NameServer 的获取(配置中请去掉 http:// 前缀)</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_spring_cloud_alicloud_ans">8. Spring Cloud AliCloud ANS</h2>
+<h2 id="_spring_cloud_alicloud_ans">7. Spring Cloud AliCloud ANS</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>ANS（Application Naming Service） 是隶属于阿里云 EDAS 产品的组件， Spring Cloud AliCloud ANS 提供了 Spring Cloud 规范下商业版的服务注册与发现，可以让用户方便的在本地开发，同时也可以运行在云环境里。</p>
@@ -4062,7 +3449,7 @@ topic 和 group 请以 实例id% 为前缀进行配置。比如 topic 为 "test"
 </table>
 </div>
 <div class="sect2">
-<h3 id="_如何引入_spring_cloud_alicloud_ans">8.1. 如何引入 Spring Cloud AliCloud ANS</h3>
+<h3 id="_如何引入_spring_cloud_alicloud_ans">7.1. 如何引入 Spring Cloud AliCloud ANS</h3>
 <div class="paragraph">
 <p>如果要在您的项目中引入 ANS，使用 group ID 为 <code>com.alibaba.cloud</code> 和 artifact ID 为 <code>spring-cloud-starter-alicloud-ans</code> 的 starter。</p>
 </div>
@@ -4076,7 +3463,7 @@ topic 和 group 请以 实例id% 为前缀进行配置。比如 topic 为 "test"
 </div>
 </div>
 <div class="sect2">
-<h3 id="_使用ans进行服务注册">8.2. 使用ANS进行服务注册</h3>
+<h3 id="_使用ans进行服务注册">7.2. 使用ANS进行服务注册</h3>
 <div class="paragraph">
 <p>当客户端引入了 Spring Cloud AliCloud ANS Starter 以后，服务的元数据会被自动注册到注册中心，比如IP、端口、权重等信息。客户端会与服务端保持心跳，来证明自己可以正常提供服务。</p>
 </div>
@@ -4129,12 +3516,12 @@ spring.cloud.alicloud.ans.server-port=8080</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_启动注册中心">8.3. 启动注册中心</h3>
+<h3 id="_启动注册中心">7.3. 启动注册中心</h3>
 <div class="paragraph">
 <p>ANS 使用的注册中心有两种，一种是完全免费的轻量版配置中心，主要用于开发和本地调试，一种是云上注册中心，ANS 依托于阿里云 EDAS 产品提供服务注册的功能。通常情况下，可以使用轻量版配置中心作为开发和测试环境，使用云上的 EDAS 作为灰度和生产环境。</p>
 </div>
 <div class="sect3">
-<h4 id="_启动轻量版配置中心">8.3.1. 启动轻量版配置中心</h4>
+<h4 id="_启动轻量版配置中心">7.3.1. 启动轻量版配置中心</h4>
 <div class="paragraph">
 <p>轻量版配置中心的下载和启动方式可参考 <a href="https://help.aliyun.com/document_detail/44163.html?spm=a2c4g.11186623.6.677.5f206b82Z2mTCF">这里</a></p>
 </div>
@@ -4155,7 +3542,7 @@ spring.cloud.alicloud.ans.server-port=8080</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_使用云上注册中心">8.3.2. 使用云上注册中心</h4>
+<h4 id="_使用云上注册中心">7.3.2. 使用云上注册中心</h4>
 <div class="paragraph">
 <p>使用云上注册中心，可以省去服务端的维护工作，同时稳定性也会更有保障。当使用云上注册中心时，代码部分和使用轻量配置中心并没有区别，但是配置上会有一些区别。</p>
 </div>
@@ -4201,7 +3588,7 @@ EDAS 提供应用托管服务，如果你将应用托管到 EDAS，那么 EDAS �
 </div>
 </div>
 <div class="sect1">
-<h2 id="_spring_cloud_alicloud_acm">9. Spring Cloud AliCloud ACM</h2>
+<h2 id="_spring_cloud_alicloud_acm">8. Spring Cloud AliCloud ACM</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Spring Cloud AliCloud ACM 是阿里云提供的商业版应用配置管理(Application Configuration Management) 产品 在 Spring Cloud 应用侧的客户端实现，且目前完全免费。</p>
@@ -4222,7 +3609,7 @@ EDAS 提供应用托管服务，如果你将应用托管到 EDAS，那么 EDAS �
 </table>
 </div>
 <div class="sect2">
-<h3 id="_如何引入_spring_cloud_alicloud_acm">9.1. 如何引入 Spring Cloud AliCloud ACM</h3>
+<h3 id="_如何引入_spring_cloud_alicloud_acm">8.1. 如何引入 Spring Cloud AliCloud ACM</h3>
 <div class="paragraph">
 <p>如果要在您的项目中引入 ACM，使用 group ID 为 <code>com.alibaba.cloud</code> 和 artifact ID 为 <code>spring-cloud-starter-alicloud-acm</code> 的 starter。</p>
 </div>
@@ -4236,7 +3623,7 @@ EDAS 提供应用托管服务，如果你将应用托管到 EDAS，那么 EDAS �
 </div>
 </div>
 <div class="sect2">
-<h3 id="_使用_acm_进行配置管理">9.2. 使用 ACM 进行配置管理</h3>
+<h3 id="_使用_acm_进行配置管理">8.2. 使用 ACM 进行配置管理</h3>
 <div class="paragraph">
 <p>当客户端引入了 Spring Cloud AliCloud ACM Starter 以后，应用启动时会自动从配置管理的服务端获取配置信息，并注入到 Spring 的 Environment 中。</p>
 </div>
@@ -4283,7 +3670,7 @@ spring.cloud.alicloud.acm.server-port=8080</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_启动配置中心">9.2.1. 启动配置中心</h4>
+<h4 id="_启动配置中心">8.2.1. 启动配置中心</h4>
 <div class="paragraph">
 <p>ACM 使用的配置中心有两种，一种是本地运行的轻量版配置中心，主要用于开发和本地调试，一种是阿里云产品 ACM。通常情况下，可以使用轻量版配置中心作为开发和测试环境，使用云上的 ACM 作为灰度和生产环境。</p>
 </div>
@@ -4342,7 +3729,7 @@ EDAS 提供应用托管服务，如果你将应用托管到 EDAS，那么 EDAS �
 </div>
 </div>
 <div class="sect3">
-<h4 id="_在配置中心添加配置">9.2.2. 在配置中心添加配置</h4>
+<h4 id="_在配置中心添加配置">8.2.2. 在配置中心添加配置</h4>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -4374,7 +3761,7 @@ DataId 的格式为 <code>{prefix}.{file-extension}</code>,prefix 默认从配�
 </div>
 </div>
 <div class="sect3">
-<h4 id="_启动应用验证">9.2.3. 启动应用验证</h4>
+<h4 id="_启动应用验证">8.2.3. 启动应用验证</h4>
 <div class="paragraph">
 <p>启动这个Example，可以在控制台看到打印出的值正是我们在轻量版配置中心上预先配置的值。</p>
 </div>
@@ -4386,7 +3773,7 @@ DataId 的格式为 <code>{prefix}.{file-extension}</code>,prefix 默认从配�
 </div>
 </div>
 <div class="sect2">
-<h3 id="_更改配置文件扩展名">9.3. 更改配置文件扩展名</h3>
+<h3 id="_更改配置文件扩展名">8.3. 更改配置文件扩展名</h3>
 <div class="paragraph">
 <p>spring-cloud-starter-alicloud-acm 中 DataId 默认的文件扩展名是 properties。除去 properties 格式之外，也支持 yaml 格式。
 支持通过 spring.cloud.alicloud.acm.file-extension 来配置文件的扩展名，yaml 格式可以配置成 <code>yaml</code> 或 <code>yml</code>。</p>
@@ -4405,7 +3792,7 @@ DataId 的格式为 <code>{prefix}.{file-extension}</code>,prefix 默认从配�
 </div>
 </div>
 <div class="sect2">
-<h3 id="_动态更新">9.4. 动态更新</h3>
+<h3 id="_动态更新">8.4. 动态更新</h3>
 <div class="paragraph">
 <p>spring-cloud-starter-alicloud-acm 默认支持配置的动态更新，当您在配置中心修改配置的内容时，会发布 Spring 中的 RefreshEvent 事件。
 带有 @RefreshScope 和 @ConfigurationProperties 注解的类会自动刷新。</p>
@@ -4424,7 +3811,7 @@ DataId 的格式为 <code>{prefix}.{file-extension}</code>,prefix 默认从配�
 </div>
 </div>
 <div class="sect2">
-<h3 id="_profile_粒度的配置">9.5. Profile 粒度的配置</h3>
+<h3 id="_profile_粒度的配置">8.5. Profile 粒度的配置</h3>
 <div class="paragraph">
 <p>spring-cloud-starter-alicloud-acm 在加载配置的时候，首先会加载 DataId 为{spring.application.name}.{file-extension}的配置，当 spring.profiles.active 中配置有内容时，还会依次去加载 spring.profile 对应的内容， DataId 的格式为{spring.application.name}-{profile}.{file-extension}的配置，且后者的优先级高于前者。</p>
 </div>
@@ -4441,13 +3828,13 @@ DataId 的格式为 <code>{prefix}.{file-extension}</code>,prefix 默认从配�
 </div>
 </div>
 <div class="sect2">
-<h3 id="_自定义配置中心超时时间">9.6. 自定义配置中心超时时间</h3>
+<h3 id="_自定义配置中心超时时间">8.6. 自定义配置中心超时时间</h3>
 <div class="paragraph">
 <p>ACM Client 与 Server 通信的超时时间默认是 3000ms，可以通过 <code>spring.cloud.alicloud.acm.timeout</code> 来修改超时时间，单位为 ms 。</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_自定义_group_的配置">9.7. 自定义 Group 的配置</h3>
+<h3 id="_自定义_group_的配置">8.7. 自定义 Group 的配置</h3>
 <div class="paragraph">
 <p>在没有明确指定 <code>{spring.cloud.alicloud.acm.group}</code> 配置的情况下， 默认使用的是 DEFAULT_GROUP 。如果需要自定义自己的 Group，可以通过以下配置来实现：</p>
 </div>
@@ -4470,7 +3857,7 @@ DataId 的格式为 <code>{prefix}.{file-extension}</code>,prefix 默认从配�
 </div>
 </div>
 <div class="sect2">
-<h3 id="_共享配置">9.8. 共享配置</h3>
+<h3 id="_共享配置">8.8. 共享配置</h3>
 <div class="paragraph">
 <p>ACM 提供了一种多个应用之间共享配置中心的同一个配置的推荐方式，供多个应用共享一些配置时使用，您在使用的时候需要添加在 bootstrap 中添加一个配置项 <code>spring.application.group</code>。</p>
 </div>
@@ -4509,7 +3896,7 @@ DataId 的格式为 <code>{prefix}.{file-extension}</code>,prefix 默认从配�
 </div>
 </div>
 <div class="sect2">
-<h3 id="_actuator_监控">9.9. Actuator 监控</h3>
+<h3 id="_actuator_监控">8.9. Actuator 监控</h3>
 <div class="paragraph">
 <p>ACM 对应的 Actuator 监控地址为 <code>/acm</code>，其中 <code>config</code> 代表了 ACM 元数据配置的信息，<code>runtime.sources</code> 对应的是从 ACM 服务端获取的配置的信息及最后刷新时间， <code>runtime.refreshHistory</code> 对应的是动态刷新的历史记录。</p>
 </div>
@@ -4517,13 +3904,13 @@ DataId 的格式为 <code>{prefix}.{file-extension}</code>,prefix 默认从配�
 </div>
 </div>
 <div class="sect1">
-<h2 id="_spring_cloud_alicloud_oss">10. Spring Cloud AliCloud OSS</h2>
+<h2 id="_spring_cloud_alicloud_oss">9. Spring Cloud AliCloud OSS</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>OSS（Object Storage Service）是阿里云的一款对象存储服务产品， Spring Cloud AliCloud OSS 提供了Spring Cloud规范下商业版的对象存储服务，提供简单易用的API，并且支持与 Spring 框架中 Resource 的整合。</p>
 </div>
 <div class="sect2">
-<h3 id="_如何引入_spring_cloud_alicloud_oss">10.1. 如何引入 Spring Cloud AliCloud OSS</h3>
+<h3 id="_如何引入_spring_cloud_alicloud_oss">9.1. 如何引入 Spring Cloud AliCloud OSS</h3>
 <div class="paragraph">
 <p>如果要在您的项目中引入 OSS，使用 group ID 为 <code>org.springframework.cloud</code> 和 artifact ID 为 <code>spring-cloud-starter-alicloud-oss</code> 的 starter。</p>
 </div>
@@ -4537,9 +3924,9 @@ DataId 的格式为 <code>{prefix}.{file-extension}</code>,prefix 默认从配�
 </div>
 </div>
 <div class="sect2">
-<h3 id="_如何使用_oss_api">10.2. 如何使用 OSS API</h3>
+<h3 id="_如何使用_oss_api">9.2. 如何使用 OSS API</h3>
 <div class="sect3">
-<h4 id="_配置_oss">10.2.1. 配置 OSS</h4>
+<h4 id="_配置_oss">9.2.1. 配置 OSS</h4>
 <div class="paragraph">
 <p>使用 Spring Cloud AliCloud OSS 之前，需要在 application.properties 中加入以下配置。</p>
 </div>
@@ -4558,7 +3945,7 @@ spring.cloud.alicloud.oss.endpoint=***.aliyuncs.com</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_引入_oss_api">10.2.2. 引入 OSS API</h4>
+<h4 id="_引入_oss_api">9.2.2. 引入 OSS API</h4>
 <div class="paragraph">
 <p>Spring Cloud Alicloud OSS 中的 OSS API 基于阿里云官方OSS SDK提供，具备上传、下载、查看等所有对象存储类操作API。</p>
 </div>
@@ -4598,7 +3985,7 @@ public class OssApplication {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_与_spring_框架的_resource_结合">10.3. 与 Spring 框架的 Resource 结合</h3>
+<h3 id="_与_spring_框架的_resource_结合">9.3. 与 Spring 框架的 Resource 结合</h3>
 <div class="paragraph">
 <p>Spring Cloud AliCloud OSS 整合了 Spring 框架的 Resource 规范，可以让用户很方便的引用 OSS 的资源。</p>
 </div>
@@ -4644,7 +4031,7 @@ public class OssApplication {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_采用_sts_授权">10.4. 采用 STS 授权</h3>
+<h3 id="_采用_sts_授权">9.4. 采用 STS 授权</h3>
 <div class="paragraph">
 <p>Spring Cloud AliCloud OSS 除了 AccessKey/SecretKey 的授权方式以外，还支持 STS 授权方式。 STS 是临时访问令牌的方式，一般用于授权第三方，临时访问自己的资源。</p>
 </div>
@@ -4668,7 +4055,7 @@ spring.cloud.alicloud.oss.sts.security-token=你被授权的ST</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_更多客户端配置">10.5. 更多客户端配置</h3>
+<h3 id="_更多客户端配置">9.5. 更多客户端配置</h3>
 <div class="paragraph">
 <p>除了基本的配置项以外， Spring Cloud AliCloud OSS 还支持很多额外的配置，也是在 application.properties 文件中。</p>
 </div>
@@ -4706,13 +4093,13 @@ spring.cloud.alicloud.oss.config.max-connections=1000</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_spring_cloud_alicloud_schedulerx">11. Spring Cloud AliCloud SchedulerX</h2>
+<h2 id="_spring_cloud_alicloud_schedulerx">10. Spring Cloud AliCloud SchedulerX</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>SchedulerX（分布式任务调度） 是隶属于阿里云EDAS产品的组件， Spring Cloud AliCloud SchedulerX 提供了在Spring Cloud的配置规范下，分布式任务调度的功能支持。SchedulerX可提供秒级、精准、高可靠、高可用的定时任务调度服务，并支持多种类型的任务调度，如简单单机任务、简单多机任务、脚本任务以及网格任务。</p>
 </div>
 <div class="sect2">
-<h3 id="_如何引入_spring_cloud_alicloud_schedulerx">11.1. 如何引入 Spring Cloud AliCloud SchedulerX</h3>
+<h3 id="_如何引入_spring_cloud_alicloud_schedulerx">10.1. 如何引入 Spring Cloud AliCloud SchedulerX</h3>
 <div class="paragraph">
 <p>如果要在您的项目中引入 SchedulerX，使用 group ID 为 <code>com.alibaba.cloud</code> 和 artifact ID 为 <code>spring-cloud-starter-alicloud-schedulerX</code> 的 starter。</p>
 </div>
@@ -4726,7 +4113,7 @@ spring.cloud.alicloud.oss.config.max-connections=1000</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_启动schedulerx任务调度">11.2. 启动SchedulerX任务调度</h3>
+<h3 id="_启动schedulerx任务调度">10.2. 启动SchedulerX任务调度</h3>
 <div class="paragraph">
 <p>当客户端引入了 Spring Cloud AliCloud SchedulerX Starter 以后，只需要进行一些简单的配置，就可以自动初始化SchedulerX的任务调度服务。</p>
 </div>
@@ -4776,7 +4163,7 @@ spring.cloud.alicloud.edas.namespace=cn-test</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_编写一个简单任务">11.3. 编写一个简单任务</h3>
+<h3 id="_编写一个简单任务">10.3. 编写一个简单任务</h3>
 <div class="paragraph">
 <p>简单任务是最常用的任务类型，只需要实现 ScxSimpleJobProcessor 接口即可。</p>
 </div>
@@ -4799,7 +4186,7 @@ spring.cloud.alicloud.edas.namespace=cn-test</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_对任务进行调度">11.4. 对任务进行调度</h3>
+<h3 id="_对任务进行调度">10.4. 对任务进行调度</h3>
 <div class="paragraph">
 <p>进入 <a href="https://edas.console.aliyun.com/#/edasSchedulerXJob?regionNo=cn-test">SchedulerX任务列表</a> 页面，选择上方"测试"区域，点击右上角"新建Job"，创建一个Job，即如下所示。</p>
 </div>
@@ -4821,7 +4208,7 @@ Job描述：无
 </div>
 </div>
 <div class="sect2">
-<h3 id="_生产环境使用">11.5. 生产环境使用</h3>
+<h3 id="_生产环境使用">10.5. 生产环境使用</h3>
 <div class="paragraph">
 <p>以上使用的都是SchedulerX的"测试"区域，主要用于本地调试和测试。</p>
 </div>
@@ -4866,13 +4253,13 @@ group-id必须创建在namespace当中。
 </div>
 </div>
 <div class="sect1">
-<h2 id="_spring_cloud_alicloud_sms">12. Spring Cloud AliCloud SMS</h2>
+<h2 id="_spring_cloud_alicloud_sms">11. Spring Cloud AliCloud SMS</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>短信服务（Short Message Service）是阿里云为用户提供的一种通信服务的能力。 Spring Cloud AliCloud SMS 实现了与 SMS 的简单集成，提供更为简单易用的 API，可以基于 Spring Cloud Alibaba SMS 来快速的接入阿里云的 SMS 服务。</p>
 </div>
 <div class="sect2">
-<h3 id="_如何引入_spring_cloud_alicloud_sms">12.1. 如何引入 Spring Cloud AliCloud SMS</h3>
+<h3 id="_如何引入_spring_cloud_alicloud_sms">11.1. 如何引入 Spring Cloud AliCloud SMS</h3>
 <div class="paragraph">
 <p>如果要在您的项目中引入 SMS，使用 group ID 为 <code>com.alibaba.cloud</code> 和 artifact ID 为 <code>spring-cloud-starter-alicloud-sms</code> 的 starter。</p>
 </div>
@@ -4886,9 +4273,9 @@ group-id必须创建在namespace当中。
 </div>
 </div>
 <div class="sect2">
-<h3 id="_如何使用_sms_api">12.2. 如何使用 SMS API</h3>
+<h3 id="_如何使用_sms_api">11.2. 如何使用 SMS API</h3>
 <div class="sect3">
-<h4 id="_配置_sms">12.2.1. 配置 SMS</h4>
+<h4 id="_配置_sms">11.2.1. 配置 SMS</h4>
 <div class="paragraph">
 <p>使用 Spring Cloud AliCloud SMS 之前，需要在 application.properties 中加入以下配置。</p>
 </div>
@@ -4903,7 +4290,7 @@ spring.cloud.alicloud.secret-key=你的阿里云 SK</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_引入_sms_api">12.2.2. 引入 SMS API</h4>
+<h4 id="_引入_sms_api">11.2.2. 引入 SMS API</h4>
 <div class="paragraph">
 <p>Spring Cloud Alicloud SMS 中的 SMS API 基于阿里云官方 SMS SDK ,提供具备单个短信发送、多个短信批量发送、短信查询、短信消息(<code>短信回执消息</code> 和 <code>上行短信消息</code>) 类型操作API。</p>
 </div>
@@ -4978,7 +4365,7 @@ public class SmsApplication {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_sms_api_的高级功能">12.3. SMS Api 的高级功能</h3>
+<h3 id="_sms_api_的高级功能">11.3. SMS Api 的高级功能</h3>
 <div class="paragraph">
 <p>Spring Cloud Alicloud SMS 封装的 API 接口为了降低学习的成本，尽量保持和官网提供的 API 以及 Example 保持一致。</p>
 </div>
@@ -5187,7 +4574,7 @@ public class SmsUpMessageListener
 </div>
 </div>
 <div class="sect1">
-<h2 id="_spring_cloud_alibaba_sidecar">13. Spring Cloud Alibaba Sidecar</h2>
+<h2 id="_spring_cloud_alibaba_sidecar">12. Spring Cloud Alibaba Sidecar</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><code>Spring Cloud Alibaba Sidecar</code> 是一个用来快速<strong>完美整合</strong> Spring Cloud
@@ -5206,15 +4593,15 @@ Cloud Netflix Sidecar</a>，目前支持的服务发现组件：</p>
 </ul>
 </div>
 <div class="sect2">
-<h3 id="_术语">13.1. 术语</h3>
+<h3 id="_术语">12.1. 术语</h3>
 <div class="sect3">
-<h4 id="_异构微服务">13.1.1. 异构微服务</h4>
+<h4 id="_异构微服务">12.1.1. 异构微服务</h4>
 <div class="paragraph">
 <p>非Spring Cloud应用，统称异构微服务。比如你的遗留项目，或者非JVM应用。</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_完美整合的三层含义">13.1.2. "完美整合"的三层含义</h4>
+<h4 id="_完美整合的三层含义">12.1.2. "完美整合"的三层含义</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -5231,9 +4618,9 @@ Cloud Netflix Sidecar</a>，目前支持的服务发现组件：</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_why_or_why_not">13.2. Why or Why not?</h3>
+<h3 id="_why_or_why_not">12.2. Why or Why not?</h3>
 <div class="sect3">
-<h4 id="_为什么要编写alibaba_sidecar">13.2.1. 为什么要编写Alibaba Sidecar？</h4>
+<h4 id="_为什么要编写alibaba_sidecar">12.2.1. 为什么要编写Alibaba Sidecar？</h4>
 <div class="paragraph">
 <p>原因有两点：</p>
 </div>
@@ -5256,7 +4643,7 @@ Gateway的新一代Sidecar，然而官方表示并没有该计划。详见：htt
 </div>
 </div>
 <div class="sect3">
-<h4 id="_为什么不用service_mesh">13.2.2. 为什么不用Service Mesh？</h4>
+<h4 id="_为什么不用service_mesh">12.2.2. 为什么不用Service Mesh？</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -5274,7 +4661,7 @@ Sidecar一个小组件就能解决问题了（核心代码不超过200行），�
 </div>
 </div>
 <div class="sect2">
-<h3 id="_原理">13.3. 原理</h3>
+<h3 id="_原理">12.3. 原理</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -5293,7 +4680,7 @@ Sidecar实例下线；如果异构微服务恢复正常，则会自动上线。�
 </div>
 </div>
 <div class="sect2">
-<h3 id="_要求">13.4. 要求</h3>
+<h3 id="_要求">12.4. 要求</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -5309,7 +4696,7 @@ Cloud本身就是基于HTTP的；</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_使用示例">13.5. 使用示例</h3>
+<h3 id="_使用示例">12.5. 使用示例</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -5321,7 +4708,7 @@ Cloud本身就是基于HTTP的；</p>
 </ul>
 </div>
 <div class="sect3">
-<h4 id="_示例代码以nacos服务发现为例">13.5.1. 示例代码（以Nacos服务发现为例）</h4>
+<h4 id="_示例代码以nacos服务发现为例">12.5.1. 示例代码（以Nacos服务发现为例）</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -5374,7 +4761,7 @@ Sidecar的配置。</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_异构微服务_2">13.5.2. 异构微服务</h4>
+<h4 id="_异构微服务_2">12.5.2. 异构微服务</h4>
 <div class="paragraph">
 <p>我准备了一个NodeJS编写的简单微服务。</p>
 </div>
@@ -5410,7 +4797,7 @@ server.listen(8060, function() {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_测试">13.5.3. 测试</h4>
+<h4 id="_测试">12.5.3. 测试</h4>
 <div class="sect4">
 <h5 id="_测试1spring_cloud微服务完美调用异构微服务">测试1：Spring Cloud微服务完美调用异构微服务</h5>
 <div class="paragraph">
@@ -5451,7 +4838,7 @@ Gateway还可以整合Sentinel或者Hystirx、Resilience4J，所以也带有了�
 </div>
 </div>
 <div class="sect2">
-<h3 id="_alibaba_sidecar优缺点分析">13.6. Alibaba Sidecar优缺点分析</h3>
+<h3 id="_alibaba_sidecar优缺点分析">12.6. Alibaba Sidecar优缺点分析</h3>
 <div class="paragraph">
 <p>Alibaba
 Sidecar的设计和Sidecar基本一致，优缺点和Sidecar的优缺点也是一样的。</p>
@@ -5489,10 +4876,10 @@ Sidecar当网关在使用，经过了一层转发，性能有一定下降。</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_spring_cloud_alibaba_appactive">14. Spring Cloud Alibaba AppActive</h2>
+<h2 id="_spring_cloud_alibaba_appactive">13. Spring Cloud Alibaba AppActive</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_appactive介绍">14.1. AppActive介绍</h3>
+<h3 id="_appactive介绍">13.1. AppActive介绍</h3>
 <div class="paragraph">
 <p>AppActive，是一个面向业务应用构建云原生高可用多活容灾架构的开源中间件。它提供了应用多活容灾架构的标准、实现和 Demo，适用于丰富的业务场景（单 AZ、单 Region、单云、多 AZ、多 Region、多云、自建 IDC等）。</p>
 </div>
@@ -5503,7 +4890,7 @@ Sidecar当网关在使用，经过了一层转发，性能有一定下降。</p>
 <p>AppActive 具备以下特性</p>
 </div>
 <div class="sect3">
-<h4 id="_单元分流">14.1.1. 单元分流</h4>
+<h4 id="_单元分流">13.1.1. 单元分流</h4>
 <div class="sect4">
 <h5 id="_流量统一接入">流量统一接入</h5>
 <div class="paragraph">
@@ -5588,7 +4975,7 @@ Sidecar当网关在使用，经过了一层转发，性能有一定下降。</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_单元协同">14.1.2. 单元协同</h4>
+<h4 id="_单元协同">13.1.2. 单元协同</h4>
 <div class="paragraph">
 <p>在容灾场景中，理想场景中各个单元独立，但实际上会存在部分跨单元场景的业务场景，为了满足这些场景，产品需要提供单元协同的能力。</p>
 </div>
@@ -5600,7 +4987,7 @@ Sidecar当网关在使用，经过了一层转发，性能有一定下降。</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_单元保护">14.1.3. 单元保护</h4>
+<h4 id="_单元保护">13.1.3. 单元保护</h4>
 <div class="paragraph">
 <p>产品保证业务逻辑的全局正确性，不会因切流操作导致单元业务逻辑不一致问题。系统自上而下各层都有对错误流量的纠错保护能力，保证业务按单元化规则进行正确的流转。</p>
 </div>
@@ -5618,7 +5005,7 @@ Sidecar当网关在使用，经过了一层转发，性能有一定下降。</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_单元扩展">14.1.4. 单元扩展</h4>
+<h4 id="_单元扩展">13.1.4. 单元扩展</h4>
 <div class="sect4">
 <h5 id="_水平扩展">水平扩展</h5>
 <div class="paragraph">
@@ -5641,9 +5028,9 @@ Sidecar当网关在使用，经过了一层转发，性能有一定下降。</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_如何使用appactive">14.2. 如何使用AppActive</h3>
+<h3 id="_如何使用appactive">13.2. 如何使用AppActive</h3>
 <div class="sect3">
-<h4 id="_数据面">14.2.1. 数据面</h4>
+<h4 id="_数据面">13.2.1. 数据面</h4>
 <div class="paragraph">
 <p><strong>前置条件</strong></p>
 </div>
@@ -5970,7 +5357,7 @@ spring.cloud.appactive.filter.general-path=/*</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-09-15 17:13:30 +0800
+Last updated 2022-10-07 17:48:13 +0800
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
