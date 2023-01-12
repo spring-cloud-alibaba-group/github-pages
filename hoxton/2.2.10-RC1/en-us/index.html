@@ -663,11 +663,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#_spring_cloud_alibaba_governance">13. Spring Cloud Alibaba Governance</a>
 <ul class="sectlevel2">
-<li><a href="#_resource_transform">13.1. Resource-Transform</a></li>
+<li><a href="#_resource_transform">13.1. Resource Transform</a></li>
 <li><a href="#_routing">13.2. Routing</a>
 <ul class="sectlevel3">
 <li><a href="#_component_support_description">13.2.1. Component support description</a></li>
-<li><a href="#_using">13.2.2. Using</a></li>
+<li><a href="#_using_routing_capacity">13.2.2. Using Routing capacity</a></li>
 </ul>
 </li>
 <li><a href="#_authentication">13.3. Authentication</a></li>
@@ -5067,20 +5067,20 @@ The streaming rule demonstrated next will send requests with user IDs 0 ~ 2999 t
 </div>
 </div>
 <div class="paragraph">
-<p>Microservices Governance module is a micro-service governance sub-module launched by Spring Cloud Alibaba, which provides various types of microservices governance capabilities, including label routing, service authentication, etc. Moreover, it supports various control planes, such as Istio and OpenSergo, so that users can get the governance rules in real time without modifying Spring Cloud applications, and apply these rules to applications to govern the Spring Cloud application.</p>
+<p>Spring Cloud Alibaba Governance is a Microservices governance capabilities provided by Spring Cloud Alibaba, which provides various types of microservices governance capabilities, including label routing, service authentication, etc. Moreover, it supports various control planes, such as <a href="https://istio.io/">Istio</a> and <a href="http://opensergo.io/">OpenSergo</a>, so that users can get the governance rules in real time just adding relevant dependency, and apply these rules to applications to govern the Spring Cloud Alibaba application.</p>
 </div>
 <div class="sect2">
-<h3 id="_resource_transform">13.1. Resource-Transform</h3>
+<h3 id="_resource_transform">13.1. Resource Transform</h3>
 <div class="imageblock">
 <div class="content">
 <img src="pic/resource-transform.png" alt="resource transform">
 </div>
 </div>
 <div class="paragraph">
-<p>The resource-transform module of Microservices Governance will uniformly transform the configurations published by different control planes, like Istio and OperSergo, into the unified abstract data structure of Spring Cloud Alibaba for subsequent use.</p>
+<p>The resource-transform adapter of Microservices Governance will uniformly transform the rules published by different control planes, like Istio and OperSergo, into the unified abstract data structure of Spring Cloud Alibaba for subsequent use.</p>
 </div>
 <div class="paragraph">
-<p>If you use Istio in your project to transform the configuration, you need to use a following starter:</p>
+<p>If you use Istio in your project to transform the rule, first of all, note that you need to build a Kubernetes cluster and deploy Istio in it. For details, refer to <a href="https://istio.io/latest/zh/docs/setup/install">Istio installation</a>, you need to add a following starter dependency application(Generally added to service consumer application):</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -5225,12 +5225,12 @@ spring:
 </div>
 </div>
 <div class="sect3">
-<h4 id="_using">13.2.2. Using</h4>
+<h4 id="_using_routing_capacity">13.2.2. Using Routing capacity</h4>
 <div class="paragraph">
-<p>With the introduction of the configuration transformation module, we can obtain the governance rules to give the Spring Cloud application some governance capabilities. Label routing module can route the Spring Cloud application according to the request header, request parameters and other tags to route to different services.</p>
+<p>With the introduction of the transformation adapter of rule, we can obtain the governance rules to give the Spring Cloud application some governance capabilities. Label routing module can route the Spring Cloud application according to the request header, request parameters and other tags to route to different services.</p>
 </div>
 <div class="paragraph">
-<p>If you use Microservices Governance Label Routing in your project, You need to use a following starter:</p>
+<p>If you use Microservices Governance Label Routing in your project, You need to use a following starter dependency(Generally added to service consumer application):</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -5250,7 +5250,7 @@ If no configuration,use default ribbon load balance algorithm ZoneAvoidanceRule.
 </div>
 </div>
 <div class="paragraph">
-<p>With the introduction of Istio Resource Transform module, the label routing module supports routing of the following types of request meta-information:</p>
+<p>With the introduction of Istio Resource Transform adapter, the label routing module supports routing of the following types of request meta-information:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -5291,7 +5291,7 @@ If no configuration,use default ribbon load balance algorithm ZoneAvoidanceRule.
 </div>
 </div>
 <div class="paragraph">
-<p>With the introduction of the configuration transformation module, we can obtain the governance rules to give the Spring Cloud application some governance capabilities. The Authentication module provides various authentication modes for Spring Cloud applications, such as IP blacklist and whitelist and JWT authentication.</p>
+<p>With the introduction of the transformation adapter of rule, we can obtain the governance rules to give the Spring Cloud application some governance capabilities. The Authentication module provides various authentication modes for Spring Cloud applications, such as IP blacklist and whitelist and JWT authentication.</p>
 </div>
 <div class="paragraph">
 <p>Add following Microservices Authentication starter:</p>
@@ -5326,7 +5326,7 @@ If no configuration,use default ribbon load balance algorithm ZoneAvoidanceRule.
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-01-12 12:14:57 +0800
+Last updated 2023-01-12 20:55:50 +0800
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>
